@@ -1,14 +1,19 @@
 .message {
 	@include transition(opacity 300ms, transform 300ms);
-	@include border-radius(8px);
 
-	margin: 10px 40px 10px 0;
-	background: lighten(#263238, 10);
-	overflow: hidden;
+	margin: 10px 0;
+	padding-right: 100px;
 
 	&.-you {
-		margin: 10px 0 10px 40px;
-		background: #2f6e8e;
+		// margin: 10px 0 10px 40px;
+		text-align: right;
+		padding: 0;
+
+		.message_text {
+			@include border-radius(2em 0 2em 2em);
+			margin-right: 0px;
+			background: #2f6e8e;
+		}
 	}
 
 	&.-old {
@@ -18,34 +23,87 @@
 		}
 	}
 
+	&.-you, &.-system {
+		.message_sender {
+			display: none;
+		}
+
+		.message_time {
+			text-align: right;
+		}
+	}
+
 	&.-system {
-		margin: 10px 0;
-		background: #e7fff7;
-		color: #263238;
+		padding: 0px;
+		opacity: .5;
+
+		.message_text {
+			@include border-radius(2em);
+			margin-left: 0px;
+			margin-right: 0px;
+			background: #e7fff7;
+			color: #263238;
+			display: block;
+		}
 	}
 
 	&.-anim {
-		@include animation(message-animLeft 1000ms infinite);
+		@include animation(message-animLeft 1000ms 1);
 
 		&.-you {
-			@include animation(message-animRight 1000ms infinite);
+			@include animation(message-animRight 1000ms 1);
+		}
+
+		&.-system {
+			@include animation(message-animSystem 2000ms 1);
 		}
 	}
 }
 
 .message_sender {
-	background: rgba(0,0,0,.2);
 	padding: 10px;
+	display: inline-block;
 }
 
 .message_text {
-	padding: 10px;
+	@include border-radius(0 2em 2em 2em);
+	background: lighten(#263238, 10);
+	padding: 10px 1em;
+	display: inline-block;
+
 }
 
 .message_time {
-	float:right;
-	padding: 10px;
-	opacity: 0.7;
+	@include transition(opacity 300ms);
+	padding: 5px 10px;
+	// display: none;
+	text-align: right;
+	font-size: .7em;
+	opacity: 0.5;
+
+	&:hover {
+		opacity: 1;
+	}
+}
+
+@include keyframes(message-animSystem) {
+	from {
+		opacity: 0;
+		@include transform(scale(.5, .5));
+	}
+
+	20% {
+		@include transform(scale(1.1, 1.1));
+	}
+
+	30% {
+		opacity: 1;
+		@include transform(scale(1, 1));
+	}
+
+	100% {
+		opacity: .5;
+	}
 }
 
 @include keyframes(message-animLeft) {

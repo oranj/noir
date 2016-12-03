@@ -3,6 +3,10 @@ $ircWindow-textareaHeight: 100px;
 .ircWindow {
 	position: relative;
 	height: 100vh;
+
+	&.-hidden {
+		display: none;
+	}
 }
 
 .ircWindow_chatArea {
@@ -26,6 +30,8 @@ $ircWindow-textareaHeight: 100px;
 
 .ircWindow_textInput {
 	@include transition(opacity 300ms);
+	@include border-radius(10px);
+
 	border: none;
 	margin: 0;
 	padding: 10px;

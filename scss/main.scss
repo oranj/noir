@@ -12,11 +12,24 @@ body, html {
 	background: #263238;
 }
 
-html, *, input, textarea, button, select {
+html, input, textarea, button, select {
 	font-size: 18px;
 	font-family: sans-serif;
 }
 
+.clearfix {
+	&::before, &::after {
+	  	content: " ";
+	  	display: table;
+	}
+
+	&::after {
+  		clear: both;
+	}
+}
+
+
 @import "blocks/chatWindow";
 @import "blocks/ircWindow";
+@import "blocks/ircSidebar";
 @import "blocks/message";

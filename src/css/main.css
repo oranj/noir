@@ -13,9 +13,19 @@ body, html {
 }
 
 /* line 15, ../../scss/main.scss */
-html, *, input, textarea, button, select {
+html, input, textarea, button, select {
   font-size: 18px;
   font-family: sans-serif;
+}
+
+/* line 21, ../../scss/main.scss */
+.clearfix::before, .clearfix::after {
+  content: " ";
+  display: table;
+}
+/* line 26, ../../scss/main.scss */
+.clearfix::after {
+  clear: both;
 }
 
 /* line 1, ../../scss/blocks/_chatWindow.scss */
@@ -26,7 +36,7 @@ html, *, input, textarea, button, select {
 /* line 5, ../../scss/blocks/_chatWindow.scss */
 .chatWindow_sidebar {
   float: left;
-  min-width: 300px;
+  min-width: 200px;
   width: 25%;
   background: #202a2f;
 }
@@ -42,8 +52,12 @@ html, *, input, textarea, button, select {
   position: relative;
   height: 100vh;
 }
+/* line 7, ../../scss/blocks/_ircWindow.scss */
+.ircWindow.-hidden {
+  display: none;
+}
 
-/* line 8, ../../scss/blocks/_ircWindow.scss */
+/* line 12, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_chatArea {
   padding: 10px;
   max-height: calc(100vh - 100px);
@@ -54,7 +68,7 @@ html, *, input, textarea, button, select {
   overflow-y: auto;
 }
 
-/* line 18, ../../scss/blocks/_ircWindow.scss */
+/* line 22, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_inputArea {
   position: absolute;
   bottom: 0px;
@@ -64,12 +78,15 @@ html, *, input, textarea, button, select {
   left: 0px;
 }
 
-/* line 27, ../../scss/blocks/_ircWindow.scss */
+/* line 31, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_textInput {
   -moz-transition: opacity 300ms;
   -o-transition: opacity 300ms;
   -webkit-transition: opacity 300ms;
   transition: opacity 300ms;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
   border: none;
   margin: 0;
   padding: 10px;
@@ -78,12 +95,12 @@ html, *, input, textarea, button, select {
   width: calc(100% - 10px - 100px);
   opacity: 0.5;
 }
-/* line 37, ../../scss/blocks/_ircWindow.scss */
+/* line 43, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_textInput:hover, .ircWindow_textInput:focus, .ircWindow_textInput:active {
   opacity: 1;
 }
 
-/* line 42, ../../scss/blocks/_ircWindow.scss */
+/* line 48, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_submitButton {
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
@@ -93,69 +110,281 @@ html, *, input, textarea, button, select {
   border: none;
 }
 
+/* line 1, ../../scss/blocks/_ircSidebar.scss */
+.ircSidebar {
+  margin: 1.2em;
+}
+
+/* line 5, ../../scss/blocks/_ircSidebar.scss */
+.ircSidebar_item {
+  -moz-transition: background 300ms;
+  -o-transition: background 300ms;
+  -webkit-transition: background 300ms;
+  transition: background 300ms;
+  background: rgba(255, 255, 255, 0);
+  cursor: pointer;
+}
+/* line 10, ../../scss/blocks/_ircSidebar.scss */
+.ircSidebar_item.-active {
+  background: rgba(255, 255, 255, 0.1);
+}
+/* line 14, ../../scss/blocks/_ircSidebar.scss */
+.ircSidebar_item.-unread .ircSidebar_itemUnread {
+  -moz-animation: ircSidebar_item-popUp 300ms 1;
+  -webkit-animation: ircSidebar_item-popUp 300ms 1;
+  animation: ircSidebar_item-popUp 300ms 1;
+  -moz-transform: scale(1, 1);
+  -ms-transform: scale(1, 1);
+  -webkit-transform: scale(1, 1);
+  transform: scale(1, 1);
+  opacity: 1;
+}
+
+/* line 22, ../../scss/blocks/_ircSidebar.scss */
+.ircSidebar_itemUnread {
+  -moz-transition: opacity 300ms, -moz-transform 300ms;
+  -o-transition: opacity 300ms, -o-transform 300ms;
+  -webkit-transition: opacity 300ms, -webkit-transform 300ms;
+  transition: opacity 300ms, transform 300ms;
+  -moz-border-radius: 2em;
+  -webkit-border-radius: 2em;
+  border-radius: 2em;
+  -moz-transform: scale(0, 0);
+  -ms-transform: scale(0, 0);
+  -webkit-transform: scale(0, 0);
+  transform: scale(0, 0);
+  opacity: 0;
+  text-align: center;
+  line-height: 1.5em;
+  background: #f00;
+  color: #fff;
+  float: right;
+  width: 1.5em;
+  height: 1.5em;
+}
+
+@-moz-keyframes ircSidebar_item-popUp {
+  from {
+    -moz-transform: scale(0, 0);
+    transform: scale(0, 0);
+    opacity: 0;
+  }
+  70% {
+    -moz-transform: scale(1.1, 1.1);
+    transform: scale(1.1, 1.1);
+  }
+  to {
+    -moz-transform: scale(1, 1);
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes ircSidebar_item-popUp {
+  from {
+    -webkit-transform: scale(0, 0);
+    transform: scale(0, 0);
+    opacity: 0;
+  }
+  70% {
+    -webkit-transform: scale(1.1, 1.1);
+    transform: scale(1.1, 1.1);
+  }
+  to {
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+}
+@keyframes ircSidebar_item-popUp {
+  from {
+    -moz-transform: scale(0, 0);
+    -ms-transform: scale(0, 0);
+    -webkit-transform: scale(0, 0);
+    transform: scale(0, 0);
+    opacity: 0;
+  }
+  70% {
+    -moz-transform: scale(1.1, 1.1);
+    -ms-transform: scale(1.1, 1.1);
+    -webkit-transform: scale(1.1, 1.1);
+    transform: scale(1.1, 1.1);
+  }
+  to {
+    -moz-transform: scale(1, 1);
+    -ms-transform: scale(1, 1);
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+}
 /* line 1, ../../scss/blocks/_message.scss */
 .message {
   -moz-transition: opacity 300ms, -moz-transform 300ms;
   -o-transition: opacity 300ms, -o-transform 300ms;
   -webkit-transition: opacity 300ms, -webkit-transform 300ms;
   transition: opacity 300ms, transform 300ms;
-  -moz-border-radius: 8px;
-  -webkit-border-radius: 8px;
-  border-radius: 8px;
-  margin: 10px 40px 10px 0;
-  background: #3b4d56;
-  overflow: hidden;
+  margin: 10px 0;
+  padding-right: 100px;
 }
-/* line 9, ../../scss/blocks/_message.scss */
+/* line 7, ../../scss/blocks/_message.scss */
 .message.-you {
-  margin: 10px 0 10px 40px;
+  text-align: right;
+  padding: 0;
+}
+/* line 12, ../../scss/blocks/_message.scss */
+.message.-you .message_text {
+  -moz-border-radius: 2em 0 2em 2em;
+  -webkit-border-radius: 2em;
+  border-radius: 2em 0 2em 2em;
+  margin-right: 0px;
   background: #2f6e8e;
 }
-/* line 14, ../../scss/blocks/_message.scss */
+/* line 19, ../../scss/blocks/_message.scss */
 .message.-old {
   opacity: 0.3;
 }
-/* line 16, ../../scss/blocks/_message.scss */
+/* line 21, ../../scss/blocks/_message.scss */
 .message.-old:hover {
   opacity: 8;
 }
-/* line 21, ../../scss/blocks/_message.scss */
+/* line 27, ../../scss/blocks/_message.scss */
+.message.-you .message_sender, .message.-system .message_sender {
+  display: none;
+}
+/* line 31, ../../scss/blocks/_message.scss */
+.message.-you .message_time, .message.-system .message_time {
+  text-align: right;
+}
+/* line 36, ../../scss/blocks/_message.scss */
 .message.-system {
-  margin: 10px 0;
+  padding: 0px;
+  opacity: .5;
+}
+/* line 40, ../../scss/blocks/_message.scss */
+.message.-system .message_text {
+  -moz-border-radius: 2em;
+  -webkit-border-radius: 2em;
+  border-radius: 2em;
+  margin-left: 0px;
+  margin-right: 0px;
   background: #e7fff7;
   color: #263238;
+  display: block;
 }
-/* line 27, ../../scss/blocks/_message.scss */
+/* line 50, ../../scss/blocks/_message.scss */
 .message.-anim {
-  -moz-animation: message-animLeft 1000ms infinite;
-  -webkit-animation: message-animLeft 1000ms infinite;
-  animation: message-animLeft 1000ms infinite;
+  -moz-animation: message-animLeft 1000ms 1;
+  -webkit-animation: message-animLeft 1000ms 1;
+  animation: message-animLeft 1000ms 1;
 }
-/* line 30, ../../scss/blocks/_message.scss */
+/* line 53, ../../scss/blocks/_message.scss */
 .message.-anim.-you {
-  -moz-animation: message-animRight 1000ms infinite;
-  -webkit-animation: message-animRight 1000ms infinite;
-  animation: message-animRight 1000ms infinite;
+  -moz-animation: message-animRight 1000ms 1;
+  -webkit-animation: message-animRight 1000ms 1;
+  animation: message-animRight 1000ms 1;
+}
+/* line 57, ../../scss/blocks/_message.scss */
+.message.-anim.-system {
+  -moz-animation: message-animSystem 2000ms 1;
+  -webkit-animation: message-animSystem 2000ms 1;
+  animation: message-animSystem 2000ms 1;
 }
 
-/* line 36, ../../scss/blocks/_message.scss */
+/* line 63, ../../scss/blocks/_message.scss */
 .message_sender {
-  background: rgba(0, 0, 0, 0.2);
   padding: 10px;
+  display: inline-block;
 }
 
-/* line 41, ../../scss/blocks/_message.scss */
+/* line 68, ../../scss/blocks/_message.scss */
 .message_text {
-  padding: 10px;
+  -moz-border-radius: 0 2em 2em 2em;
+  -webkit-border-radius: 0;
+  border-radius: 0 2em 2em 2em;
+  background: #3b4d56;
+  padding: 10px 1em;
+  display: inline-block;
 }
 
-/* line 45, ../../scss/blocks/_message.scss */
+/* line 76, ../../scss/blocks/_message.scss */
 .message_time {
-  float: right;
-  padding: 10px;
-  opacity: 0.7;
+  -moz-transition: opacity 300ms;
+  -o-transition: opacity 300ms;
+  -webkit-transition: opacity 300ms;
+  transition: opacity 300ms;
+  padding: 5px 10px;
+  text-align: right;
+  font-size: .7em;
+  opacity: 0.5;
+}
+/* line 84, ../../scss/blocks/_message.scss */
+.message_time:hover {
+  opacity: 1;
 }
 
+@-moz-keyframes message-animSystem {
+  from {
+    opacity: 0;
+    -moz-transform: scale(0.5, 0.5);
+    transform: scale(0.5, 0.5);
+  }
+  20% {
+    -moz-transform: scale(1.1, 1.1);
+    transform: scale(1.1, 1.1);
+  }
+  30% {
+    opacity: 1;
+    -moz-transform: scale(1, 1);
+    transform: scale(1, 1);
+  }
+  100% {
+    opacity: .5;
+  }
+}
+@-webkit-keyframes message-animSystem {
+  from {
+    opacity: 0;
+    -webkit-transform: scale(0.5, 0.5);
+    transform: scale(0.5, 0.5);
+  }
+  20% {
+    -webkit-transform: scale(1.1, 1.1);
+    transform: scale(1.1, 1.1);
+  }
+  30% {
+    opacity: 1;
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+  }
+  100% {
+    opacity: .5;
+  }
+}
+@keyframes message-animSystem {
+  from {
+    opacity: 0;
+    -moz-transform: scale(0.5, 0.5);
+    -ms-transform: scale(0.5, 0.5);
+    -webkit-transform: scale(0.5, 0.5);
+    transform: scale(0.5, 0.5);
+  }
+  20% {
+    -moz-transform: scale(1.1, 1.1);
+    -ms-transform: scale(1.1, 1.1);
+    -webkit-transform: scale(1.1, 1.1);
+    transform: scale(1.1, 1.1);
+  }
+  30% {
+    opacity: 1;
+    -moz-transform: scale(1, 1);
+    -ms-transform: scale(1, 1);
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+  }
+  100% {
+    opacity: .5;
+  }
+}
 @-moz-keyframes message-animLeft {
   from {
     opacity: 0;
