@@ -1,0 +1,250 @@
+/* line 3, ../../scss/main.scss */
+* {
+  box-sizing: border-box;
+}
+
+/* line 7, ../../scss/main.scss */
+body, html {
+  display: block;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  background: #263238;
+}
+
+/* line 15, ../../scss/main.scss */
+html, *, input, textarea, button, select {
+  font-size: 18px;
+  font-family: sans-serif;
+}
+
+/* line 1, ../../scss/blocks/_chatWindow.scss */
+.chatWindow {
+  color: #e7fff7;
+}
+
+/* line 5, ../../scss/blocks/_chatWindow.scss */
+.chatWindow_sidebar {
+  float: left;
+  min-width: 300px;
+  width: 25%;
+  background: #202a2f;
+}
+
+/* line 12, ../../scss/blocks/_chatWindow.scss */
+.chatWindow_main, .chatWindow_sidebar {
+  overflow-y: auto;
+  height: 100vh;
+}
+
+/* line 3, ../../scss/blocks/_ircWindow.scss */
+.ircWindow {
+  position: relative;
+  height: 100vh;
+}
+
+/* line 8, ../../scss/blocks/_ircWindow.scss */
+.ircWindow_chatArea {
+  padding: 10px;
+  max-height: calc(100vh - 100px);
+  position: absolute;
+  bottom: 100px;
+  width: 100%;
+  left: 0px;
+  overflow-y: auto;
+}
+
+/* line 18, ../../scss/blocks/_ircWindow.scss */
+.ircWindow_inputArea {
+  position: absolute;
+  bottom: 0px;
+  height: 100px;
+  padding: 10px 10px 0px;
+  width: 100%;
+  left: 0px;
+}
+
+/* line 27, ../../scss/blocks/_ircWindow.scss */
+.ircWindow_textInput {
+  -moz-transition: opacity 300ms;
+  -o-transition: opacity 300ms;
+  -webkit-transition: opacity 300ms;
+  transition: opacity 300ms;
+  border: none;
+  margin: 0;
+  padding: 10px;
+  height: 80px;
+  resize: none;
+  width: calc(100% - 10px - 100px);
+  opacity: 0.5;
+}
+/* line 37, ../../scss/blocks/_ircWindow.scss */
+.ircWindow_textInput:hover, .ircWindow_textInput:focus, .ircWindow_textInput:active {
+  opacity: 1;
+}
+
+/* line 42, ../../scss/blocks/_ircWindow.scss */
+.ircWindow_submitButton {
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  float: right;
+  width: 100px;
+  border: none;
+}
+
+/* line 1, ../../scss/blocks/_message.scss */
+.message {
+  -moz-transition: opacity 300ms, -moz-transform 300ms;
+  -o-transition: opacity 300ms, -o-transform 300ms;
+  -webkit-transition: opacity 300ms, -webkit-transform 300ms;
+  transition: opacity 300ms, transform 300ms;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  margin: 10px 40px 10px 0;
+  background: #3b4d56;
+  overflow: hidden;
+}
+/* line 9, ../../scss/blocks/_message.scss */
+.message.-you {
+  margin: 10px 0 10px 40px;
+  background: #2f6e8e;
+}
+/* line 14, ../../scss/blocks/_message.scss */
+.message.-old {
+  opacity: 0.3;
+}
+/* line 16, ../../scss/blocks/_message.scss */
+.message.-old:hover {
+  opacity: 8;
+}
+/* line 21, ../../scss/blocks/_message.scss */
+.message.-system {
+  margin: 10px 0;
+  background: #e7fff7;
+  color: #263238;
+}
+/* line 27, ../../scss/blocks/_message.scss */
+.message.-anim {
+  -moz-animation: message-animLeft 1000ms infinite;
+  -webkit-animation: message-animLeft 1000ms infinite;
+  animation: message-animLeft 1000ms infinite;
+}
+/* line 30, ../../scss/blocks/_message.scss */
+.message.-anim.-you {
+  -moz-animation: message-animRight 1000ms infinite;
+  -webkit-animation: message-animRight 1000ms infinite;
+  animation: message-animRight 1000ms infinite;
+}
+
+/* line 36, ../../scss/blocks/_message.scss */
+.message_sender {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 10px;
+}
+
+/* line 41, ../../scss/blocks/_message.scss */
+.message_text {
+  padding: 10px;
+}
+
+/* line 45, ../../scss/blocks/_message.scss */
+.message_time {
+  float: right;
+  padding: 10px;
+  opacity: 0.7;
+}
+
+@-moz-keyframes message-animLeft {
+  from {
+    opacity: 0;
+    -moz-transform: translateX(-33%);
+    transform: translateX(-33%);
+  }
+  50% {
+    -moz-transform: translateX(0);
+    transform: translateX(0);
+  }
+  to {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes message-animLeft {
+  from {
+    opacity: 0;
+    -webkit-transform: translateX(-33%);
+    transform: translateX(-33%);
+  }
+  50% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes message-animLeft {
+  from {
+    opacity: 0;
+    -moz-transform: translateX(-33%);
+    -ms-transform: translateX(-33%);
+    -webkit-transform: translateX(-33%);
+    transform: translateX(-33%);
+  }
+  50% {
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  to {
+    opacity: 1;
+  }
+}
+@-moz-keyframes message-animRight {
+  from {
+    opacity: 0;
+    -moz-transform: translateX(33%);
+    transform: translateX(33%);
+  }
+  50% {
+    -moz-transform: translateX(0);
+    transform: translateX(0);
+  }
+  to {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes message-animRight {
+  from {
+    opacity: 0;
+    -webkit-transform: translateX(33%);
+    transform: translateX(33%);
+  }
+  50% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes message-animRight {
+  from {
+    opacity: 0;
+    -moz-transform: translateX(33%);
+    -ms-transform: translateX(33%);
+    -webkit-transform: translateX(33%);
+    transform: translateX(33%);
+  }
+  50% {
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  to {
+    opacity: 1;
+  }
+}

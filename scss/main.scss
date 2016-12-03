@@ -1,0 +1,22 @@
+@import "base";
+
+* {
+	box-sizing: border-box;
+}
+
+body, html {
+	display: block;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	background: #263238;
+}
+
+html, *, input, textarea, button, select {
+	font-size: 18px;
+	font-family: sans-serif;
+}
+
+@import "blocks/chatWindow";
+@import "blocks/ircWindow";
+@import "blocks/message";

@@ -1,0 +1,48 @@
+$ircWindow-textareaHeight: 100px;
+
+.ircWindow {
+	position: relative;
+	height: 100vh;
+}
+
+.ircWindow_chatArea {
+	padding: 10px;
+	max-height: calc(100vh - #{$ircWindow-textareaHeight});
+	position: absolute;
+	bottom: $ircWindow-textareaHeight;
+	width: 100%;
+	left: 0px;
+	overflow-y: auto;
+}
+
+.ircWindow_inputArea {
+	position: absolute;
+	bottom: 0px;
+	height: $ircWindow-textareaHeight;
+	padding: 10px 10px 0px;
+	width: 100%;
+	left: 0px;
+}
+
+.ircWindow_textInput {
+	@include transition(opacity 300ms);
+	border: none;
+	margin: 0;
+	padding: 10px;
+	height: ($ircWindow-textareaHeight - 20px);
+	resize: none;
+	width: calc(100% - 10px - #{$ircWindow-textareaHeight});
+	opacity: 0.5;
+
+	&:hover, &:focus, &:active {
+		opacity: 1;
+	}
+}
+
+.ircWindow_submitButton {
+	@include border-radius(4px);
+	float:right;
+	width: $ircWindow-textareaHeight;
+	border: none;
+
+}

@@ -1,0 +1,19 @@
+.chatWindow {
+	color: #e7fff7;
+}
+
+.chatWindow_sidebar {
+	float: left;
+	min-width: 300px;
+	width: 25%;
+	background: darken(#263238, 3);
+}
+
+.chatWindow_main, .chatWindow_sidebar {
+	overflow-y: auto;
+	height: 100vh;
+}
+
+.chatWindow_main {
+
+}

@@ -1,0 +1,17 @@
+{
+  "name": "noir",
+  "version": "0.1.0",
+  "description": "Extendable chat application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-compass": "^1.1.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-electron": "^5.0.0"
+  }
+}
