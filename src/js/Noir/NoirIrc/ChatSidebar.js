@@ -1,4 +1,6 @@
 const View = require("./../View.js");
+const Event = require("./../Event.js");
+
 const template = `
 	<div class="ircSidebar">
 		<h2 class="ircSidebar_header">
@@ -6,33 +8,51 @@ const template = `
 		</h2>
 		<div class="ircSidebar_item clearfix" data-cjs-template="items">
 			<span class="ircSidebar_itemTitle">{{ windowId }}</span>
-			<span class="ircSidebar_itemUnread">{{ unreadCount }}</span>
+			<span class="isValidElement()Sidebar_itemUnread">{{ unreadCount }}</span>
 		</div>
 	</div>`;
 
-module.exports = class ChatWindow {
 
-	constructor(title, onWindowSelect) {
+function toggleClass(element, className, value) {
+	if (value == undefined) {
+		value = ! element.classList.contains(className);
+	}
+	if (value) {
+		element.classList.add(className);
+	} else {
+		element.classList.remove(className);
+	}
+}
+
+class ChatSidebar {
+
+	constructor(title) {
 		this.view = new View(template, {}, { title });
-		this.onWindowSelect = onWindowSelect;
 		this.unreadCounts = {};
+	}
+
+	getUnreadCounts() {
+		return Object.keys(this.unreadCounts).reduce((carry, key) => {
+			return carry + this.unreadCounts[key];
+		}, 0);
 	}
 
 	registerWindow(windowId, unreadCount) {
 		this.setUnreadCount(windowId, unreadCount);
 		var item = this.view.items.add(windowId, { windowId, unreadCount });
 		item.element.addEventListener('click', e => {
-			this.onWindowSelect.call(null, [ windowId ]);
+			Event.trigger(this, 'windowSelect', { windowId });
 		})
+	}
+
+	unregisterWindow(windowId) {
+		delete this.unreadCounts[windowId];
+		this.view.items.remove(windowId);
 	}
 
 	handleWindowActivated(windowId) {
 		this.view.items.forEach((window, _windowId) => {
-			if (_windowId == windowId) {
-				window.element.classList.add('-active');
-			} else {
-				window.element.classList.remove('-active');
-			}
+			toggleClass(window.element, '-active', _windowId == windowId);
 		});
 		this.setUnreadCount(windowId, 0);
 	}
@@ -46,11 +66,13 @@ module.exports = class ChatWindow {
 		if (this.view.items.has(windowId)) {
 			let item = this.view.items.get(windowId);
 			item.set({ unreadCount });
-			if (unreadCount == 0) {
-				item.element.classList.remove('-unread');
-			} else {
-				item.element.classList.add('-unread');
-			}
+			toggleClass(item.element, '-unread', unreadCount != 0);
 		}
 	}
-};
+}
+
+Event.mixin({
+	windowSelect: [ 'windowId' ]
+}, ChatSidebar);
+
+module.exports = ChatSidebar;

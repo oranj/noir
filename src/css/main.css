@@ -47,17 +47,17 @@ html, input, textarea, button, select {
   height: 100vh;
 }
 
-/* line 3, ../../scss/blocks/_ircWindow.scss */
+/* line 4, ../../scss/blocks/_ircWindow.scss */
 .ircWindow {
   position: relative;
   height: 100vh;
 }
-/* line 7, ../../scss/blocks/_ircWindow.scss */
+/* line 8, ../../scss/blocks/_ircWindow.scss */
 .ircWindow.-hidden {
   display: none;
 }
 
-/* line 12, ../../scss/blocks/_ircWindow.scss */
+/* line 13, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_chatArea {
   padding: 10px;
   max-height: calc(100vh - 100px);
@@ -68,7 +68,7 @@ html, input, textarea, button, select {
   overflow-y: auto;
 }
 
-/* line 22, ../../scss/blocks/_ircWindow.scss */
+/* line 23, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_inputArea {
   position: absolute;
   bottom: 0px;
@@ -78,7 +78,7 @@ html, input, textarea, button, select {
   left: 0px;
 }
 
-/* line 31, ../../scss/blocks/_ircWindow.scss */
+/* line 32, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_textInput {
   -moz-transition: opacity 300ms;
   -o-transition: opacity 300ms;
@@ -92,22 +92,102 @@ html, input, textarea, button, select {
   padding: 10px;
   height: 80px;
   resize: none;
-  width: calc(100% - 10px - 100px);
+  width: calc(100% - 10px - 50px);
   opacity: 0.5;
 }
-/* line 43, ../../scss/blocks/_ircWindow.scss */
+/* line 44, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_textInput:hover, .ircWindow_textInput:focus, .ircWindow_textInput:active {
   opacity: 1;
 }
 
-/* line 48, ../../scss/blocks/_ircWindow.scss */
-.ircWindow_submitButton {
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
-  border-radius: 4px;
-  float: right;
-  width: 100px;
+/* line 50, ../../scss/blocks/_ircWindow.scss */
+.ircWindow_button {
+  -moz-border-radius: 40px;
+  -webkit-border-radius: 40px;
+  border-radius: 40px;
+  -moz-transition: -moz-transform 300ms, opacity 300ms;
+  -o-transition: -o-transform 300ms, opacity 300ms;
+  -webkit-transition: -webkit-transform 300ms, opacity 300ms;
+  transition: transform 300ms, opacity 300ms;
+  -moz-transform: scale(0.9, 0.9);
+  -ms-transform: scale(0.9, 0.9);
+  -webkit-transform: scale(0.9, 0.9);
+  transform: scale(0.9, 0.9);
+  width: 40px;
+  height: 40px;
   border: none;
+  cursor: pointer;
+  opacity: .7;
+}
+/* line 61, ../../scss/blocks/_ircWindow.scss */
+.ircWindow_button:hover {
+  opacity: 1;
+  -moz-transform: scale(1, 1);
+  -ms-transform: scale(1, 1);
+  -webkit-transform: scale(1, 1);
+  transform: scale(1, 1);
+}
+/* line 66, ../../scss/blocks/_ircWindow.scss */
+.ircWindow_button.-send {
+  background: #3bb16a;
+}
+/* line 70, ../../scss/blocks/_ircWindow.scss */
+.ircWindow_button.-people {
+  background: #acccd0;
+}
+
+/* line 75, ../../scss/blocks/_ircWindow.scss */
+.ircWindow_buttonArea {
+  float: right;
+  width: 50px;
+}
+
+/* line 80, ../../scss/blocks/_ircWindow.scss */
+.ircWindow_contactArea {
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  -moz-transition: -moz-transform 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 200ms, z-index 300ms;
+  -o-transition: -o-transform 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 200ms, z-index 300ms;
+  -webkit-transition: -webkit-transform 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 200ms, z-index 300ms;
+  transition: transform 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 200ms, z-index 300ms;
+  -moz-transform: scale(0.1, 0.1);
+  -ms-transform: scale(0.1, 0.1);
+  -webkit-transform: scale(0.1, 0.1);
+  transform: scale(0.1, 0.1);
+  -moz-transform-origin: 80% 100%;
+  -ms-transform-origin: 80% 100%;
+  -webkit-transform-origin: 80% 100%;
+  transform-origin: 80% 100%;
+  opacity: 0;
+  z-index: -1;
+  color: #000;
+  min-width: 100px;
+  min-height: 150px;
+  background: #fff;
+  position: absolute;
+  bottom: 60px;
+  right: 20px;
+  padding: 10px;
+}
+/* line 97, ../../scss/blocks/_ircWindow.scss */
+.ircWindow_contactArea::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  right: 10px;
+  border-top: 10px solid #fff;
+  border-right: 10px solid transparent;
+  border-left: 10px solid transparent;
+}
+/* line 107, ../../scss/blocks/_ircWindow.scss */
+.ircWindow_contactArea.-open {
+  z-index: auto;
+  opacity: 1;
+  -moz-transform: scale(1, 1);
+  -ms-transform: scale(1, 1);
+  -webkit-transform: scale(1, 1);
+  transform: scale(1, 1);
 }
 
 /* line 1, ../../scss/blocks/_ircSidebar.scss */
@@ -248,19 +328,19 @@ html, input, textarea, button, select {
   opacity: 8;
 }
 /* line 27, ../../scss/blocks/_message.scss */
-.message.-you .message_sender, .message.-system .message_sender {
+.message.-sameSender .message_sender, .message.-you .message_sender, .message.-system .message_sender {
   display: none;
 }
-/* line 31, ../../scss/blocks/_message.scss */
-.message.-you .message_time, .message.-system .message_time {
-  text-align: right;
+/* line 33, ../../scss/blocks/_message.scss */
+.message.-timestamped .message_time {
+  display: block;
 }
-/* line 36, ../../scss/blocks/_message.scss */
+/* line 38, ../../scss/blocks/_message.scss */
 .message.-system {
   padding: 0px;
   opacity: .5;
 }
-/* line 40, ../../scss/blocks/_message.scss */
+/* line 42, ../../scss/blocks/_message.scss */
 .message.-system .message_text {
   -moz-border-radius: 2em;
   -webkit-border-radius: 2em;
@@ -271,32 +351,32 @@ html, input, textarea, button, select {
   color: #263238;
   display: block;
 }
-/* line 50, ../../scss/blocks/_message.scss */
+/* line 52, ../../scss/blocks/_message.scss */
 .message.-anim {
   -moz-animation: message-animLeft 1000ms 1;
   -webkit-animation: message-animLeft 1000ms 1;
   animation: message-animLeft 1000ms 1;
 }
-/* line 53, ../../scss/blocks/_message.scss */
+/* line 55, ../../scss/blocks/_message.scss */
 .message.-anim.-you {
   -moz-animation: message-animRight 1000ms 1;
   -webkit-animation: message-animRight 1000ms 1;
   animation: message-animRight 1000ms 1;
 }
-/* line 57, ../../scss/blocks/_message.scss */
+/* line 59, ../../scss/blocks/_message.scss */
 .message.-anim.-system {
   -moz-animation: message-animSystem 2000ms 1;
   -webkit-animation: message-animSystem 2000ms 1;
   animation: message-animSystem 2000ms 1;
 }
 
-/* line 63, ../../scss/blocks/_message.scss */
+/* line 65, ../../scss/blocks/_message.scss */
 .message_sender {
   padding: 10px;
-  display: inline-block;
+  display: block;
 }
 
-/* line 68, ../../scss/blocks/_message.scss */
+/* line 70, ../../scss/blocks/_message.scss */
 .message_text {
   -moz-border-radius: 0 2em 2em 2em;
   -webkit-border-radius: 0;
@@ -306,18 +386,19 @@ html, input, textarea, button, select {
   display: inline-block;
 }
 
-/* line 76, ../../scss/blocks/_message.scss */
+/* line 78, ../../scss/blocks/_message.scss */
 .message_time {
   -moz-transition: opacity 300ms;
   -o-transition: opacity 300ms;
   -webkit-transition: opacity 300ms;
   transition: opacity 300ms;
   padding: 5px 10px;
-  text-align: right;
+  display: none;
+  text-align: left;
   font-size: .7em;
   opacity: 0.5;
 }
-/* line 84, ../../scss/blocks/_message.scss */
+/* line 86, ../../scss/blocks/_message.scss */
 .message_time:hover {
   opacity: 1;
 }

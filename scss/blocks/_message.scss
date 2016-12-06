@@ -23,13 +23,15 @@
 		}
 	}
 
-	&.-you, &.-system {
+	&.-sameSender, &.-you, &.-system {
 		.message_sender {
 			display: none;
 		}
+	}
 
+	&.-timestamped {
 		.message_time {
-			text-align: right;
+			display: block;
 		}
 	}
 
@@ -62,7 +64,7 @@
 
 .message_sender {
 	padding: 10px;
-	display: inline-block;
+	display: block;
 }
 
 .message_text {
@@ -76,8 +78,8 @@
 .message_time {
 	@include transition(opacity 300ms);
 	padding: 5px 10px;
-	// display: none;
-	text-align: right;
+	display: none;
+	text-align: left;
 	font-size: .7em;
 	opacity: 0.5;
 

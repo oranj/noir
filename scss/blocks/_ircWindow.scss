@@ -1,4 +1,5 @@
 $ircWindow-textareaHeight: 100px;
+$ircWindow-buttonareaWidth: 50px;
 
 .ircWindow {
 	position: relative;
@@ -37,7 +38,7 @@ $ircWindow-textareaHeight: 100px;
 	padding: 10px;
 	height: ($ircWindow-textareaHeight - 20px);
 	resize: none;
-	width: calc(100% - 10px - #{$ircWindow-textareaHeight});
+	width: calc(100% - 10px - #{$ircWindow-buttonareaWidth});
 	opacity: 0.5;
 
 	&:hover, &:focus, &:active {
@@ -45,10 +46,67 @@ $ircWindow-textareaHeight: 100px;
 	}
 }
 
-.ircWindow_submitButton {
-	@include border-radius(4px);
-	float:right;
-	width: $ircWindow-textareaHeight;
-	border: none;
 
+.ircWindow_button {
+	@include border-radius(40px);
+	@include transition(transform 300ms, opacity 300ms);
+	@include transform(scale(.9, .9));
+
+	width: 40px;
+	height: 40px;
+	border: none;
+	cursor: pointer;
+	opacity: .7;
+
+	&:hover {
+		opacity: 1;
+		@include transform(scale(1, 1));
+	}
+
+	&.-send {
+		background: #3bb16a;
+	}
+
+	&.-people {
+		background: #acccd0;
+	}
+}
+
+.ircWindow_buttonArea {
+	float: right;
+	width: $ircWindow-buttonareaWidth;
+}
+
+.ircWindow_contactArea {
+	@include border-radius(10px);
+	@include transition(transform 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 200ms, z-index 300ms);
+	@include transform(scale(0.1, 0.1));
+	@include transform-origin(80%, 100%);
+
+	opacity: 0;
+	z-index: -1;
+	color: #000;
+	min-width: 100px;
+	min-height: 150px;
+	background: #fff;
+	position: absolute;
+    bottom: 60px;
+    right: 20px;
+    padding: 10px;
+
+    &::after {
+    	content: "";
+    	position: absolute;
+    	top:100%;
+    	right:10px;
+    	border-top:10px solid #fff;
+    	border-right:10px solid transparent;
+    	border-left:10px solid transparent;
+    }
+
+    &.-open {
+    	z-index: auto;
+    	opacity: 1;
+		@include transform(scale(1, 1));
+    }
 }
