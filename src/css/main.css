@@ -298,7 +298,7 @@ html, input, textarea, button, select {
     opacity: 1;
   }
 }
-/* line 1, ../../scss/blocks/_message.scss */
+/* line 3, ../../scss/blocks/_message.scss */
 .message {
   -moz-transition: opacity 300ms, -moz-transform 300ms;
   -o-transition: opacity 300ms, -o-transform 300ms;
@@ -307,87 +307,111 @@ html, input, textarea, button, select {
   margin: 10px 0;
   padding-right: 100px;
 }
-/* line 7, ../../scss/blocks/_message.scss */
+/* line 9, ../../scss/blocks/_message.scss */
 .message.-you {
   text-align: right;
   padding: 0;
 }
-/* line 12, ../../scss/blocks/_message.scss */
+/* line 14, ../../scss/blocks/_message.scss */
 .message.-you .message_text {
-  -moz-border-radius: 2em 0 2em 2em;
-  -webkit-border-radius: 2em;
-  border-radius: 2em 0 2em 2em;
+  -moz-border-radius: 1em 0 1em 1em;
+  -webkit-border-radius: 1em;
+  border-radius: 1em 0 1em 1em;
   margin-right: 0px;
   background: #2f6e8e;
 }
-/* line 19, ../../scss/blocks/_message.scss */
+/* line 21, ../../scss/blocks/_message.scss */
 .message.-old {
   opacity: 0.3;
 }
-/* line 21, ../../scss/blocks/_message.scss */
+/* line 23, ../../scss/blocks/_message.scss */
 .message.-old:hover {
   opacity: 8;
 }
-/* line 27, ../../scss/blocks/_message.scss */
+/* line 29, ../../scss/blocks/_message.scss */
 .message.-sameSender .message_sender, .message.-you .message_sender, .message.-system .message_sender {
   display: none;
 }
-/* line 33, ../../scss/blocks/_message.scss */
+/* line 35, ../../scss/blocks/_message.scss */
 .message.-timestamped .message_time {
   display: block;
 }
-/* line 38, ../../scss/blocks/_message.scss */
+/* line 40, ../../scss/blocks/_message.scss */
 .message.-system {
   padding: 0px;
   opacity: .5;
 }
-/* line 42, ../../scss/blocks/_message.scss */
+/* line 44, ../../scss/blocks/_message.scss */
 .message.-system .message_text {
-  -moz-border-radius: 2em;
-  -webkit-border-radius: 2em;
-  border-radius: 2em;
+  -moz-border-radius: 1em;
+  -webkit-border-radius: 1em;
+  border-radius: 1em;
   margin-left: 0px;
   margin-right: 0px;
   background: #e7fff7;
   color: #263238;
   display: block;
 }
-/* line 52, ../../scss/blocks/_message.scss */
+/* line 54, ../../scss/blocks/_message.scss */
 .message.-anim {
   -moz-animation: message-animLeft 1000ms 1;
   -webkit-animation: message-animLeft 1000ms 1;
   animation: message-animLeft 1000ms 1;
 }
-/* line 55, ../../scss/blocks/_message.scss */
+/* line 57, ../../scss/blocks/_message.scss */
 .message.-anim.-you {
   -moz-animation: message-animRight 1000ms 1;
   -webkit-animation: message-animRight 1000ms 1;
   animation: message-animRight 1000ms 1;
 }
-/* line 59, ../../scss/blocks/_message.scss */
+/* line 61, ../../scss/blocks/_message.scss */
 .message.-anim.-system {
   -moz-animation: message-animSystem 2000ms 1;
   -webkit-animation: message-animSystem 2000ms 1;
   animation: message-animSystem 2000ms 1;
 }
 
-/* line 65, ../../scss/blocks/_message.scss */
+/* line 67, ../../scss/blocks/_message.scss */
 .message_sender {
   padding: 10px;
   display: block;
 }
 
-/* line 70, ../../scss/blocks/_message.scss */
+/* line 72, ../../scss/blocks/_message.scss */
 .message_text {
-  -moz-border-radius: 0 2em 2em 2em;
+  -moz-border-radius: 0 1em 1em 1em;
   -webkit-border-radius: 0;
-  border-radius: 0 2em 2em 2em;
+  border-radius: 0 1em 1em 1em;
   background: #3b4d56;
   padding: 10px 1em;
   display: inline-block;
 }
+/* line 79, ../../scss/blocks/_message.scss */
+.message_text > span > p {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+/* line 83, ../../scss/blocks/_message.scss */
+.message_text > span > p + p {
+  margin-top: 1em;
+}
+/* line 88, ../../scss/blocks/_message.scss */
+.message_text > span code, .message_text > span pre {
+  text-align: left;
+}
+/* line 92, ../../scss/blocks/_message.scss */
+.message_text > span a {
+  color: #fff;
+}
+/* line 96, ../../scss/blocks/_message.scss */
+.message_text > span img {
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  max-width: 100%;
+}
 
-/* line 78, ../../scss/blocks/_message.scss */
+/* line 103, ../../scss/blocks/_message.scss */
 .message_time {
   -moz-transition: opacity 300ms;
   -o-transition: opacity 300ms;
@@ -401,7 +425,7 @@ html, input, textarea, button, select {
   border-bottom: 1px dashed #678898;
   margin-bottom: 10px;
 }
-/* line 88, ../../scss/blocks/_message.scss */
+/* line 113, ../../scss/blocks/_message.scss */
 .message_time:hover {
   opacity: 1;
 }

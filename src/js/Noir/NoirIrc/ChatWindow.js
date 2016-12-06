@@ -1,17 +1,21 @@
-const View = require("./../View.js");
-const Event = require("./../Event.js");
+const View        = require("./../View.js");
+const Event       = require("./../Event.js");
+const linkify     = require('linkifyjs');
+const linkifyHtml = require('linkifyjs/html');
+const marked      = require('marked');
+
 const template = `
 	<div class="ircWindow -hidden">
 		<div class="ircWindow_chatArea" data-cjs-name="scrollArea">
 			<div class="message -anim" data-cjs-template="messages">
 				<div class="message_time" data-cjs-name="time">
-					{{ timestamp | formatTime }}
+					{{ timestamp | formatTime | html }}
 				</div>
 				<div class="message_sender" data-cjs-name="sender">
-					{{ sender }}
+					{{ sender | html }}
 				</div>
 				<div class="message_text" data-cjs-name="text">
-					{{ text }}
+					{{ text | md | linkify }}
 				</div>
 			</div>
 		</div>
@@ -24,8 +28,8 @@ const template = `
 					<i class="fa fa-paper-plane" aria-hidden="true"></i>
 				</button>
 				<div class="ircWindow_contactArea" data-cjs-name="contactArea">
-					<div data-cjs-template="contacts" class="ircWindow_contact" data-contact-name="{{ $key }}">
-						{{$key}}
+					<div data-cjs-template="contacts" class="ircWindow_contact" data-contact-name="{{ $key | html }}">
+						{{ $key | html }}
 					</div>
 				</div>
 				<button
@@ -68,13 +72,22 @@ class ChatWindow {
 				return parts[1] + ' ' + date.getDate() + ', ' + (date.getHours() % 12)
 					 + ":" + ("00" + date.getMinutes()).slice(-2)
 					+ ":" + ("00" + date.getSeconds()).slice(-2) + (date.getHours() > 12 ? "PM" : "AM");
+			},
+			html: function(str) {
+				return View.escapeHtml(str);
+			},
+			linkify: function(str) {
+				return linkifyHtml(str);
+			},
+			md: function(str) {
+				return marked(str);
 			}
 		});
 
 		this.messageId = 0;
 
 		this.view.textarea.addEventListener('keydown', e => {
-			if (e.keyCode == 13) {
+			if (e.keyCode == 13 && ! e.shiftKey) {
 				e.preventDefault();
 				this.handleMessage();
 			}
@@ -178,7 +191,20 @@ class ChatWindow {
 	}
 
 	addChatMessage(from, text, timestamp) {
+
 		var view = this.addMessage(from, text, timestamp);
+		view.element.addEventListener('click', e => {
+			var node = e.target;
+			while (node.tagName.toUpperCase() != 'A') {
+				if (node == view.element) {
+					return;
+				}
+				node = node.parentNode;
+			}
+			e.preventDefault();
+			Event.trigger(this, 'openUrl', { url: node.href });
+		});
+
 		if (from == this.nickname) {
 			view.element.classList.add('-you');
 		}
@@ -191,6 +217,7 @@ class ChatWindow {
 
 Event.mixin({
 	message: [ 'message' ],
+	openUrl: [ 'url' ],
 	conversationOpened: [ 'contact' ]
 }, ChatWindow);
 

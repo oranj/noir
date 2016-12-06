@@ -1,7 +1,7 @@
 const irc = require('irc');
 const ChatWindow = require("./ChatWindow");
 const ChatSidebar = require("./ChatSidebar");
-const {app} = require('electron')
+const {app, ipcRenderer, shell } = require('electron')
 
 
 module.exports = class NoirIrc {
@@ -60,11 +60,13 @@ module.exports = class NoirIrc {
 		    console.log('%s was kicked from %s by %s: %s', who, channel, by, reason);
 		});
 
+
+
 		// Listen for any message, PM said user when he posts
 		this.client.addListener("message", (from, to, text, message) => {
 			console.log("MESSAGE", from, to, text, message);
 			var channel = message.args[0];
-			if (message.command == "PRIVMSG") {
+			if (to == nickName) {
 				channel = from;
 				if (! this.windows.hasOwnProperty(channel)) {
 					this.openConversation(channel);
@@ -72,9 +74,18 @@ module.exports = class NoirIrc {
 			} else if (! this.windows.hasOwnProperty(channel)) {
 				return;
 			}
+
+			if (to == nickName || text.indexOf(nickName) >= 0) {
+				var notification = new window.Notification("Message from " + from, { body: text, silent: true });
+				notification.onclick = function() {
+					ipcRenderer.send('focusWindow', 'main');
+				};
+			}
+
 			this.windows[channel].addChatMessage(from, text, this.getTimestamp());
 			if (! this.windows[channel].isVisible()) {
 				this.sidebarEntry.handleNotification(channel, 1);
+				console.log("UNREAD", this.sidebarEntry.getUnreadCounts());
 				app.dock.setBadge(this.sidebarEntry.getUnreadCounts())
 			}
 		});
@@ -104,6 +115,9 @@ module.exports = class NoirIrc {
 
 	openWindow(id) {
 		let window = new ChatWindow('noirbot', id)
+			.onOpenUrl( e => {
+				shell.openExternal( e.url );
+			})
 			.onMessage( e => {
 				this.client.say(id, e.message);
 				window.addChatMessage('noirbot', e.message, this.getTimestamp());

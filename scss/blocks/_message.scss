@@ -1,3 +1,5 @@
+$message-border-radius: 1em;
+
 .message {
 	@include transition(opacity 300ms, transform 300ms);
 
@@ -10,7 +12,7 @@
 		padding: 0;
 
 		.message_text {
-			@include border-radius(2em 0 2em 2em);
+			@include border-radius($message-border-radius 0 $message-border-radius $message-border-radius);
 			margin-right: 0px;
 			background: #2f6e8e;
 		}
@@ -40,7 +42,7 @@
 		opacity: .5;
 
 		.message_text {
-			@include border-radius(2em);
+			@include border-radius($message-border-radius);
 			margin-left: 0px;
 			margin-right: 0px;
 			background: #e7fff7;
@@ -68,11 +70,34 @@
 }
 
 .message_text {
-	@include border-radius(0 2em 2em 2em);
+	@include border-radius(0 $message-border-radius $message-border-radius $message-border-radius);
 	background: lighten(#263238, 10);
 	padding: 10px 1em;
 	display: inline-block;
 
+	> span {
+		> p {
+			margin-top: 0px;
+			margin-bottom: 0px;
+
+			& + p {
+				margin-top: 1em;
+			}
+		}
+
+		code, pre {
+			text-align: left;
+		}
+
+		a {
+			color: #fff;
+		}
+
+		img {
+			@include border-radius(5px);
+			max-width: 100%;
+		}
+	}
 }
 
 .message_time {

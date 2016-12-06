@@ -433,7 +433,8 @@ function bindPatternedTextNode(textNode, filterList, binds) {
 		}
 		var target = document.createElement('span');
 		pushBind(binds, token.bind, [ token.operations ], (value) => {
-			target.innerHTML = View.escapeHtml(value);
+			target.innerHTML = value;
+			// target.innerHTML = View.escapeHtml(value);
 		}, target);
 		return target;
 	}).forEach((element) => {
