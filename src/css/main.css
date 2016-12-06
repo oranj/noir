@@ -384,26 +384,27 @@ html, input, textarea, button, select {
   border-radius: 0 1em 1em 1em;
   background: #3b4d56;
   padding: 10px 1em;
+  text-align: left;
   display: inline-block;
 }
-/* line 79, ../../scss/blocks/_message.scss */
+/* line 80, ../../scss/blocks/_message.scss */
 .message_text > span > p {
   margin-top: 0px;
   margin-bottom: 0px;
 }
-/* line 83, ../../scss/blocks/_message.scss */
+/* line 84, ../../scss/blocks/_message.scss */
 .message_text > span > p + p {
   margin-top: 1em;
 }
-/* line 88, ../../scss/blocks/_message.scss */
+/* line 89, ../../scss/blocks/_message.scss */
 .message_text > span code, .message_text > span pre {
   text-align: left;
 }
-/* line 92, ../../scss/blocks/_message.scss */
+/* line 93, ../../scss/blocks/_message.scss */
 .message_text > span a {
   color: #fff;
 }
-/* line 96, ../../scss/blocks/_message.scss */
+/* line 97, ../../scss/blocks/_message.scss */
 .message_text > span img {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -411,7 +412,7 @@ html, input, textarea, button, select {
   max-width: 100%;
 }
 
-/* line 103, ../../scss/blocks/_message.scss */
+/* line 104, ../../scss/blocks/_message.scss */
 .message_time {
   -moz-transition: opacity 300ms;
   -o-transition: opacity 300ms;
@@ -425,7 +426,7 @@ html, input, textarea, button, select {
   border-bottom: 1px dashed #678898;
   margin-bottom: 10px;
 }
-/* line 113, ../../scss/blocks/_message.scss */
+/* line 114, ../../scss/blocks/_message.scss */
 .message_time:hover {
   opacity: 1;
 }

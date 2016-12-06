@@ -61,8 +61,11 @@ class ChatWindow {
 		this.nickname = nickname;
 		this.channel  = channel;
 
-		this.lastSender = null;
-		this.lastTimestamp = 0;
+		this.lastMessage   = null;
+		this.lastSender    = null;
+		this.lastTimestamp = null;
+		this.lastText      = '';
+		this.lastDisplayedTimestamp = 0;
 
 		this.view = new View(template, {
 			formatTime: function(timestamp) {
@@ -80,7 +83,12 @@ class ChatWindow {
 				return linkifyHtml(str);
 			},
 			md: function(str) {
-				return marked(str);
+				return marked(str, {
+					gfm: true,
+					breaks: true,
+					sanitize: true,
+					smartypants: true
+				});
 			}
 		});
 
@@ -150,28 +158,35 @@ class ChatWindow {
 	}
 
 	addMessage(sender, text, timestamp) {
-		let message = this.view.messages.add(this.messageId++, {
-			sender: sender,
-			timestamp: timestamp,
-			text: text
-		});
 
-		if (timestamp - this.lastTimestamp > 300) {
-			// Add a message timestamp;
-			this.lastTimestamp = timestamp;
-			message.element.classList.add('-timestamped');
+		let displayTime = (timestamp - this.lastDisplayedTimestamp > 300);
+		let wasRecent = (timestamp - this.lastTimestamp) < 5;
+		let sameSender = (sender == this.lastSender);
+
+		if (sameSender && wasRecent) {
+			this.lastText = this.lastText + "\n" + text;
+			this.lastMessage.set({ text: this.lastText });
+		} else {
+			this.lastMessage = this.view.messages.add(this.messageId++, {
+				sender: sender,
+				timestamp: timestamp,
+				text: text
+			});
+			if (displayTime) {
+				this.lastDisplayedTimestamp = timestamp;
+				this.lastMessage.element.classList.add('-timestamped');
+			}
+			this.lastText   = text;
+			this.lastSender = sender;
 		}
 
-		if (sender == this.lastSender) {
-			message.element.classList.add('-sameSender');
-		}
-		this.lastSender = sender;
+		this.lastTimestamp = timestamp;
 
 		setTimeout(() => {
-			message.element.classList.remove('-anim');
+			this.lastMessage.element.classList.remove('-anim');
 		}, 1000);
 
-		return message;
+		return this.lastMessage;
 	}
 
 	addSystemMessage(text, timestamp) {
