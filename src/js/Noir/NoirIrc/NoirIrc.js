@@ -5,20 +5,16 @@ const {app} = require('electron')
 
 
 module.exports = class NoirIrc {
-	constructor() {
-		var channels = [ '#raytestmn', '#nomajingno' ];
+	constructor(host, nickName, config, channels) {
 
-		this.client = new irc.Client(
-			'irc.freenode.net',
-			'noirbot',
-			{
-				autoConnect: false
-			}
-		);
+		config.autoConnect = false;
+
+		this.client = new irc.Client(host, nickName, config);
+
 
 		this.windows = {};
 		this.element = document.getElementById('main');
-		this.sidebarEntry = new ChatSidebar('irc.freenode.net')
+		this.sidebarEntry = new ChatSidebar(host)
 			.onWindowSelect( e => {
 				this.showWindow(e.windowId);
 			});
@@ -68,10 +64,12 @@ module.exports = class NoirIrc {
 		this.client.addListener("message", (from, to, text, message) => {
 			console.log("MESSAGE", from, to, text, message);
 			var channel = message.args[0];
-			if (channel == 'noirbot') {
+			if (message.command == "PRIVMSG") {
 				channel = from;
-			}
-			if (! this.windows.hasOwnProperty(channel)) {
+				if (! this.windows.hasOwnProperty(channel)) {
+					this.openConversation(channel);
+				}
+			} else if (! this.windows.hasOwnProperty(channel)) {
 				return;
 			}
 			this.windows[channel].addChatMessage(from, text, this.getTimestamp());
@@ -79,7 +77,6 @@ module.exports = class NoirIrc {
 				this.sidebarEntry.handleNotification(channel, 1);
 				app.dock.setBadge(this.sidebarEntry.getUnreadCounts())
 			}
-			// this.window.addChatMessage(from, text, this.getTimestamp());
 		});
 	}
 

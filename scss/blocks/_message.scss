@@ -79,9 +79,11 @@
 	@include transition(opacity 300ms);
 	padding: 5px 10px;
 	display: none;
-	text-align: left;
+	text-align: center;
 	font-size: .7em;
 	opacity: 0.5;
+	border-bottom: 1px dashed #678898;
+	margin-bottom: 10px;
 
 	&:hover {
 		opacity: 1;

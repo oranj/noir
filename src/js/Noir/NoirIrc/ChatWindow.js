@@ -183,7 +183,6 @@ class ChatWindow {
 		}
 		setTimeout(() => {
 			this.view.scrollArea.scrollTop = document.body.scrollHeight;
-			debugger;
 		}, 10);
 		return view;
 	}

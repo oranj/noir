@@ -394,11 +394,13 @@ html, input, textarea, button, select {
   transition: opacity 300ms;
   padding: 5px 10px;
   display: none;
-  text-align: left;
+  text-align: center;
   font-size: .7em;
   opacity: 0.5;
+  border-bottom: 1px dashed #678898;
+  margin-bottom: 10px;
 }
-/* line 86, ../../scss/blocks/_message.scss */
+/* line 88, ../../scss/blocks/_message.scss */
 .message_time:hover {
   opacity: 1;
 }
