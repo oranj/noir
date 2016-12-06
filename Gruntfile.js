@@ -9,6 +9,18 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		electron: {
+	        macosBuild: {
+	            options: {
+	                name: 'Noir',
+	                dir: 'src',
+	                out: 'build',
+	                version: '1.3.5',
+	                platform: 'darwin',
+	                arch: 'x64'
+	            }
+	        }
+	    },
 		watch: {
 			compass: {
 				files: [ './scss/**/*.scss' ],
@@ -17,9 +29,10 @@ module.exports = function(grunt) {
 		}
 	});
 
+	grunt.loadNpmTasks('grunt-electron');
 	grunt.loadNpmTasks('grunt-contrib-compass');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
-	grunt.registerTask('default', ['jshint']);
+	grunt.registerTask('default', ['electron']);
 
 };

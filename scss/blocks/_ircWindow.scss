@@ -17,6 +17,7 @@ $ircWindow-buttonareaWidth: 50px;
 	bottom: $ircWindow-textareaHeight;
 	width: 100%;
 	left: 0px;
+	overflow-x: hidden;
 	overflow-y: auto;
 }
 

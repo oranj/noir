@@ -65,10 +65,11 @@ html, input, textarea, button, select {
   bottom: 100px;
   width: 100%;
   left: 0px;
+  overflow-x: hidden;
   overflow-y: auto;
 }
 
-/* line 23, ../../scss/blocks/_ircWindow.scss */
+/* line 24, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_inputArea {
   position: absolute;
   bottom: 0px;
@@ -78,7 +79,7 @@ html, input, textarea, button, select {
   left: 0px;
 }
 
-/* line 32, ../../scss/blocks/_ircWindow.scss */
+/* line 33, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_textInput {
   -moz-transition: opacity 300ms;
   -o-transition: opacity 300ms;
@@ -95,12 +96,12 @@ html, input, textarea, button, select {
   width: calc(100% - 10px - 50px);
   opacity: 0.5;
 }
-/* line 44, ../../scss/blocks/_ircWindow.scss */
+/* line 45, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_textInput:hover, .ircWindow_textInput:focus, .ircWindow_textInput:active {
   opacity: 1;
 }
 
-/* line 50, ../../scss/blocks/_ircWindow.scss */
+/* line 51, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_button {
   -moz-border-radius: 40px;
   -webkit-border-radius: 40px;
@@ -119,7 +120,7 @@ html, input, textarea, button, select {
   cursor: pointer;
   opacity: .7;
 }
-/* line 61, ../../scss/blocks/_ircWindow.scss */
+/* line 62, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_button:hover {
   opacity: 1;
   -moz-transform: scale(1, 1);
@@ -127,22 +128,22 @@ html, input, textarea, button, select {
   -webkit-transform: scale(1, 1);
   transform: scale(1, 1);
 }
-/* line 66, ../../scss/blocks/_ircWindow.scss */
+/* line 67, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_button.-send {
   background: #3bb16a;
 }
-/* line 70, ../../scss/blocks/_ircWindow.scss */
+/* line 71, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_button.-people {
   background: #acccd0;
 }
 
-/* line 75, ../../scss/blocks/_ircWindow.scss */
+/* line 76, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_buttonArea {
   float: right;
   width: 50px;
 }
 
-/* line 80, ../../scss/blocks/_ircWindow.scss */
+/* line 81, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_contactArea {
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
@@ -170,7 +171,7 @@ html, input, textarea, button, select {
   right: 20px;
   padding: 10px;
 }
-/* line 97, ../../scss/blocks/_ircWindow.scss */
+/* line 98, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_contactArea::after {
   content: "";
   position: absolute;
@@ -180,7 +181,7 @@ html, input, textarea, button, select {
   border-right: 10px solid transparent;
   border-left: 10px solid transparent;
 }
-/* line 107, ../../scss/blocks/_ircWindow.scss */
+/* line 108, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_contactArea.-open {
   z-index: auto;
   opacity: 1;

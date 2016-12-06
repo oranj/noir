@@ -105,6 +105,7 @@ class ChatWindow {
 
 	show() {
 		this.view.element.classList.remove('-hidden');
+		this.view.textarea.focus();
 	}
 
 	hide() {
