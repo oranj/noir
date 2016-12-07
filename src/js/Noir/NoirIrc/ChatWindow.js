@@ -201,7 +201,7 @@ class ChatWindow {
 
 		view.element.classList.add('-join');
 		view.element.classList.add('-system');
-		this.view.contacts.add(who, '');
+		this.view.contacts.replace(who, '');
 		return view;
 	}
 
@@ -224,7 +224,7 @@ class ChatWindow {
 			view.element.classList.add('-you');
 		}
 		setTimeout(() => {
-			this.view.scrollArea.scrollTop = document.body.scrollHeight;
+			this.view.scrollArea.scrollTop = this.view.scrollAreadocument.body.scrollHeight;
 		}, 10);
 		return view;
 	}
