@@ -1,4 +1,4 @@
-const NoirIrc = require('./js/Noir/NoirIrc/NoirIrc.js');
+const NoirContribIrc = require('./js/Noir/NoirContribIrc/NoirContribIrc.js');
 const { remote } = require('electron');
 
 
@@ -17,5 +17,5 @@ remote.getGlobal('SETTINGS').connections
 			config.nick = cxn.userName;
 		}
 		cxn.config = config;
-		new NoirIrc(cxn.host, cxn.name || cxn.host, cxn.userName, cxn.config, cxn.channels);
+		new NoirContribIrc(cxn.host, cxn.name || cxn.host, cxn.userName, cxn.config, cxn.channels);
 	})
