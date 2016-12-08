@@ -2,13 +2,17 @@ const View = require("./../Noir/View.js");
 const Event = require("./../Noir/Event.js");
 
 const template = `
-	<div class="ircSidebar">
-		<h2 class="ircSidebar_header">
+	<div class="sidebarBlock">
+		<h2 class="sidebarBlock_heading">
 			{{ title }}
+
+			<i class="sidebarBlock_expander"></i>
 		</h2>
-		<div class="ircSidebar_item clearfix" data-cjs-template="items">
-			<span class="ircSidebar_itemTitle">{{ windowId }}</span>
-			<span class="isValidElement()Sidebar_itemUnread">{{ unreadCount }}</span>
+		<div class="sidebarBlock_content">
+			<div class="sidebarBlock_item clearfix" data-cjs-template="items">
+				<span class="sidebarBlock_itemTitle">{{ windowId }}</span>
+				<span class="sidebarBlock_itemBadge -empty" data-cjs-name="badge">{{ unreadCount }}</span>
+			</div>
 		</div>
 	</div>`;
 
@@ -66,7 +70,7 @@ class ChatSidebar {
 		if (this.view.items.has(windowId)) {
 			let item = this.view.items.get(windowId);
 			item.set({ unreadCount });
-			toggleClass(item.element, '-unread', unreadCount != 0);
+			toggleClass(item.badge, '-empty', unreadCount == 0);
 		}
 	}
 }

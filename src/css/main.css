@@ -28,29 +28,44 @@ html, input, textarea, button, select {
   clear: both;
 }
 
-/* line 1, ../../scss/blocks/_chatWindow.scss */
+/* line 3, ../../scss/blocks/_chatWindow.scss */
 .chatWindow {
   color: #e7fff7;
 }
 
-/* line 5, ../../scss/blocks/_chatWindow.scss */
+/* line 7, ../../scss/blocks/_chatWindow.scss */
 .chatWindow_sidebar {
   float: left;
   min-width: 200px;
   width: 25%;
   background: #202a2f;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* line 12, ../../scss/blocks/_chatWindow.scss */
-.chatWindow_main, .chatWindow_sidebar {
+/* line 15, ../../scss/blocks/_chatWindow.scss */
+.chatWindow_sidebar {
   overflow-y: auto;
   height: 100vh;
+}
+
+/* line 20, ../../scss/blocks/_chatWindow.scss */
+.chatWindow_main {
+  overflow-y: auto;
+  height: calc(100vh - 60px);
+}
+
+/* line 25, ../../scss/blocks/_chatWindow.scss */
+.chatWindow_tabset {
+  height: 60px;
+  overflow-y: hidden;
+  background: #404f56;
+  border-bottom: 1px solid #262829;
 }
 
 /* line 4, ../../scss/blocks/_ircWindow.scss */
 .ircWindow {
   position: relative;
-  height: 100vh;
+  height: 100%;
 }
 /* line 8, ../../scss/blocks/_ircWindow.scss */
 .ircWindow.-hidden {
@@ -60,7 +75,7 @@ html, input, textarea, button, select {
 /* line 13, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_chatArea {
   padding: 10px;
-  max-height: calc(100vh - 100px);
+  max-height: calc(100% - 100px);
   position: absolute;
   bottom: 100px;
   width: 100%;
@@ -191,60 +206,78 @@ html, input, textarea, button, select {
   transform: scale(1, 1);
 }
 
-/* line 1, ../../scss/blocks/_ircSidebar.scss */
-.ircSidebar {
-  margin: 1.2em;
+/* line 5, ../../scss/blocks/_sidebarBlock.scss */
+.sidebarBlock_heading {
+  margin: 0;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  font-size: 1.2em;
 }
 
-/* line 5, ../../scss/blocks/_ircSidebar.scss */
-.ircSidebar_item {
+/* line 12, ../../scss/blocks/_sidebarBlock.scss */
+.sidebarBlock_content {
+  -moz-transition: max-height 300ms;
+  -o-transition: max-height 300ms;
+  -webkit-transition: max-height 300ms;
+  transition: max-height 300ms;
+  max-height: 1000px;
+  overflow-y: hidden;
+}
+/* line 17, ../../scss/blocks/_sidebarBlock.scss */
+.sidebarBlock_content.-closed {
+  max-height: 0;
+}
+
+/* line 22, ../../scss/blocks/_sidebarBlock.scss */
+.sidebarBlock_item {
   -moz-transition: background 300ms;
   -o-transition: background 300ms;
   -webkit-transition: background 300ms;
   transition: background 300ms;
   background: rgba(255, 255, 255, 0);
   cursor: pointer;
+  padding: 5px 10px;
 }
-/* line 10, ../../scss/blocks/_ircSidebar.scss */
-.ircSidebar_item.-active {
+/* line 28, ../../scss/blocks/_sidebarBlock.scss */
+.sidebarBlock_item.-active {
   background: rgba(255, 255, 255, 0.1);
 }
-/* line 14, ../../scss/blocks/_ircSidebar.scss */
-.ircSidebar_item.-unread .ircSidebar_itemUnread {
-  -moz-animation: ircSidebar_item-popUp 300ms 1;
-  -webkit-animation: ircSidebar_item-popUp 300ms 1;
-  animation: ircSidebar_item-popUp 300ms 1;
+
+/* line 37, ../../scss/blocks/_sidebarBlock.scss */
+.sidebarBlock_itemBadge {
   -moz-transform: scale(1, 1);
   -ms-transform: scale(1, 1);
   -webkit-transform: scale(1, 1);
   transform: scale(1, 1);
-  opacity: 1;
-}
-
-/* line 22, ../../scss/blocks/_ircSidebar.scss */
-.ircSidebar_itemUnread {
   -moz-transition: opacity 300ms, -moz-transform 300ms;
   -o-transition: opacity 300ms, -o-transform 300ms;
   -webkit-transition: opacity 300ms, -webkit-transform 300ms;
   transition: opacity 300ms, transform 300ms;
+  -moz-animation: ircSidebar_item-popUp 300ms 1;
+  -webkit-animation: ircSidebar_item-popUp 300ms 1;
+  animation: ircSidebar_item-popUp 300ms 1;
   -moz-border-radius: 2em;
   -webkit-border-radius: 2em;
   border-radius: 2em;
-  -moz-transform: scale(0, 0);
-  -ms-transform: scale(0, 0);
-  -webkit-transform: scale(0, 0);
-  transform: scale(0, 0);
-  opacity: 0;
+  opacity: 1;
   text-align: center;
   line-height: 1.5em;
-  background: #f00;
+  background: #ff5312;
   color: #fff;
   float: right;
   width: 1.5em;
   height: 1.5em;
 }
+/* line 52, ../../scss/blocks/_sidebarBlock.scss */
+.sidebarBlock_itemBadge.-empty {
+  -moz-transform: scale(0, 0);
+  -ms-transform: scale(0, 0);
+  -webkit-transform: scale(0, 0);
+  transform: scale(0, 0);
+  opacity: 0;
+}
 
-@-moz-keyframes ircSidebar_item-popUp {
+@-moz-keyframes sidebarBlock_itemBadge-popUp {
   from {
     -moz-transform: scale(0, 0);
     transform: scale(0, 0);
@@ -260,7 +293,7 @@ html, input, textarea, button, select {
     opacity: 1;
   }
 }
-@-webkit-keyframes ircSidebar_item-popUp {
+@-webkit-keyframes sidebarBlock_itemBadge-popUp {
   from {
     -webkit-transform: scale(0, 0);
     transform: scale(0, 0);
@@ -276,7 +309,7 @@ html, input, textarea, button, select {
     opacity: 1;
   }
 }
-@keyframes ircSidebar_item-popUp {
+@keyframes sidebarBlock_itemBadge-popUp {
   from {
     -moz-transform: scale(0, 0);
     -ms-transform: scale(0, 0);
@@ -383,28 +416,30 @@ html, input, textarea, button, select {
   -webkit-border-radius: 0;
   border-radius: 0 1em 1em 1em;
   background: #3b4d56;
+  max-width: 100%;
+  overflow-x: auto;
   padding: 10px 1em;
   text-align: left;
   display: inline-block;
 }
-/* line 80, ../../scss/blocks/_message.scss */
+/* line 82, ../../scss/blocks/_message.scss */
 .message_text > span > p {
   margin-top: 0px;
   margin-bottom: 0px;
 }
-/* line 84, ../../scss/blocks/_message.scss */
+/* line 86, ../../scss/blocks/_message.scss */
 .message_text > span > p + p {
   margin-top: 1em;
 }
-/* line 89, ../../scss/blocks/_message.scss */
+/* line 91, ../../scss/blocks/_message.scss */
 .message_text > span code, .message_text > span pre {
   text-align: left;
 }
-/* line 93, ../../scss/blocks/_message.scss */
+/* line 95, ../../scss/blocks/_message.scss */
 .message_text > span a {
   color: #fff;
 }
-/* line 97, ../../scss/blocks/_message.scss */
+/* line 99, ../../scss/blocks/_message.scss */
 .message_text > span img {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -412,7 +447,7 @@ html, input, textarea, button, select {
   max-width: 100%;
 }
 
-/* line 104, ../../scss/blocks/_message.scss */
+/* line 106, ../../scss/blocks/_message.scss */
 .message_time {
   -moz-transition: opacity 300ms;
   -o-transition: opacity 300ms;
@@ -426,7 +461,7 @@ html, input, textarea, button, select {
   border-bottom: 1px dashed #678898;
   margin-bottom: 10px;
 }
-/* line 114, ../../scss/blocks/_message.scss */
+/* line 116, ../../scss/blocks/_message.scss */
 .message_time:hover {
   opacity: 1;
 }

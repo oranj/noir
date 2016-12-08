@@ -3,7 +3,7 @@ $ircWindow-buttonareaWidth: 50px;
 
 .ircWindow {
 	position: relative;
-	height: 100vh;
+	height: 100%;
 
 	&.-hidden {
 		display: none;
@@ -12,7 +12,7 @@ $ircWindow-buttonareaWidth: 50px;
 
 .ircWindow_chatArea {
 	padding: 10px;
-	max-height: calc(100vh - #{$ircWindow-textareaHeight});
+	max-height: calc(100% - #{$ircWindow-textareaHeight});
 	position: absolute;
 	bottom: $ircWindow-textareaHeight;
 	width: 100%;

@@ -1,55 +1,38 @@
-.ircSidebar {
-	margin: 1.2em;
-}
+// .ircSidebar {
 
-.ircSidebar_item {
-	@include transition(background 300ms);
-	background: rgba(255,255,255,0);
-	cursor: pointer;
+// }
 
-	&.-active {
-		background: rgba(255,255,255,.1);
-	}
+// .ircSidebar_item {
 
-	&.-unread .ircSidebar_itemUnread {
-		@include animation(ircSidebar_item-popUp 300ms 1);
-		@include transform(scale(1, 1));
 
-		opacity: 1;
-	}
-}
+// 	&.-active {
+// 		background: rgba(255,255,255,.1);
+// 	}
 
-.ircSidebar_itemUnread {
-	@include transition(opacity 300ms, transform 300ms);
-	@include border-radius(2em);
-	@include transform(scale(0, 0));
+// 	&.-unread .ircSidebar_itemUnread {
+// 		@include animation(ircSidebar_item-popUp 300ms 1);
+// 		@include transform(scale(1, 1));
 
-	opacity: 0;
-	text-align: center;
-	line-height: 1.5em;
-	background: #f00;
-	color: #fff;
-	float: right;
-	width: 1.5em;
-	height: 1.5em;
-}
+// 		opacity: 1;
+// 	}
+// }
 
-.ircSidebar_header {
+// .ircSidebar_itemUnread {
+// 	@include transition(opacity 300ms, transform 300ms);
+// 	@include border-radius(2em);
+// 	@include transform(scale(0, 0));
 
-}
+// 	opacity: 0;
+// 	text-align: center;
+// 	line-height: 1.5em;
+// 	background: #f00;
+// 	color: #fff;
+// 	float: right;
+// 	width: 1.5em;
+// 	height: 1.5em;
+// }
 
-@include keyframes(ircSidebar_item-popUp) {
-	from {
-		@include transform(scale(0, 0));
-		opacity: 0;
-	}
+// .ircSidebar_header {
 
-	70% {
-		@include transform(scale(1.1, 1.1));
-	}
+// }
 
-	to {
-		@include transform(scale(1, 1));
-		opacity: 1;
-	}
-}

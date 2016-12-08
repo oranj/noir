@@ -1,3 +1,5 @@
+$chatWindow-tabsetHeight: 60px;
+
 .chatWindow {
 	color: #e7fff7;
 }
@@ -7,13 +9,22 @@
 	min-width: 200px;
 	width: 25%;
 	background: darken(#263238, 3);
+	-webkit-font-smoothing: antialiased;
 }
 
-.chatWindow_main, .chatWindow_sidebar {
+.chatWindow_sidebar {
 	overflow-y: auto;
 	height: 100vh;
 }
 
 .chatWindow_main {
+	overflow-y: auto;
+	height: calc(100vh - #{$chatWindow-tabsetHeight});
+}
 
+.chatWindow_tabset {
+	height: $chatWindow-tabsetHeight;
+	overflow-y: hidden;
+	background: #404f56;
+	border-bottom: 1px solid #262829;
 }

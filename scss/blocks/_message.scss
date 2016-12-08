@@ -72,6 +72,8 @@ $message-border-radius: 1em;
 .message_text {
 	@include border-radius(0 $message-border-radius $message-border-radius $message-border-radius);
 	background: lighten(#263238, 10);
+	max-width: 100%;
+	overflow-x: auto;
 	padding: 10px 1em;
 	text-align: left;
 	display: inline-block;

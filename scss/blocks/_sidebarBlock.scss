@@ -1,0 +1,72 @@
+.sidebarBlock {
+
+}
+
+.sidebarBlock_heading {
+	margin: 0;
+	padding: 10px;
+	background: rgba(0,0,0,0.2);
+	font-size: 1.2em;
+}
+
+.sidebarBlock_content {
+	@include transition(max-height 300ms);
+	max-height: 1000px;
+	overflow-y: hidden;
+
+	&.-closed {
+		max-height: 0;
+	}
+}
+
+.sidebarBlock_item {
+	@include transition(background 300ms);
+	background: rgba(255,255,255,0);
+	cursor: pointer;
+	padding: 5px 10px;
+
+	&.-active {
+		background: rgba(255,255,255,.1);
+	}
+}
+
+.sidebarBlock_itemTitle {
+
+}
+
+.sidebarBlock_itemBadge {
+	@include transform(scale(1, 1));
+	@include transition(opacity 300ms, transform 300ms);
+	@include animation(ircSidebar_item-popUp 300ms 1);
+	@include border-radius(2em);
+
+	opacity: 1;
+	text-align: center;
+	line-height: 1.5em;
+	background: #ff5312;
+	color: #fff;
+	float: right;
+	width: 1.5em;
+	height: 1.5em;
+
+	&.-empty {
+		@include transform(scale(0, 0));
+		opacity: 0;
+	}
+}
+
+@include keyframes(sidebarBlock_itemBadge-popUp) {
+	from {
+		@include transform(scale(0, 0));
+		opacity: 0;
+	}
+
+	70% {
+		@include transform(scale(1.1, 1.1));
+	}
+
+	to {
+		@include transform(scale(1, 1));
+		opacity: 1;
+	}
+}
