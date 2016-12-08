@@ -134,6 +134,10 @@ module.exports = class NoirContribIrc {
 
 	openWindow(id) {
 
+		// prevent duplicate windows
+		if (this.windows.hasOwnProperty(id)) {
+			return this.windows[id];
+		}
 
 		let window = new ChatWindow('noirbot', id)
 			.onOpenUrl( e => {
