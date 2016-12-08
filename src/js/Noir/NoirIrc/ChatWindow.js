@@ -224,7 +224,7 @@ class ChatWindow {
 			view.element.classList.add('-you');
 		}
 		setTimeout(() => {
-			this.view.scrollArea.scrollTop = this.view.scrollAreadocument.body.scrollHeight;
+			this.view.scrollArea.scrollTop = this.view.scrollArea.scrollHeight;
 		}, 10);
 		return view;
 	}
