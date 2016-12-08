@@ -1,5 +1,5 @@
-const View        = require("./../View.js");
-const Event       = require("./../Event.js");
+const View        = require("./../Noir/View.js");
+const Event       = require("./../Noir/Event.js");
 const linkify     = require('linkifyjs');
 const linkifyHtml = require('linkifyjs/html');
 const marked      = require('marked');

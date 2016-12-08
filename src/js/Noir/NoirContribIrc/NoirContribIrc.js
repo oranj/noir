@@ -4,7 +4,7 @@ const ChatSidebar = require("./ChatSidebar");
 const {app, ipcRenderer, shell, remote } = require('electron')
 
 
-module.exports = class NoirIrc {
+module.exports = class NoirContribIrc {
 	constructor(host, connectionName, userName, config, channels) {
 
 		config.autoConnect = false;
@@ -133,6 +133,8 @@ module.exports = class NoirIrc {
 	}
 
 	openWindow(id) {
+
+
 		let window = new ChatWindow('noirbot', id)
 			.onOpenUrl( e => {
 				shell.openExternal( e.url );
