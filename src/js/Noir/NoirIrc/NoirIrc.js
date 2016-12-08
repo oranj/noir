@@ -1,20 +1,20 @@
 const irc = require('irc');
 const ChatWindow = require("./ChatWindow");
 const ChatSidebar = require("./ChatSidebar");
-const {app, ipcRenderer, shell } = require('electron')
+const {app, ipcRenderer, shell, remote } = require('electron')
 
 
 module.exports = class NoirIrc {
-	constructor(host, nickName, config, channels) {
+	constructor(host, connectionName, userName, config, channels) {
 
 		config.autoConnect = false;
 
-		this.client = new irc.Client(host, nickName, config);
+		this.client = new irc.Client(host, userName, config);
 
 
 		this.windows = {};
 		this.element = document.getElementById('main');
-		this.sidebarEntry = new ChatSidebar(host)
+		this.sidebarEntry = new ChatSidebar(connectionName)
 			.onWindowSelect( e => {
 				this.showWindow(e.windowId);
 			});
@@ -66,7 +66,7 @@ module.exports = class NoirIrc {
 		this.client.addListener("message", (from, to, text, message) => {
 			console.log("MESSAGE", from, to, text, message);
 			var channel = message.args[0];
-			if (to == nickName) {
+			if (to == userName) {
 				channel = from;
 				if (! this.windows.hasOwnProperty(channel)) {
 					this.openConversation(channel);
@@ -75,7 +75,7 @@ module.exports = class NoirIrc {
 				return;
 			}
 
-			if (to == nickName || text.indexOf(nickName) >= 0) {
+			if (to == userName || text.indexOf(userName) >= 0) {
 				var notification = new window.Notification("Message from " + from, { body: text, silent: true });
 				notification.onclick = function() {
 					ipcRenderer.send('focusWindow', 'main');
@@ -85,10 +85,20 @@ module.exports = class NoirIrc {
 			this.windows[channel].addChatMessage(from, text, this.getTimestamp());
 			if (! this.windows[channel].isVisible()) {
 				this.sidebarEntry.handleNotification(channel, 1);
-				console.log("UNREAD", this.sidebarEntry.getUnreadCounts());
-				app.dock.setBadge(this.sidebarEntry.getUnreadCounts())
+				this.updateBadgeCount();
 			}
 		});
+	}
+
+	updateBadgeCount() {
+		if (remote.app.dock && remote.app.dock.setBadge) {
+			var count = this.sidebarEntry.getUnreadCounts();
+			if (count == 0) {
+				remote.app.dock.setBadge("");
+			} else {
+				remote.app.dock.setBadge(count.toString());
+			}
+		}
 	}
 
 	joinChannel(channelId) {
@@ -146,6 +156,7 @@ module.exports = class NoirIrc {
 			this.windows[_id].toggleDisplay(_id == id);
 		});
 		this.sidebarEntry.handleWindowActivated(id);
+		this.updateBadgeCount();
 	}
 
 	getTimestamp() {
