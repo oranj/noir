@@ -34,7 +34,7 @@ if (! fs.existsSync(global.FILE_PREFS)) {
       }
     ]
   };
-  fs.writeFileSync(global.FILE_PREFS, JSON.stringify(defaults), { mode: '0777' });
+  fs.writeFileSync(global.FILE_PREFS, JSON.stringify(defaults, null, "\t"), { mode: '0777' });
 }
 
 var contents = fs.readFileSync(global.FILE_PREFS);
