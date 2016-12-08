@@ -57,6 +57,7 @@ function createWindow () {
     label: "Application",
     submenu: [
       { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
+      { label: "Toggle Developer Tools", accelerator: "CommandOrControl+Alt+I", click: ()  =>  win.webContents.toggleDevTools() },
       { label: "Preferences", submenu: [
         {
           label: "Settings",
@@ -84,10 +85,6 @@ function createWindow () {
   ];
 
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
-
-
-  // Open the DevTools.
-  win.webContents.openDevTools()
 
   // Emitted when the window is closed.
   win.on('closed', () => {
