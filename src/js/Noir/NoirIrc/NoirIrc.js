@@ -53,10 +53,19 @@ module.exports = class NoirIrc {
 	    	console.log(message.command + ' ' + message.args.join(' '), this.getTimestamp());
 		});
 
-		this.client.addListener('part', function(channel, who, reason) {
+		this.client.addListener('part', (channel, who, reason) => {
+			if (! this.window.hasOwnProperty(channel)) {
+				return;
+			}
+			this.windows[channel].removeParticipant(who, reason, this.getTimestamp());
 		    console.log('%s has left %s: %s', who, channel, reason);
 		});
+
 		this.client.addListener('kick', function(channel, who, by, reason) {
+			if (! this.window.hasOwnProperty(channel)) {
+				return;
+			}
+			this.windows[channel].removeParticipant(who, reason, this.getTimestamp());
 		    console.log('%s was kicked from %s by %s: %s', who, channel, by, reason);
 		});
 

@@ -205,6 +205,16 @@ class ChatWindow {
 		return view;
 	}
 
+	removeParticipant(who, reason, timestamp) {
+		var text = who + " has left " + this.channel+"\n&nbsp;&nbsp;" + reason;
+		var view = this.addMessage(null, text, timestamp);
+
+		view.element.classList.add('-join');
+		view.element.classList.add('-system');
+		this.view.contacts.remove(who);
+		return view;
+	}
+
 	addChatMessage(from, text, timestamp) {
 
 		var view = this.addMessage(from, text, timestamp);
