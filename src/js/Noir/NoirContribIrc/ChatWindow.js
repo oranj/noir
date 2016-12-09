@@ -1,8 +1,5 @@
 const View        = require("./../Noir/View.js");
 const Event       = require("./../Noir/Event.js");
-const linkify     = require('linkifyjs');
-const linkifyHtml = require('linkifyjs/html');
-const marked      = require('marked');
 
 const template = `
 	<div class="ircWindow -hidden">
@@ -15,7 +12,7 @@ const template = `
 					{{ sender | html }}
 				</div>
 				<div class="message_text" data-cjs-name="text">
-					{{ text | md | linkify }}
+					{{ text | formatMessage }}
 				</div>
 			</div>
 		</div>
@@ -76,19 +73,14 @@ class ChatWindow {
 					 + ":" + ("00" + date.getMinutes()).slice(-2)
 					+ ":" + ("00" + date.getSeconds()).slice(-2) + (date.getHours() > 12 ? "PM" : "AM");
 			},
-			html: function(str) {
-				return View.escapeHtml(str);
-			},
-			linkify: function(str) {
-				return linkifyHtml(str);
-			},
-			md: function(str) {
-				return marked(str, {
-					gfm: true,
-					breaks: true,
-					sanitize: true,
-					smartypants: true
-				});
+			html: View.escapeHtml,
+			formatMessage: str => {
+				return this.displayedMessageTransforms.reduce((carry, plugin) => {
+					return plugin(carry)
+				}, str);
+			}
+		});
+
 		this.view.element.addEventListener('click', e => {
 			var node = e.target;
 			while (node.tagName.toUpperCase() != 'A') {
@@ -158,7 +150,10 @@ class ChatWindow {
 	}
 
 	handleMessage() {
-		var message = this.view.textarea.value;
+		let message = this.sentMessageTransforms.reduce((carry, transform) => {
+			return transform(carry);
+		}, this.view.textarea.value);
+
 		if (! message) {
 			return;
 		}

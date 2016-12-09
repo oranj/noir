@@ -1,6 +1,6 @@
-const irc = require('irc');
-const ChatWindow = require("./ChatWindow");
-const ChatSidebar = require("./ChatSidebar");
+const irc                                = require('irc');
+const ChatWindow                         = require("./ChatWindow");
+const ChatSidebar                        = require("./ChatSidebar");
 const {app, ipcRenderer, shell, remote } = require('electron')
 
 
@@ -11,6 +11,8 @@ module.exports = class NoirContribIrc {
 
 		this.client = new irc.Client(host, userName, config);
 
+		this.displayedMessageTransforms = [];
+		this.sentMessageTransforms = [];
 
 		this.windows = {};
 		this.element = document.getElementById('main');
@@ -139,24 +141,28 @@ module.exports = class NoirContribIrc {
 			return this.windows[id];
 		}
 
-		let window = new ChatWindow('noirbot', id)
+		let chatWindow = new ChatWindow('noirbot', id)
 			.onOpenUrl( e => {
 				shell.openExternal( e.url );
 			})
 			.onMessage( e => {
 				this.client.say(id, e.message);
-				window.addChatMessage('noirbot', e.message, this.getTimestamp());
+				chatWindow.addChatMessage('noirbot', e.message, this.getTimestamp());
 			})
 			.onConversationOpened( e => {
 				this.openConversation( e.contact );
 				this.showWindow(e.contact);
 			});
 
+
+		chatWindow.displayedMessageTransforms = Object.create(this.displayedMessageTransforms);
+		chatWindow.sentMessageTransforms      = Object.create(this.sentMessageTransforms);
+
 		this.sidebarEntry.registerWindow(id, 0);
 
-		this.element.appendChild(window.view.element);
-		this.windows[id] = window;
-		return window;
+		this.element.appendChild(chatWindow.view.element);
+		this.windows[id] = chatWindow;
+		return chatWindow;
 	}
 
 	closeWindow(id) {

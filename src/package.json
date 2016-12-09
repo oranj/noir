@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "main": "main.js",
   "dependencies": {
+    "emojione": "^2.2.7",
     "irc": "^0.5.2",
     "linkify": "^0.2.1",
     "linkifyjs": "^2.1.3",
