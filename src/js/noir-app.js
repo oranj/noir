@@ -4,6 +4,8 @@ const linkifyHtml    = require('linkifyjs/html');
 const marked         = require('marked');
 const emojione       = require('emojione');
 
+let emoji = Object.keys(emojione.emojioneList);
+
 remote.getGlobal('SETTINGS').connections
 	.filter(cxn => cxn.type == 'noir-contrib-irc' )
 	.forEach(cxn => {
@@ -36,5 +38,36 @@ remote.getGlobal('SETTINGS').connections
 
 		irc.sentMessageTransforms.push(function strInjectEmoji(str) {
 			return emojione.shortnameToUnicode(str);
+		});
+
+		irc.autoCompleteListeners.push(function autoCompleteEmoji(event) {
+
+			let lastWord = event.currentWord;
+
+			if (lastWord[0] != ':') {
+				return false;
+			}
+
+			if (lastWord.length < 2) {
+				return false;
+			}
+
+			var candidates = emoji
+				.filter(em => ( em.slice(0, lastWord.length) == lastWord ))
+				.map(em => {
+					let unicode = emojione.shortnameToUnicode(em);
+					return {
+						replace: lastWord,
+						value: unicode,
+						label: unicode + " " + em
+					};
+				});
+
+			candidates.sort((a, b) => {
+				var diff = a.value.length - b.value.length;
+				return diff / Math.abs(diff);
+			});
+
+			return candidates.slice(0, 5);
 		});
 	})

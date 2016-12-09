@@ -17,6 +17,9 @@ const template = `
 			</div>
 		</div>
 		<div class="ircWindow_inputArea">
+			<div class="ircWindow_autoComplete" data-cjs-name="autoComplete">
+				<div class="ircWindow_suggestion" data-cjs-template="suggestions" data-suggest-value="{{ value }}" data-suggest-replace="{{ replace }}">{{ label }}</div>
+			</div>
 			<div class="ircWindow_buttonArea">
 				<button
 					type="button"
@@ -88,7 +91,7 @@ class ChatWindow {
 		this.view.element.addEventListener('click', e => {
 			var node = e.target;
 			while (node.tagName.toUpperCase() != 'A') {
-				if (node == view.element) {
+				if (node == this.view.element) {
 					return;
 				}
 				node = node.parentNode;
@@ -97,12 +100,53 @@ class ChatWindow {
 			Event.trigger(this, 'openUrl', { url: node.href });
 		});
 
+		this.view.element.addEventListener('click', e => {
+			var node = e.target;
+			while ( !node.hasAttribute('data-suggest-replace') ) {
+				if (node == this.view.element) {
+					return;
+				}
+				node = node.parentNode;
+			}
+			e.preventDefault();
+			this.replaceTextAt(
+				this.view.textarea.selectionStart - 1,
+				node.getAttribute('data-suggest-replace'),
+				node.getAttribute('data-suggest-value')
+			);
+			// console.log(node);
+		});
+
 		this.messageId = 0;
 
 		this.view.textarea.addEventListener('keydown', e => {
 			if (e.keyCode == 13 && ! e.shiftKey) {
 				e.preventDefault();
 				this.handleMessage();
+			}
+		});
+
+		this.view.textarea.addEventListener('input', e => {
+			var text = this.getTextInput();
+			var currentWord = this.findWordAtPosition(this.view.textarea.selectionStart - 1, text)[1];
+
+			let data = {
+				text: text,
+				currentWord: currentWord,
+				sender: this,
+				originalEvent: e
+			};
+
+			let prompts = this.autoCompleteListeners.reduce((carry, listener) => {
+				return carry || listener(data)
+			}, false);
+
+			if (prompts && prompts.length) {
+				this.view.autoComplete.classList.add("-visible");
+				this.view.suggestions.updateAll(prompts);
+			} else {
+				this.view.autoComplete.classList.remove("-visible");
+				this.view.suggestions.empty();
 			}
 		});
 
@@ -123,6 +167,43 @@ class ChatWindow {
 			let contact = node.getAttribute('data-contact-name');
 			Event.trigger(this, 'conversationOpened', { contact });
 		});
+	}
+
+	replaceTextAt(position, from, to) {
+		var text = this.getTextInput();
+		var parts = this.findWordAtPosition(position, text);
+
+		if (from != parts[1]) {
+			return;
+		}
+
+		this.view.textarea.value = parts[0] + to + parts[2];
+		this.view.textarea.focus();
+		this.view.textarea.selectionStart = (parts[0] + to).length + 1;
+		this.view.textarea.selectionEnd   = (parts[0] + to).length + 1;
+	}
+
+	findWordAtPosition(position, text) {
+		var start, end, char;
+
+		for (start = position; start >= 0; start --) {
+			char = text[start];
+			if (char == " " || char == "\n" || char == "\t" || char == "\r") {
+				break;
+			}
+		}
+
+		for (end = position; end < text.length; end++) {
+			char = text[end];
+			if (char === undefined || char == " " || char == "\n" || char == "\t" || char == "\r") {
+				break;
+			}
+		}
+
+		start = Math.min(position, start + 1);
+		end = Math.max(position, end);
+
+		return [ text.slice(0, start), text.slice(start, end), text.slice(end) ];
 	}
 
 	setParticipants(participants) {
@@ -163,6 +244,10 @@ class ChatWindow {
 		}
 		Event.trigger(this, 'message', { message });
 		this.view.textarea.value = '';
+	}
+
+	getTextInput() {
+		return this.view.textarea.value;
 	}
 
 	addMessage(sender, text, timestamp) {

@@ -77,6 +77,11 @@ $message-border-radius: 1em;
 	padding: 10px 1em;
 	text-align: left;
 	display: inline-block;
+    line-height: 1.5em;
+    -webkit-font-smoothing: antialiased;
+
+
+
 
 	> span {
 		> p {
