@@ -89,7 +89,16 @@ class ChatWindow {
 					sanitize: true,
 					smartypants: true
 				});
+		this.view.element.addEventListener('click', e => {
+			var node = e.target;
+			while (node.tagName.toUpperCase() != 'A') {
+				if (node == view.element) {
+					return;
+				}
+				node = node.parentNode;
 			}
+			e.preventDefault();
+			Event.trigger(this, 'openUrl', { url: node.href });
 		});
 
 		this.messageId = 0;
@@ -218,17 +227,6 @@ class ChatWindow {
 	addChatMessage(from, text, timestamp) {
 
 		var view = this.addMessage(from, text, timestamp);
-		view.element.addEventListener('click', e => {
-			var node = e.target;
-			while (node.tagName.toUpperCase() != 'A') {
-				if (node == view.element) {
-					return;
-				}
-				node = node.parentNode;
-			}
-			e.preventDefault();
-			Event.trigger(this, 'openUrl', { url: node.href });
-		});
 
 		if (from == this.nickname) {
 			view.element.classList.add('-you');
