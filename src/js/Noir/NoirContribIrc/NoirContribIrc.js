@@ -12,7 +12,8 @@ module.exports = class NoirContribIrc {
 		this.client = new irc.Client(host, userName, config);
 
 		this.displayedMessageTransforms = [];
-		this.sentMessageTransforms = [];
+		this.sentMessageTransforms      = [];
+		this.autoCompleteListeners      = [];
 
 		this.windows = {};
 		this.element = document.getElementById('main');
@@ -157,6 +158,7 @@ module.exports = class NoirContribIrc {
 
 		chatWindow.displayedMessageTransforms = Object.create(this.displayedMessageTransforms);
 		chatWindow.sentMessageTransforms      = Object.create(this.sentMessageTransforms);
+		chatWindow.autoCompleteListeners      = Object.create(this.autoCompleteListeners);
 
 		this.sidebarEntry.registerWindow(id, 0);
 

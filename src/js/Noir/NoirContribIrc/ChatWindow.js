@@ -64,6 +64,10 @@ class ChatWindow {
 		this.lastText      = '';
 		this.lastDisplayedTimestamp = 0;
 
+		this.displayedMessageTransforms = [];
+		this.sentMessageTransforms = [];
+		this.autoCompleteListeners = [];
+
 		this.view = new View(template, {
 			formatTime: function(timestamp) {
 				var date = new Date(timestamp * 1000);
