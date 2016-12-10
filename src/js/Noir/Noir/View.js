@@ -32,6 +32,10 @@ function View(root, filters = {}, data = {}) {
 		return this;
 	};
 
+	this.getData = function() {
+		return data;
+	};
+
 	/**
 	 * Sets a map of values to the internal data store
 	 * @param {Object} map Values keyed by value name
@@ -143,6 +147,21 @@ View.CollectionView = function(root, filters = {}, data = {}) {
 
 		parentNode.appendChild(view.element);
 		return view;
+	};
+
+	this.sort = function(callback) {
+		var keys = Object.keys(this.all);
+		keys.forEach( key => {
+			parentNode.removeChild( this.all[key].element );
+		});
+		keys.sort((a, b) => {
+			var dataA = this.all[a].getData();
+			var dataB = this.all[b].getData();
+			return callback(dataA, dataB);
+		});
+		keys.forEach( key => {
+			parentNode.appendChild( this.all[key].element );
+		});
 	};
 
 	/**
