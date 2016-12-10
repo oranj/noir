@@ -20,8 +20,7 @@
     @for $i from 0 through 10 {
     	&[data-cursor-pos="#{$i}"] .autoComplete_suggestion:nth-child(#{$i + 1}) {
 
-    		background: #fa0;
-
+    		background: #eee;
     	}
 	}
 
@@ -43,13 +42,18 @@
 }
 
 .autoComplete_suggestion {
+	@include transition(background 300ms);
+	background: #fff;
 	display: block;
 	padding: 10px;
 	border-top: 1px solid #ccc;
 
 	&:first-child {
 		border-top: none;
+		@include border-radius(8px 8px 0 0);
 	}
 
-
+	&:last-child {
+		@include border-radius(0 0 8px 8px);
+	}
 }
