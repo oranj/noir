@@ -17,9 +17,6 @@ const template = `
 			</div>
 		</div>
 		<div class="ircWindow_inputArea">
-			<div class="ircWindow_autoComplete" data-cjs-name="autoComplete">
-				<div class="ircWindow_suggestion" data-cjs-template="suggestions" data-suggest-value="{{ value }}" data-suggest-replace="{{ replace }}">{{ label }}</div>
-			</div>
 			<div class="ircWindow_buttonArea">
 				<button
 					type="button"
@@ -56,7 +53,7 @@ function toggleClass(element, className, value) {
 
 class ChatWindow {
 
-	constructor(nickname, channel) {
+	constructor(nickname, channel, chatAreaFactory) {
 
 		this.nickname = nickname;
 		this.channel  = channel;
@@ -69,7 +66,6 @@ class ChatWindow {
 
 		this.displayedMessageTransforms = [];
 		this.sentMessageTransforms = [];
-		this.autoCompleteListeners = [];
 
 		this.view = new View(template, {
 			formatTime: function(timestamp) {
@@ -88,6 +84,8 @@ class ChatWindow {
 			}
 		});
 
+		chatAreaFactory.make(this.view.textarea);
+
 		this.view.element.addEventListener('click', e => {
 			var node = e.target;
 			while (node.tagName.toUpperCase() != 'A') {
@@ -100,53 +98,12 @@ class ChatWindow {
 			Event.trigger(this, 'openUrl', { url: node.href });
 		});
 
-		this.view.element.addEventListener('click', e => {
-			var node = e.target;
-			while ( !node.hasAttribute('data-suggest-replace') ) {
-				if (node == this.view.element) {
-					return;
-				}
-				node = node.parentNode;
-			}
-			e.preventDefault();
-			this.replaceTextAt(
-				this.view.textarea.selectionStart - 1,
-				node.getAttribute('data-suggest-replace'),
-				node.getAttribute('data-suggest-value')
-			);
-			// console.log(node);
-		});
-
 		this.messageId = 0;
 
 		this.view.textarea.addEventListener('keydown', e => {
 			if (e.keyCode == 13 && ! e.shiftKey) {
 				e.preventDefault();
 				this.handleMessage();
-			}
-		});
-
-		this.view.textarea.addEventListener('input', e => {
-			var text = this.getTextInput();
-			var currentWord = this.findWordAtPosition(this.view.textarea.selectionStart - 1, text)[1];
-
-			let data = {
-				text: text,
-				currentWord: currentWord,
-				sender: this,
-				originalEvent: e
-			};
-
-			let prompts = this.autoCompleteListeners.reduce((carry, listener) => {
-				return carry || listener(data)
-			}, false);
-
-			if (prompts && prompts.length) {
-				this.view.autoComplete.classList.add("-visible");
-				this.view.suggestions.updateAll(prompts);
-			} else {
-				this.view.autoComplete.classList.remove("-visible");
-				this.view.suggestions.empty();
 			}
 		});
 

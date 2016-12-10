@@ -5,7 +5,7 @@ const {app, ipcRenderer, shell, remote } = require('electron')
 
 
 module.exports = class NoirContribIrc {
-	constructor(host, connectionName, userName, config, channels) {
+	constructor(host, connectionName, userName, config, channels, chatAreaFactory) {
 
 		config.autoConnect = false;
 
@@ -16,6 +16,7 @@ module.exports = class NoirContribIrc {
 		this.autoCompleteListeners      = [];
 
 		this.windows = {};
+		this.chatAreaFactory = chatAreaFactory;
 		this.element = document.getElementById('main');
 		this.sidebarEntry = new ChatSidebar(connectionName)
 			.onWindowSelect( e => {
@@ -142,7 +143,7 @@ module.exports = class NoirContribIrc {
 			return this.windows[id];
 		}
 
-		let chatWindow = new ChatWindow('noirbot', id)
+		let chatWindow = new ChatWindow('noirbot', id, this.chatAreaFactory)
 			.onOpenUrl( e => {
 				shell.openExternal( e.url );
 			})
