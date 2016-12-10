@@ -1,16 +1,15 @@
 const NoirContribIrc = require('./js/Noir/NoirContribIrc/NoirContribIrc.js');
 const { ChatAreaFactory } = require('./js/Noir/Noir/ChatArea.js');
 const { remote }     = require('electron');
+const Tabset         = require('./js/Noir/Noir/Tabset.js');
 const linkifyHtml    = require('linkifyjs/html');
 const marked         = require('marked');
 const emojione       = require('emojione');
 
-let emojis = Object.keys(emojione.emojioneList).filter(e => {
-	return emojione.shortnameToUnicode(e) != "🤙";
-});
+let emojis = Object.keys(emojione.emojioneList);
+let tabset = new Tabset();
 
-let chatAreaFactory = (new ChatAreaFactory);
-
+let chatAreaFactory = new ChatAreaFactory;
 chatAreaFactory.addAutoCompleteListener(function ircAutoComplete(e) {
 
 	if (! e.word.match(/^\:.+$/)) {
@@ -31,6 +30,8 @@ chatAreaFactory.addAutoCompleteListener(function ircAutoComplete(e) {
 		});
 });
 
+document.getElementById('main').appendChild(tabset.view.element);
+
 remote.getGlobal('SETTINGS').connections
 	.filter(cxn => cxn.type == 'noir-contrib-irc' )
 	.forEach(cxn => {
@@ -46,7 +47,7 @@ remote.getGlobal('SETTINGS').connections
 			config.nick = cxn.userName;
 		}
 		cxn.config = config;
-		var irc = new NoirContribIrc(cxn.host, cxn.name || cxn.host, cxn.userName, cxn.config, cxn.channels, chatAreaFactory);
+		var irc = new NoirContribIrc(cxn.host, cxn.name || cxn.host, cxn.userName, cxn.config, cxn.channels, chatAreaFactory, tabset);
 
 		irc.displayedMessageTransforms.push(function strToMarkdown(str) {
 			return marked(str, {

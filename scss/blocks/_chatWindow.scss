@@ -19,7 +19,7 @@ $chatWindow-tabsetHeight: 60px;
 
 .chatWindow_main {
 	overflow-y: auto;
-	height: calc(100vh - #{$chatWindow-tabsetHeight});
+	height: 100vh;
 }
 
 .chatWindow_tabset {

@@ -5,19 +5,22 @@ const {app, ipcRenderer, shell, remote } = require('electron')
 
 
 module.exports = class NoirContribIrc {
-	constructor(host, connectionName, userName, config, channels, chatAreaFactory) {
+	constructor(host, connectionName, userName, config, channels, chatAreaFactory, tabset) {
 
 		config.autoConnect = false;
 
 		this.client = new irc.Client(host, userName, config);
+		this.userName = userName,
+		this.tabset = tabset;
 
 		this.displayedMessageTransforms = [];
 		this.sentMessageTransforms      = [];
 		this.autoCompleteListeners      = [];
+		this.connectionName = connectionName;
 
 		this.windows = {};
 		this.chatAreaFactory = chatAreaFactory;
-		this.element = document.getElementById('main');
+
 		this.sidebarEntry = new ChatSidebar(connectionName)
 			.onWindowSelect( e => {
 				this.showWindow(e.windowId);
@@ -143,13 +146,13 @@ module.exports = class NoirContribIrc {
 			return this.windows[id];
 		}
 
-		let chatWindow = new ChatWindow('noirbot', id, this.chatAreaFactory)
+		let chatWindow = new ChatWindow(this.userName, id, this.chatAreaFactory)
 			.onOpenUrl( e => {
 				shell.openExternal( e.url );
 			})
 			.onMessage( e => {
 				this.client.say(id, e.message);
-				chatWindow.addChatMessage('noirbot', e.message, this.getTimestamp());
+				chatWindow.addChatMessage(this.userName, e.message, this.getTimestamp());
 			})
 			.onConversationOpened( e => {
 				this.openConversation( e.contact );
@@ -163,7 +166,12 @@ module.exports = class NoirContribIrc {
 
 		this.sidebarEntry.registerWindow(id, 0);
 
-		this.element.appendChild(chatWindow.view.element);
+		this.tabset.add(
+			this.connectionName+" "+id,
+			id,
+			chatWindow.view.element
+		);
+
 		this.windows[id] = chatWindow;
 		return chatWindow;
 	}
@@ -176,9 +184,7 @@ module.exports = class NoirContribIrc {
 	}
 
 	showWindow(id) {
-		Object.keys(this.windows).forEach(_id => {
-			this.windows[_id].toggleDisplay(_id == id);
-		});
+		this.tabset.show(this.connectionName+" "+id);
 		this.sidebarEntry.handleWindowActivated(id);
 		this.updateBadgeCount();
 	}

@@ -2,7 +2,7 @@ const View        = require("./../Noir/View.js");
 const Event       = require("./../Noir/Event.js");
 
 const template = `
-	<div class="ircWindow -hidden">
+	<div class="ircWindow">
 		<div class="ircWindow_chatArea" data-cjs-name="scrollArea">
 			<div class="message -anim" data-cjs-template="messages">
 				<div class="message_time" data-cjs-name="time">
@@ -168,23 +168,7 @@ class ChatWindow {
 	}
 
 	show() {
-		this.view.element.classList.remove('-hidden');
 		this.view.textarea.focus();
-	}
-
-	hide() {
-		this.view.element.classList.add('-hidden');
-	}
-
-	toggleDisplay(show) {
-		if (show === undefined) {
-			show = ! this.isVisible();
-		}
-		if (show) {
-			this.show();
-		} else {
-			this.hide();
-		}
 	}
 
 	isVisible() {
