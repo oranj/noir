@@ -1,10 +1,35 @@
 const NoirContribIrc = require('./js/Noir/NoirContribIrc/NoirContribIrc.js');
+const { ChatAreaFactory } = require('./js/Noir/Noir/ChatArea.js');
 const { remote }     = require('electron');
 const linkifyHtml    = require('linkifyjs/html');
 const marked         = require('marked');
 const emojione       = require('emojione');
 
-let emoji = Object.keys(emojione.emojioneList);
+let emojis = Object.keys(emojione.emojioneList).filter(e => {
+	return emojione.shortnameToUnicode(e) != "🤙";
+});
+
+let chatAreaFactory = (new ChatAreaFactory);
+
+chatAreaFactory.addAutoCompleteListener(function ircAutoComplete(e) {
+
+	if (! e.word.match(/^\:.+$/)) {
+		return;
+	}
+
+	emojis
+		.filter(em => {
+			return em.slice(0, e.word.length) == e.word;
+		})
+		.forEach(em => {
+			let unicode = emojione.shortnameToUnicode(em);
+			e.autoCompleteTooltip.suggest(
+				unicode,
+				unicode + " " + em,
+				em.length
+			);
+		});
+});
 
 remote.getGlobal('SETTINGS').connections
 	.filter(cxn => cxn.type == 'noir-contrib-irc' )
@@ -21,7 +46,7 @@ remote.getGlobal('SETTINGS').connections
 			config.nick = cxn.userName;
 		}
 		cxn.config = config;
-		var irc = new NoirContribIrc(cxn.host, cxn.name || cxn.host, cxn.userName, cxn.config, cxn.channels);
+		var irc = new NoirContribIrc(cxn.host, cxn.name || cxn.host, cxn.userName, cxn.config, cxn.channels, chatAreaFactory);
 
 		irc.displayedMessageTransforms.push(function strToMarkdown(str) {
 			return marked(str, {
@@ -40,34 +65,4 @@ remote.getGlobal('SETTINGS').connections
 			return emojione.shortnameToUnicode(str);
 		});
 
-		irc.autoCompleteListeners.push(function autoCompleteEmoji(event) {
-
-			let lastWord = event.currentWord;
-
-			if (lastWord[0] != ':') {
-				return false;
-			}
-
-			if (lastWord.length < 2) {
-				return false;
-			}
-
-			var candidates = emoji
-				.filter(em => ( em.slice(0, lastWord.length) == lastWord ))
-				.map(em => {
-					let unicode = emojione.shortnameToUnicode(em);
-					return {
-						replace: lastWord,
-						value: unicode,
-						label: unicode + " " + em
-					};
-				});
-
-			candidates.sort((a, b) => {
-				var diff = a.value.length - b.value.length;
-				return diff / Math.abs(diff);
-			});
-
-			return candidates.slice(0, 5);
-		});
 	})
