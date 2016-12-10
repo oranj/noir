@@ -164,6 +164,10 @@ View.CollectionView = function(root, filters = {}, data = {}) {
 		});
 	};
 
+	this.isEmpty = function() {
+		return Object.keys(all).length == 0;
+	};
+
 	/**
 	 * Updates a view identified by a name
 	 * @param  {string} name The name which identifies the view
