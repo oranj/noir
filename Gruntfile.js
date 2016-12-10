@@ -15,6 +15,7 @@ module.exports = function(grunt) {
 	                name: 'Noir',
 	                dir: 'src',
 	                out: 'build',
+	                icon: 'src/icon.icns',
 	                version: '1.3.5',
 	                platform: 'darwin',
 	                arch: 'x64'
