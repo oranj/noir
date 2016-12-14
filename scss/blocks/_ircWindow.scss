@@ -82,14 +82,15 @@ $ircWindow-buttonareaWidth: 50px;
 
 	opacity: 0;
 	z-index: -1;
-	color: #000;
+	color: #263238;
 	min-width: 100px;
 	min-height: 150px;
-	background: #fff;
+	background: #b7cbd6;
 	position: absolute;
     bottom: 60px;
     right: 20px;
-    padding: 10px;
+    max-height: calc(100vh - 130px);
+    overflow-y: auto;
 
     &::after {
     	content: "";
@@ -102,8 +103,19 @@ $ircWindow-buttonareaWidth: 50px;
     }
 
     &.-open {
-    	z-index: auto;
+    	z-index: 5;
     	opacity: 1;
 		@include transform(scale(1, 1));
     }
+}
+
+
+.ircWindow_contact {
+	@include transition(background 300ms);
+	padding: 5px 10px;
+	background: transparentize(red, 1);
+
+	&:hover {
+		background: transparentize(red, 0);
+	}
 }

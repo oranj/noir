@@ -55,6 +55,34 @@ $tabset_tabHeight: 60px;
 	}
 }
 
+.tabset_tabClose {
+	@include border-radius(10px);
+	@include transition(background 300ms);
+	width: 20px;
+	height: 20px;
+	display: inline-block;
+	font-style: normal;
+	vertical-align: middle;
+    text-align: center;
+    line-height: 20px;
+	background: rgba(255,255,255,0);
+
+	&::before {
+		@include transition(opacity 300ms);
+		content: "×";
+		opacity: .4;
+	    vertical-align: middle;
+	}
+
+	&:hover {
+		background: rgba(255,255,255,.3);
+
+		&::before {
+			opacity: 1;
+		}
+	}
+}
+
 .tabset_contents {
 	height: calc(100% - #{$tabset_tabHeight});
 }

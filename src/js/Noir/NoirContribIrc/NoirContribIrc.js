@@ -76,9 +76,6 @@ module.exports = class NoirContribIrc {
 		    console.log('%s was kicked from %s by %s: %s', who, channel, by, reason);
 		});
 
-
-
-		// Listen for any message, PM said user when he posts
 		this.client.addListener("message", (from, to, text, message) => {
 			console.log("MESSAGE", from, to, text, message);
 			var channel = message.args[0];
@@ -151,6 +148,12 @@ module.exports = class NoirContribIrc {
 				shell.openExternal( e.url );
 			})
 			.onMessage( e => {
+				let matches = e.message.match(/^\/join\s+(#[^\s]+)/);
+				if (matches) {
+					debugger;
+					this.joinChannel(matches[1]);
+					return;
+				}
 				this.client.say(id, e.message);
 				chatWindow.addChatMessage(this.userName, e.message, this.getTimestamp());
 			})
@@ -166,11 +169,22 @@ module.exports = class NoirContribIrc {
 
 		this.sidebarEntry.registerWindow(id, 0);
 
-		this.tabset.add(
-			this.connectionName+" "+id,
-			id,
-			chatWindow.view.element
-		);
+		let tab = this.tabset
+			.add(this.connectionName+" "+id)
+			.setLabel( id )
+			.setContents( chatWindow.view.element )
+			.onShow((e) => {
+				this.sidebarEntry.handleWindowActivated(id);
+				this.updateBadgeCount();
+				chatWindow.show();
+			})
+			.onHide((e) => {
+				console.log(e);
+			})
+			.onClose((e) => {
+				this.closeWindow(id);
+				console.log(e);
+			});
 
 		this.windows[id] = chatWindow;
 		return chatWindow;
@@ -178,15 +192,14 @@ module.exports = class NoirContribIrc {
 
 	closeWindow(id) {
 		this.sidebarEntry.unregisterWindow(id);
-		this.element.removeChild(window.view.element);
+		this.tabset.remove(this.connectionName+" "+id);
+		// this.element.removeChild(window.view.element);
 
 		delete this.windows[id];
 	}
 
 	showWindow(id) {
 		this.tabset.show(this.connectionName+" "+id);
-		this.sidebarEntry.handleWindowActivated(id);
-		this.updateBadgeCount();
 	}
 
 	getTimestamp() {

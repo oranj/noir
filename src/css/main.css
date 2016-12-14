@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* line 3, ../../scss/main.scss */
 * {
   box-sizing: border-box;
@@ -146,12 +147,12 @@ html, input, textarea, button, select {
   border-radius: 0 0 8px 8px;
 }
 
-/* line 3, ../../scss/blocks/_chatWindow.scss */
+/* line 1, ../../scss/blocks/_chatWindow.scss */
 .chatWindow {
   color: #e7fff7;
 }
 
-/* line 7, ../../scss/blocks/_chatWindow.scss */
+/* line 5, ../../scss/blocks/_chatWindow.scss */
 .chatWindow_sidebar {
   float: left;
   min-width: 200px;
@@ -160,24 +161,16 @@ html, input, textarea, button, select {
   -webkit-font-smoothing: antialiased;
 }
 
-/* line 15, ../../scss/blocks/_chatWindow.scss */
+/* line 13, ../../scss/blocks/_chatWindow.scss */
 .chatWindow_sidebar {
   overflow-y: auto;
   height: 100vh;
 }
 
-/* line 20, ../../scss/blocks/_chatWindow.scss */
+/* line 18, ../../scss/blocks/_chatWindow.scss */
 .chatWindow_main {
   overflow-y: auto;
   height: 100vh;
-}
-
-/* line 25, ../../scss/blocks/_chatWindow.scss */
-.chatWindow_tabset {
-  height: 60px;
-  overflow-y: hidden;
-  background: #404f56;
-  border-bottom: 1px solid #262829;
 }
 
 /* line 4, ../../scss/blocks/_ircWindow.scss */
@@ -291,16 +284,17 @@ html, input, textarea, button, select {
   transform-origin: 80% 100%;
   opacity: 0;
   z-index: -1;
-  color: #000;
+  color: #263238;
   min-width: 100px;
   min-height: 150px;
-  background: #fff;
+  background: #b7cbd6;
   position: absolute;
   bottom: 60px;
   right: 20px;
-  padding: 10px;
+  max-height: calc(100vh - 130px);
+  overflow-y: auto;
 }
-/* line 94, ../../scss/blocks/_ircWindow.scss */
+/* line 95, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_contactArea::after {
   content: "";
   position: absolute;
@@ -310,14 +304,28 @@ html, input, textarea, button, select {
   border-right: 10px solid transparent;
   border-left: 10px solid transparent;
 }
-/* line 104, ../../scss/blocks/_ircWindow.scss */
+/* line 105, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_contactArea.-open {
-  z-index: auto;
+  z-index: 5;
   opacity: 1;
   -moz-transform: scale(1, 1);
   -ms-transform: scale(1, 1);
   -webkit-transform: scale(1, 1);
   transform: scale(1, 1);
+}
+
+/* line 113, ../../scss/blocks/_ircWindow.scss */
+.ircWindow_contact {
+  -moz-transition: background 300ms;
+  -o-transition: background 300ms;
+  -webkit-transition: background 300ms;
+  transition: background 300ms;
+  padding: 5px 10px;
+  background: rgba(255, 0, 0, 0);
+}
+/* line 118, ../../scss/blocks/_ircWindow.scss */
+.ircWindow_contact:hover {
+  background: red;
 }
 
 /* line 5, ../../scss/blocks/_sidebarBlock.scss */
@@ -812,16 +820,53 @@ html, input, textarea, button, select {
 }
 
 /* line 58, ../../scss/blocks/_tabset.scss */
+.tabset_tabClose {
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  -moz-transition: background 300ms;
+  -o-transition: background 300ms;
+  -webkit-transition: background 300ms;
+  transition: background 300ms;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  font-style: normal;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 20px;
+  background: rgba(255, 255, 255, 0);
+}
+/* line 70, ../../scss/blocks/_tabset.scss */
+.tabset_tabClose::before {
+  -moz-transition: opacity 300ms;
+  -o-transition: opacity 300ms;
+  -webkit-transition: opacity 300ms;
+  transition: opacity 300ms;
+  content: "×";
+  opacity: .4;
+  vertical-align: middle;
+}
+/* line 77, ../../scss/blocks/_tabset.scss */
+.tabset_tabClose:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+/* line 80, ../../scss/blocks/_tabset.scss */
+.tabset_tabClose:hover::before {
+  opacity: 1;
+}
+
+/* line 86, ../../scss/blocks/_tabset.scss */
 .tabset_contents {
   height: calc(100% - 60px);
 }
 
-/* line 62, ../../scss/blocks/_tabset.scss */
+/* line 90, ../../scss/blocks/_tabset.scss */
 .tabset_view {
   display: none;
   height: 100%;
 }
-/* line 66, ../../scss/blocks/_tabset.scss */
+/* line 94, ../../scss/blocks/_tabset.scss */
 .tabset_view.-selected {
   display: block;
 }
