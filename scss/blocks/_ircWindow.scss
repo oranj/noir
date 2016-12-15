@@ -91,16 +91,17 @@ $ircWindow-buttonareaWidth: 50px;
     right: 20px;
     max-height: calc(100vh - 130px);
     overflow-y: auto;
+    overflow-x: hidden;
 
-    &::after {
-    	content: "";
-    	position: absolute;
-    	top:100%;
-    	right:10px;
-    	border-top:10px solid #fff;
-    	border-right:10px solid transparent;
-    	border-left:10px solid transparent;
-    }
+    // &::after {
+    // 	content: "";
+    // 	position: absolute;
+    // 	top:100%;
+    // 	right:10px;
+    // 	border-top:10px solid #fff;
+    // 	border-right:10px solid transparent;
+    // 	border-left:10px solid transparent;
+    // }
 
     &.-open {
     	z-index: 5;
@@ -113,9 +114,9 @@ $ircWindow-buttonareaWidth: 50px;
 .ircWindow_contact {
 	@include transition(background 300ms);
 	padding: 5px 10px;
-	background: transparentize(red, 1);
+	background: transparentize(white, 1);
 
 	&:hover {
-		background: transparentize(red, 0);
+		background: transparentize(white, 0);
 	}
 }

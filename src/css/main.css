@@ -293,18 +293,9 @@ html, input, textarea, button, select {
   right: 20px;
   max-height: calc(100vh - 130px);
   overflow-y: auto;
+  overflow-x: hidden;
 }
-/* line 95, ../../scss/blocks/_ircWindow.scss */
-.ircWindow_contactArea::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  right: 10px;
-  border-top: 10px solid #fff;
-  border-right: 10px solid transparent;
-  border-left: 10px solid transparent;
-}
-/* line 105, ../../scss/blocks/_ircWindow.scss */
+/* line 106, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_contactArea.-open {
   z-index: 5;
   opacity: 1;
@@ -314,18 +305,18 @@ html, input, textarea, button, select {
   transform: scale(1, 1);
 }
 
-/* line 113, ../../scss/blocks/_ircWindow.scss */
+/* line 114, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_contact {
   -moz-transition: background 300ms;
   -o-transition: background 300ms;
   -webkit-transition: background 300ms;
   transition: background 300ms;
   padding: 5px 10px;
-  background: rgba(255, 0, 0, 0);
+  background: rgba(255, 255, 255, 0);
 }
-/* line 118, ../../scss/blocks/_ircWindow.scss */
+/* line 119, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_contact:hover {
-  background: red;
+  background: white;
 }
 
 /* line 5, ../../scss/blocks/_sidebarBlock.scss */
