@@ -33,9 +33,10 @@ html, input, textarea, button, select {
 .autoComplete {
   position: absolute;
   width: 100%;
+  left: 0;
 }
 
-/* line 6, ../../scss/blocks/_autoComplete.scss */
+/* line 7, ../../scss/blocks/_autoComplete.scss */
 .autoComplete_popup {
   -moz-border-radius: 8px;
   -webkit-border-radius: 8px;
@@ -58,51 +59,51 @@ html, input, textarea, button, select {
   bottom: 0;
   overflow: hidden;
 }
-/* line 21, ../../scss/blocks/_autoComplete.scss */
+/* line 22, ../../scss/blocks/_autoComplete.scss */
 .autoComplete_popup[data-cursor-pos="0"] .autoComplete_suggestion:nth-child(1) {
   background: #eee;
 }
-/* line 21, ../../scss/blocks/_autoComplete.scss */
+/* line 22, ../../scss/blocks/_autoComplete.scss */
 .autoComplete_popup[data-cursor-pos="1"] .autoComplete_suggestion:nth-child(2) {
   background: #eee;
 }
-/* line 21, ../../scss/blocks/_autoComplete.scss */
+/* line 22, ../../scss/blocks/_autoComplete.scss */
 .autoComplete_popup[data-cursor-pos="2"] .autoComplete_suggestion:nth-child(3) {
   background: #eee;
 }
-/* line 21, ../../scss/blocks/_autoComplete.scss */
+/* line 22, ../../scss/blocks/_autoComplete.scss */
 .autoComplete_popup[data-cursor-pos="3"] .autoComplete_suggestion:nth-child(4) {
   background: #eee;
 }
-/* line 21, ../../scss/blocks/_autoComplete.scss */
+/* line 22, ../../scss/blocks/_autoComplete.scss */
 .autoComplete_popup[data-cursor-pos="4"] .autoComplete_suggestion:nth-child(5) {
   background: #eee;
 }
-/* line 21, ../../scss/blocks/_autoComplete.scss */
+/* line 22, ../../scss/blocks/_autoComplete.scss */
 .autoComplete_popup[data-cursor-pos="5"] .autoComplete_suggestion:nth-child(6) {
   background: #eee;
 }
-/* line 21, ../../scss/blocks/_autoComplete.scss */
+/* line 22, ../../scss/blocks/_autoComplete.scss */
 .autoComplete_popup[data-cursor-pos="6"] .autoComplete_suggestion:nth-child(7) {
   background: #eee;
 }
-/* line 21, ../../scss/blocks/_autoComplete.scss */
+/* line 22, ../../scss/blocks/_autoComplete.scss */
 .autoComplete_popup[data-cursor-pos="7"] .autoComplete_suggestion:nth-child(8) {
   background: #eee;
 }
-/* line 21, ../../scss/blocks/_autoComplete.scss */
+/* line 22, ../../scss/blocks/_autoComplete.scss */
 .autoComplete_popup[data-cursor-pos="8"] .autoComplete_suggestion:nth-child(9) {
   background: #eee;
 }
-/* line 21, ../../scss/blocks/_autoComplete.scss */
+/* line 22, ../../scss/blocks/_autoComplete.scss */
 .autoComplete_popup[data-cursor-pos="9"] .autoComplete_suggestion:nth-child(10) {
   background: #eee;
 }
-/* line 21, ../../scss/blocks/_autoComplete.scss */
+/* line 22, ../../scss/blocks/_autoComplete.scss */
 .autoComplete_popup[data-cursor-pos="10"] .autoComplete_suggestion:nth-child(11) {
   background: #eee;
 }
-/* line 27, ../../scss/blocks/_autoComplete.scss */
+/* line 28, ../../scss/blocks/_autoComplete.scss */
 .autoComplete_popup.-visible {
   opacity: 1;
   -moz-transform: translateY(-10px);
@@ -111,7 +112,7 @@ html, input, textarea, button, select {
   transform: translateY(-10px);
   z-index: 10;
 }
-/* line 33, ../../scss/blocks/_autoComplete.scss */
+/* line 34, ../../scss/blocks/_autoComplete.scss */
 .autoComplete_popup::after {
   content: "";
   border-top: 10px solid #fff;
@@ -122,7 +123,7 @@ html, input, textarea, button, select {
   left: 20%;
 }
 
-/* line 44, ../../scss/blocks/_autoComplete.scss */
+/* line 45, ../../scss/blocks/_autoComplete.scss */
 .autoComplete_suggestion {
   -moz-transition: background 300ms;
   -o-transition: background 300ms;
@@ -133,14 +134,14 @@ html, input, textarea, button, select {
   padding: 10px;
   border-top: 1px solid #ccc;
 }
-/* line 51, ../../scss/blocks/_autoComplete.scss */
+/* line 52, ../../scss/blocks/_autoComplete.scss */
 .autoComplete_suggestion:first-child {
   border-top: none;
   -moz-border-radius: 8px 8px 0 0;
   -webkit-border-radius: 8px;
   border-radius: 8px 8px 0 0;
 }
-/* line 56, ../../scss/blocks/_autoComplete.scss */
+/* line 57, ../../scss/blocks/_autoComplete.scss */
 .autoComplete_suggestion:last-child {
   -moz-border-radius: 0 0 8px 8px;
   -webkit-border-radius: 0;
@@ -155,19 +156,29 @@ html, input, textarea, button, select {
 /* line 5, ../../scss/blocks/_chatWindow.scss */
 .chatWindow_sidebar {
   float: left;
-  min-width: 200px;
-  width: 25%;
+  width: 200px;
+  min-width: 150px !important;
+  max-width: 66% !important;
   background: #202a2f;
+  overflow-y: auto;
+  height: 100vh;
+  position: relative;
+  padding-right: 5px;
   -webkit-font-smoothing: antialiased;
 }
 
-/* line 13, ../../scss/blocks/_chatWindow.scss */
-.chatWindow_sidebar {
-  overflow-y: auto;
-  height: 100vh;
+/* line 19, ../../scss/blocks/_chatWindow.scss */
+.chatWindow_sidebarGrab {
+  cursor: col-resize;
+  height: 100%;
+  width: 5px;
+  background: transparent;
+  position: absolute;
+  right: 0px;
+  top: 0px;
 }
 
-/* line 18, ../../scss/blocks/_chatWindow.scss */
+/* line 30, ../../scss/blocks/_chatWindow.scss */
 .chatWindow_main {
   overflow-y: auto;
   height: 100vh;

@@ -51,7 +51,38 @@ if (config.commands) {
 	});
 }
 
+(function() {
+	var grabber = document.getElementById('sidebarGrab');
+	var sidebar = document.getElementById('sidebar');
+	var isDown = false;
 
+	function setSidebarWidth(width) {
+		sidebar.style.width = width + 'px';
+		localStorage.setItem('sidebarWidth', width);
+	}
+
+	if (localStorage.getItem('sidebarWidth')) {
+		setSidebarWidth(localStorage.getItem('sidebarWidth'));
+	}
+
+	grabber.addEventListener('mousedown', (e) => {
+		isDown = true;
+		e.preventDefault();
+	});
+
+	document.body.addEventListener('mousemove', (e) => {
+		if (! isDown) {
+			return;
+		}
+		setSidebarWidth(e.clientX);
+		e.preventDefault();
+	});
+
+	document.body.addEventListener('mouseup', (e) => {
+		isDown = false;
+		e.preventDefault();
+	});
+}());
 
 document.getElementById('main').appendChild(tabset.view.element);
 

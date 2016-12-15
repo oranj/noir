@@ -4,15 +4,27 @@
 
 .chatWindow_sidebar {
 	float: left;
-	min-width: 200px;
-	width: 25%;
+	width: 200px;
+	min-width: 150px !important;
+	max-width: 66% !important;
 	background: darken(#263238, 3);
+	overflow-y: auto;
+	height: 100vh;
+	position: relative;
+	padding-right: 5px;
+
 	-webkit-font-smoothing: antialiased;
 }
 
-.chatWindow_sidebar {
-	overflow-y: auto;
-	height: 100vh;
+.chatWindow_sidebarGrab {
+	cursor: col-resize;
+	height: 100%;
+	width: 5px;
+	background: transparent;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+
 }
 
 .chatWindow_main {
