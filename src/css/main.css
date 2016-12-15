@@ -163,11 +163,10 @@ html, input, textarea, button, select {
   overflow-y: auto;
   height: 100vh;
   position: relative;
-  padding-right: 5px;
   -webkit-font-smoothing: antialiased;
 }
 
-/* line 19, ../../scss/blocks/_chatWindow.scss */
+/* line 18, ../../scss/blocks/_chatWindow.scss */
 .chatWindow_sidebarGrab {
   cursor: col-resize;
   height: 100%;
@@ -178,7 +177,7 @@ html, input, textarea, button, select {
   top: 0px;
 }
 
-/* line 30, ../../scss/blocks/_chatWindow.scss */
+/* line 29, ../../scss/blocks/_chatWindow.scss */
 .chatWindow_main {
   overflow-y: auto;
   height: 100vh;
