@@ -32,18 +32,21 @@ chatAreaFactory.addAutoCompleteListener(function ircAutoComplete(e) {
 });
 
 if (config.commands) {
+	let waitForChars = (config.commandPromptAfter || 3);
 	chatAreaFactory.addAutoCompleteListener(function ircAutoComplete(e) {
-		Object.keys(config.commands).forEach(prefix => {
-			if (e.word.slice(0, prefix.length) != prefix) {
+		Object.keys(config.commands).forEach(shortName => {
+			let cmd = config.commands[shortName];
+			if (e.word.length < waitForChars) {
 				return;
 			}
-			config.commands[prefix].forEach(cmd => {
-				e.autoCompleteTooltip.suggest(
-					cmd,
-					cmd,
-					cmd.length
-				);
-			});
+			if (shortName.slice(0, e.word.length) != e.word) {
+				return;
+			}
+			e.autoCompleteTooltip.suggest(
+				cmd,
+				shortName,
+				shortName.length
+			);
 		});
 	});
 }

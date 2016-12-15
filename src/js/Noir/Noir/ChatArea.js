@@ -68,28 +68,55 @@ class ChatArea {
 		});
 
 		this.textarea.addEventListener('keydown', (e) => {
-			if (! this.autoCompleteTooltip.isVisible()) {
-				return;
+			if (this.autoCompleteTooltip.isVisible()) {
+				if (e.keyCode == 9) {
+					this.autoCompleteTooltip.useSelected();
+					e.preventDefault();
+				} else if (e.keyCode == 27) {
+					this.autoCompleteTooltip.hide();
+					e.preventDefault();
+				} else if (e.keyCode == 40) { // down
+					this.autoCompleteTooltip.cursorDown();
+					e.preventDefault();
+				} else if (e.keyCode == 38) { // up
+					this.autoCompleteTooltip.cursorUp();
+					e.preventDefault();
+				}
+			} else if (e.keyCode == 9) {
+				if (this.selectNextTemplate( this.textarea.selectionStart )) {
+					e.preventDefault();
+				}
 			}
-			if (e.keyCode == 9) {
-				this.autoCompleteTooltip.useSelected();
-				e.preventDefault();
-			} else if (e.keyCode == 27) {
-				this.autoCompleteTooltip.hide();
-				e.preventDefault();
-			} else if (e.keyCode == 40) { // down
-				this.autoCompleteTooltip.cursorDown();
-				e.preventDefault();
-			} else if (e.keyCode == 38) { // up
-				this.autoCompleteTooltip.cursorUp();
-				e.preventDefault();
-			} else {
-			}
+
+			console.log('key down', e);
 		});
 
 		this.textarea.addEventListener('blur', (e) => {
 			this.autoCompleteTooltip.hide();
 		});
+	}
+
+	selectNextTemplate( cursorPosition ) {
+		let text     = this.textarea.value;
+		let preText  = text.slice(0, cursorPosition);
+		let atText   = "";
+		let postText = text.slice(cursorPosition);
+
+		let matches = postText.match(/^(.*?)\[\[([^\]]+)\]\](.*)$/);
+		if ( !matches ) {
+			return false;
+		}
+
+		preText  += matches[1];
+		atText   = '[[' + matches[2] + ']]';
+		postText = matches[3];
+
+		this.textarea.value = preText + atText + postText;
+
+		this.textarea.selectionStart = preText.length;
+		this.textarea.selectionEnd = preText.length + atText.length;
+
+		return true;
 	}
 
 	replaceWordAtCurrentPosition( word ) {
@@ -99,11 +126,17 @@ class ChatArea {
 	replaceWordAtPosition( cursorPosition, word ) {
 		let segmented = segmentAtPosition( cursorPosition, this.textarea.value );
 		let preCursor = segmented.beforeWord + word;
+		let postCursor = segmented.afterWord;
 
-		this.textarea.value = preCursor + segmented.afterWord;
+		this.textarea.value = preCursor + postCursor;
 		this.textarea.focus();
-		this.textarea.selectionStart = preCursor.length + 1;
-		this.textarea.selectionEnd = preCursor.length + 1;
+
+		if (! this.selectNextTemplate(cursorPosition)) {
+
+			this.textarea.selectionStart = preCursor.length;
+			this.textarea.selectionEnd = preCursor.length;
+
+		}
 	}
 }
 
