@@ -39,6 +39,9 @@ module.exports = class NoirContribIrc {
 
 		this.client.addListener("join", (channel, who) => {
 			if (! this.windows.hasOwnProperty(channel)) {
+				if (who == userName) {
+					this.joinChannel(channel);
+				}
 				return;
 			}
 			this.windows[channel].addParticipant(who, this.getTimestamp());
@@ -154,8 +157,15 @@ module.exports = class NoirContribIrc {
 					this.joinChannel(matches[1]);
 					return;
 				}
-				this.client.say(id, e.message);
-				chatWindow.addChatMessage(this.userName, e.message, this.getTimestamp());
+				var withConn = () => {
+					this.client.say(id, e.message);
+					chatWindow.addChatMessage(this.userName, e.message, this.getTimestamp());
+				};
+				if ( this.client.conn === null ) {
+					this.client.connect( withConn );
+				} else {
+					withConn();
+				}
 			})
 			.onConversationOpened( e => {
 				this.openConversation( e.contact );
