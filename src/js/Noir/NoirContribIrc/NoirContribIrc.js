@@ -5,7 +5,7 @@ const {app, ipcRenderer, shell, remote } = require('electron')
 
 
 module.exports = class NoirContribIrc {
-	constructor(host, connectionName, userName, config, channels, chatAreaFactory, tabset) {
+	constructor(host, connectionName, userName, config, channels, chatAreaFactory, tabset, historyFactory ) {
 
 		config.autoConnect = false;
 
@@ -17,6 +17,7 @@ module.exports = class NoirContribIrc {
 		this.sentMessageTransforms      = [];
 		this.autoCompleteListeners      = [];
 		this.connectionName = connectionName;
+		this.historyFactory = historyFactory;
 
 		this.windows = {};
 		this.chatAreaFactory = chatAreaFactory;
@@ -38,13 +39,16 @@ module.exports = class NoirContribIrc {
 		document.getElementById('sidebar').appendChild(this.sidebarEntry.view.element);
 
 		this.client.addListener("join", (channel, who) => {
-			if (! this.windows.hasOwnProperty(channel)) {
-				if (who == userName) {
-					this.joinChannel(channel);
-				}
-				return;
-			}
-			this.windows[channel].addParticipant(who, this.getTimestamp());
+			this.getWindow( channel ).then(( wind )=> {
+				wind.addParticipant( who, this.getTimestamp() );
+			});
+			// if (! this.windows.hasOwnProperty(channel)) {
+			// 	if (who == userName) {
+			// 		this.joinChannel(channel);
+			// 	}
+			// 	return;
+			// }
+			// this.windows[channel].addParticipant(who, this.getTimestamp());
 		});
 
 		this.client.addListener('error', (message) => {
@@ -55,8 +59,9 @@ module.exports = class NoirContribIrc {
 			if (! this.windows.hasOwnProperty(channel)) {
 				return;
 			}
-
-			this.windows[channel].setParticipants(users);
+			this.getWindow( channel ).then(( wind )=> {
+				wind.setParticipants( users );
+			});
 		});
 
 		this.client.addListener('raw', (message) => {
@@ -67,16 +72,20 @@ module.exports = class NoirContribIrc {
 			if (! this.window.hasOwnProperty(channel)) {
 				return;
 			}
-			this.windows[channel].removeParticipant(who, reason, this.getTimestamp());
-		    console.log('%s has left %s: %s', who, channel, reason);
+			this.getWindow( channel ).then(( wind )=> {
+				wind.removeParticipant( who, reason, this.getTimestamp() );
+		    	console.log('%s has left %s: %s', who, channel, reason);
+			});
 		});
 
 		this.client.addListener('kick', function(channel, who, by, reason) {
 			if (! this.window.hasOwnProperty(channel)) {
 				return;
 			}
-			this.windows[channel].removeParticipant(who, reason, this.getTimestamp());
-		    console.log('%s was kicked from %s by %s: %s', who, channel, by, reason);
+			this.getWindow( channel ).then(( wind )=> {
+				wind.removeParticipant(who, reason, this.getTimestamp());
+			    console.log('%s was kicked from %s by %s: %s', who, channel, by, reason);
+			});
 		});
 
 		this.client.addListener("message", (from, to, text, message) => {
@@ -98,11 +107,13 @@ module.exports = class NoirContribIrc {
 				};
 			}
 
-			this.windows[channel].addChatMessage(from, text, this.getTimestamp());
-			if (! this.windows[channel].isVisible()) {
-				this.sidebarEntry.handleNotification(channel, 1);
-				this.updateBadgeCount();
-			}
+			this.getWindow( channel ).then(( win ) => {
+				win.addChatMessage(from, text, this.getTimestamp());
+				if (! win.isVisible()) {
+					this.sidebarEntry.handleNotification(channel, 1);
+					this.updateBadgeCount();
+				}
+			});
 		});
 	}
 
@@ -118,9 +129,13 @@ module.exports = class NoirContribIrc {
 	}
 
 	joinChannel(channelId) {
-		var window = this.openWindow(channelId);
 
-		this.client.join(channelId, () => {
+		Promise.all([
+			new Promise((res) => {
+				this.client.join( channelId, res );
+			}),
+			this.getWindow( channelId )
+		]).then(( results ) => {
 			this.client.send('NAMES', channelId.slice(1));
 			console.log("JOIN", arguments);
 		});
@@ -132,76 +147,81 @@ module.exports = class NoirContribIrc {
 	}
 
 	openConversation(target) {
-		return this.openWindow(target);
+		return this.getWindow(target);
 	}
 
 	closeConversation(target) {
 		this.closeWindow(target);
 	}
 
-	openWindow(id) {
+	getWindow(id) {
 
 		// prevent duplicate windows
-		if (this.windows.hasOwnProperty(id)) {
-			return this.windows[id];
+		if ( this.windows.hasOwnProperty(id)) {
+			return this.windows[ id ];
 		}
 
-		let chatWindow = new ChatWindow(this.userName, id, this.chatAreaFactory)
-			.onOpenUrl( e => {
-				shell.openExternal( e.url );
-			})
-			.onMessage( e => {
-				let matches = e.message.match(/^\/join\s+(#[^\s]+)/);
-				if (matches) {
-					debugger;
-					this.joinChannel(matches[1]);
-					return;
-				}
-				var withConn = () => {
-					this.client.say(id, e.message);
-					chatWindow.addChatMessage(this.userName, e.message, this.getTimestamp());
-				};
-				if ( this.client.conn === null ) {
-					this.client.connect( withConn );
-				} else {
-					withConn();
-				}
-			})
-			.onConversationOpened( e => {
-				this.openConversation( e.contact );
-				this.showWindow(e.contact);
-			});
+		this.windows[ id ] = this.historyFactory.make( id ).then(( history ) => {
+
+			let chatWindow = new ChatWindow(this.userName, id, this.chatAreaFactory, history )
+				.onOpenUrl( e => {
+					shell.openExternal( e.url );
+				})
+				.onMessage( e => {
+					let matches = e.message.match(/^\/join\s+(#[^\s]+)/);
+					if (matches) {
+						this.joinChannel(matches[1]);
+						return;
+					}
+					var withConn = () => {
+						this.client.say(id, e.message);
+						chatWindow.addChatMessage(this.userName, e.message, this.getTimestamp());
+					};
+					if ( this.client.conn === null ) {
+						this.client.connect( withConn );
+					} else {
+						withConn();
+					}
+				})
+				.onConversationOpened( e => {
+					this.openConversation( e.contact );
+					this.showWindow(e.contact);
+				});
 
 
-		chatWindow.displayedMessageTransforms = Object.create(this.displayedMessageTransforms);
-		chatWindow.sentMessageTransforms      = Object.create(this.sentMessageTransforms);
-		chatWindow.autoCompleteListeners      = Object.create(this.autoCompleteListeners);
+			chatWindow.displayedMessageTransforms = Object.create(this.displayedMessageTransforms);
+			chatWindow.sentMessageTransforms      = Object.create(this.sentMessageTransforms);
+			chatWindow.autoCompleteListeners      = Object.create(this.autoCompleteListeners);
 
-		this.sidebarEntry.registerWindow(id, 0);
+			this.sidebarEntry.registerWindow(id, 0);
 
-		let tab = this.tabset
-			.add(this.connectionName+" "+id)
-			.setLabel( id )
-			.setContents( chatWindow.view.element )
-			.onShow((e) => {
-				this.sidebarEntry.handleWindowActivated(id);
-				this.updateBadgeCount();
-				chatWindow.show();
-			})
-			.onHide((e) => {
-				console.log(e);
-			})
-			.onClose((e) => {
-				this.closeWindow(id);
-				console.log(e);
-			});
+			let tab = this.tabset
+				.add(this.connectionName+" "+id)
+				.setLabel( id )
+				.setContents( chatWindow.view.element )
+				.onShow((e) => {
+					this.sidebarEntry.handleWindowActivated(id);
+					this.updateBadgeCount();
+					chatWindow.show();
+				})
+				.onHide((e) => {
+					console.log(e);
+				})
+				.onClose((e) => {
+					this.closeWindow(id);
+					console.log(e);
+				});
 
-		this.windows[id] = chatWindow;
-		return chatWindow;
+			return chatWindow;
+		});
+
+		return this.windows[ id ];
 	}
 
 	closeWindow(id) {
 		this.sidebarEntry.unregisterWindow(id);
+		this.windows[ id ].handleShutdown();
+
 		this.tabset.remove(this.connectionName+" "+id);
 		// this.element.removeChild(window.view.element);
 

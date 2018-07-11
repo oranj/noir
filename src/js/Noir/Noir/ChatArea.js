@@ -209,7 +209,7 @@ class AutoCompleteTooltip {
 	}
 
 	getCursorPosition() {
-		return this.view.popup.setAttribute('data-cursor-pos');
+		return this.view.popup.getAttribute('data-cursor-pos');
 	}
 
 	cursorUp() {

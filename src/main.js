@@ -1,6 +1,6 @@
 const {app, BrowserWindow, Menu, shell} = require('electron')
-const path = require('path')
-const url = require('url')
+const path = require('path');
+const url = require('url');
 const fs = require('fs');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -10,6 +10,7 @@ process.umask = 0;
 
 global.DIR_APPDATA  = app.getPath('userData');
 global.DIR_SETTINGS = DIR_APPDATA + "/Settings";
+global.DIR_LOGS     = DIR_APPDATA + "/Logs";
 global.FILE_PREFS   = DIR_SETTINGS + "/prefs.json";
 
 if (! fs.existsSync(DIR_APPDATA)) {
@@ -18,6 +19,10 @@ if (! fs.existsSync(DIR_APPDATA)) {
 
 if (! fs.existsSync(DIR_SETTINGS)) {
   fs.mkdirSync(DIR_SETTINGS, '0777');
+}
+
+if (! fs.existsSync(DIR_LOGS)) {
+  fs.mkdirSync(DIR_LOGS, '0777');
 }
 
 if (! fs.existsSync(global.FILE_PREFS)) {

@@ -5,6 +5,7 @@ const Tabset         = require('./js/Noir/Noir/Tabset.js');
 const linkifyHtml    = require('linkifyjs/html');
 const marked         = require('marked');
 const emojione       = require('emojione');
+const HistoryFactory = require('./js/Noir/Noir/History/HistoryFactory.js');
 
 let emojis = Object.keys(emojione.emojioneList);
 let tabset = new Tabset();
@@ -101,7 +102,8 @@ config.connections
 			config.nick = cxn.userName;
 		}
 		cxn.config = config;
-		var irc = new NoirContribIrc(cxn.host, cxn.name || cxn.host, cxn.userName, cxn.config, cxn.channels, chatAreaFactory, tabset);
+		var historyFactory = new HistoryFactory( remote.getGlobal( 'DIR_LOGS' ), 'noirirc_' + cxn.name + '_' );
+		var irc = new NoirContribIrc(cxn.host, cxn.name || cxn.host, cxn.userName, cxn.config, cxn.channels, chatAreaFactory, tabset, historyFactory );
 
 		irc.displayedMessageTransforms.push(function strToMarkdown(str) {
 			return marked(str, {

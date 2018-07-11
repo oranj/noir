@@ -53,7 +53,7 @@ function toggleClass(element, className, value) {
 
 class ChatWindow {
 
-	constructor(nickname, channel, chatAreaFactory) {
+	constructor( nickname, channel, chatAreaFactory, history ) {
 
 		this.nickname = nickname;
 		this.channel  = channel;
@@ -63,6 +63,7 @@ class ChatWindow {
 		this.lastTimestamp = null;
 		this.lastText      = '';
 		this.lastDisplayedTimestamp = 0;
+		this.history = history;
 
 		this.displayedMessageTransforms = [];
 		this.sentMessageTransforms = [];
@@ -103,12 +104,12 @@ class ChatWindow {
 		this.view.textarea.addEventListener('keydown', e => {
 			if (e.keyCode == 13 && ! e.shiftKey) {
 				e.preventDefault();
-				this.handleMessage();
+				this.sendTextboxMessage();
 			}
 		});
 
 		this.view.sendButton.addEventListener('click', e => {
-			this.handleMessage();
+			this.sendTextboxMessage();
 		});
 		this.view.peopleButton.addEventListener('click', e => {
 			toggleClass(this.view.contactArea, '-open');
@@ -138,6 +139,10 @@ class ChatWindow {
 		this.view.textarea.focus();
 		this.view.textarea.selectionStart = (parts[0] + to).length + 1;
 		this.view.textarea.selectionEnd   = (parts[0] + to).length + 1;
+	}
+
+	handleShutdown() {
+		this.history.save();
 	}
 
 	findWordAtPosition(position, text) {
@@ -175,7 +180,7 @@ class ChatWindow {
 		return ! this.view.element.classList.contains("-hidden");
 	}
 
-	handleMessage() {
+	sendTextboxMessage() {
 		let message = this.sentMessageTransforms.reduce((carry, transform) => {
 			return transform(carry);
 		}, this.view.textarea.value);
@@ -249,11 +254,12 @@ class ChatWindow {
 		return view;
 	}
 
-	addChatMessage(from, text, timestamp) {
+	addChatMessage( sender, text, timestamp) {
 
-		var view = this.addMessage(from, text, timestamp);
+		this.history.log( sender, text, timestamp );
+		var view = this.addMessage(sender, text, timestamp);
 
-		if (from == this.nickname) {
+		if (sender == this.nickname) {
 			view.element.classList.add('-you');
 		}
 		setTimeout(() => {
