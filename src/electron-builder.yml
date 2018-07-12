@@ -1,0 +1,31 @@
+appId: org.oranj.Noir
+productName: Noir
+artifactName: "${productName}-${os}-${arch}-${version}.${ext}"
+files:
+  - "**/*"
+  - "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,test,__tests__,tests,powered-test,example,examples,*.d.ts}"
+  - "!**/node_modules/.bin"
+  - "!**/*.{o,hprof,orig,pyc,pyo,rbc}"
+  - "!**/._*"
+  - "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,__pycache__,thumbs.db,.gitignore,.gitattributes,.editorconfig,.flowconfig,.yarn-metadata.json,.idea,appveyor.yml,.travis.yml,circle.yml,npm-debug.log,.nyc_output,yarn.lock,.yarn-integrity}"
+  - "!**/node_modules/search-index/si${/*}"
+asar: true
+compression: maximum
+mac:
+  category: public.app-category.reference
+dmg:
+  icon: "icon.icns"
+  iconSize: 128
+  contents:
+    - x: 532
+      y: 249
+      type: link
+      path: /Applications
+    - x: 281
+      y: 249
+      type: file
+nsis:
+  perMachine: true
+  oneClick: true
+npmRebuild: true
+nodeGypRebuild: false

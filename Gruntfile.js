@@ -9,6 +9,21 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		'electron-packager': {
+			macosBuild: {
+				options: {
+					platform: 'darwin',
+					arch: 'x64',
+					dir: 'src',
+					out: 'build',
+					icon: 'src/icons.icns',
+					name: 'Noir',
+					electronVersion: '2.0.4',
+					overwrite: true
+
+				}
+			}
+		},
 		electron: {
 	        macosBuild: {
 	            options: {
@@ -16,7 +31,7 @@ module.exports = function(grunt) {
 	                dir: 'src',
 	                out: 'build',
 	                icon: 'src/icon.icns',
-	                version: '1.3.5',
+	                electronVersion: '2.0.4',
 	                platform: 'darwin',
 	                arch: 'x64'
 	            }
@@ -31,6 +46,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.loadNpmTasks('grunt-electron');
+	grunt.loadNpmTasks('grunt-electron-packager');
 	grunt.loadNpmTasks('grunt-contrib-compass');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
