@@ -1,4 +1,5 @@
 const NoirContribIrc = require('./js/Noir/NoirContribIrc/NoirContribIrc.js');
+const NoirOgImagePreview = require('./js/Noir/NoirOgImagePreview/NoirOgImagePreview.js');
 const { ChatAreaFactory } = require('./js/Noir/Noir/ChatArea.js');
 const { remote }     = require('electron');
 const Tabset         = require('./js/Noir/Noir/Tabset.js');
@@ -102,6 +103,10 @@ config.connections
 		}
 		cxn.config = config;
 		var irc = new NoirContribIrc(cxn.host, cxn.name || cxn.host, cxn.userName, cxn.config, cxn.channels, chatAreaFactory, tabset);
+		var imgPreview = new NoirOgImagePreview({
+			maxHeight: '30vh',
+			minHeight: '40px'
+		}, true);
 
 		irc.displayedMessageTransforms.push(function strToMarkdown(str) {
 			return marked(str, {
@@ -114,6 +119,11 @@ config.connections
 
 		irc.displayedMessageTransforms.push(function strAddLinks(str) {
 			return linkifyHtml(str);
+		});
+
+		var imageIdCounter = 0;
+		irc.displayedMessageTransforms.push(function getLinkImage(str) {
+			return imgPreview.attachPreviewToString( str );
 		});
 
 		irc.sentMessageTransforms.push(function strInjectEmoji(str) {
