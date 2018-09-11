@@ -1,5 +1,5 @@
-const View = require("./../Noir/View.js");
-const Event = require("./../Noir/Event.js");
+const View = require( "./../Noir/View.js" );
+const Event = require( "./../Noir/Event.js" );
 
 const template = `
 	<div class="sidebarBlock">
@@ -17,66 +17,66 @@ const template = `
 	</div>`;
 
 
-function toggleClass(element, className, value) {
-	if (value == undefined) {
-		value = ! element.classList.contains(className);
+function toggleClass( element, className, value ) {
+	if ( value == undefined ) {
+		value = ! element.classList.contains( className );
 	}
-	if (value) {
-		element.classList.add(className);
+	if ( value ) {
+		element.classList.add( className );
 	} else {
-		element.classList.remove(className);
+		element.classList.remove( className );
 	}
 }
 
 class ChatSidebar {
 
-	constructor(title) {
-		this.view = new View(template, {}, { title });
+	constructor( title ) {
+		this.view = new View( template, {}, { title });
 		this.unreadCounts = {};
 	}
 
 	getUnreadCounts() {
-		return Object.keys(this.unreadCounts).reduce((carry, key) => {
+		return Object.keys( this.unreadCounts ).reduce( ( carry, key ) => {
 			return carry + this.unreadCounts[key];
-		}, 0);
+		}, 0 );
 	}
 
-	registerWindow(windowId, unreadCount) {
-		this.setUnreadCount(windowId, unreadCount);
-		var item = this.view.items.add(windowId, { windowId, unreadCount });
-		item.element.addEventListener('click', e => {
-			Event.trigger(this, 'windowSelect', { windowId });
-		})
-	}
-
-	unregisterWindow(windowId) {
-		delete this.unreadCounts[windowId];
-		this.view.items.remove(windowId);
-	}
-
-	handleWindowActivated(windowId) {
-		this.view.items.forEach((window, _windowId) => {
-			toggleClass(window.element, '-active', _windowId == windowId);
+	registerWindow( windowId, unreadCount ) {
+		this.setUnreadCount( windowId, unreadCount );
+		var item = this.view.items.add( windowId, { windowId, unreadCount });
+		item.element.addEventListener( "click", e => {
+			Event.trigger( this, "windowSelect", { windowId });
 		});
-		this.setUnreadCount(windowId, 0);
 	}
 
-	handleNotification(windowId, increment) {
-		this.setUnreadCount(windowId, this.unreadCounts[windowId] + increment);
+	unregisterWindow( windowId ) {
+		delete this.unreadCounts[windowId];
+		this.view.items.remove( windowId );
 	}
 
-	setUnreadCount(windowId, unreadCount) {
+	handleWindowActivated( windowId ) {
+		this.view.items.forEach( ( window, _windowId ) => {
+			toggleClass( window.element, "-active", _windowId == windowId );
+		});
+		this.setUnreadCount( windowId, 0 );
+	}
+
+	handleNotification( windowId, increment ) {
+		this.setUnreadCount( windowId, this.unreadCounts[windowId] + increment );
+	}
+
+	setUnreadCount( windowId, unreadCount ) {
 		this.unreadCounts[windowId] = unreadCount;
-		if (this.view.items.has(windowId)) {
-			let item = this.view.items.get(windowId);
+		if ( this.view.items.has( windowId ) ) {
+			let item = this.view.items.get( windowId );
 			item.set({ unreadCount });
-			toggleClass(item.badge, '-empty', unreadCount == 0);
+			toggleClass( item.badge, "-empty", unreadCount == 0 );
 		}
 	}
 }
 
 Event.mixin({
-	windowSelect: [ 'windowId' ]
-}, ChatSidebar);
+	windowSelect: [ "windowId" ]
+}, ChatSidebar );
 
 module.exports = ChatSidebar;

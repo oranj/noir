@@ -1,26 +1,30 @@
+let IP_DIV_ID = 0;
+
 module.exports = class NoirOgImagePreview {
-	constructor( imageStyle, wrapInAnchor ) {
-		this._imageIdCounter = 0;
-		this._imageStyle = imageStyle;
-		this._wrapInAnchor = wrapInAnchor;
+
+	constructor( config ) {
+		this._imageStyle = config.style || {};
+		this._wrapInAnchor = typeof config.wrapInAnchor == "undefined" ? true : config.wrapInAnchor;
 	}
 
 	getOgImageFromUrl( url ) {
 		var that = this;
-		return new Promise(function( resolve, reject ) {
+		var image = new Image();
+		image.className = "noirOGIP_image";
+		for ( var property in that._imageStyle ) {
+			if ( ! that._imageStyle.hasOwnProperty( property ) ) {
+				continue;
+			}
+			image.style[ property ] = that._imageStyle[ property ];
+		}
+
+		return new Promise( function( resolve, reject ) {
 			var xhr = new XMLHttpRequest();
 			xhr.open( "GET", url );
 			xhr.onload = function() {
-				var imageUrl = that.getOgImageFromHtml( xhr.responseText );
+				var imageUrl = that.getOgImageSrcFromHtml( xhr.responseText );
 				if ( !imageUrl ) {
 					reject();
-				}
-				var image = new Image();
-				for ( var property in that._imageStyle ) {
-					if ( ! that._imageStyle.hasOwnProperty( property )) {
-						continue;
-					}
-					image.style[ property ] = that._imageStyle[ property ];
 				}
 				image.src = imageUrl;
 				resolve( image );
@@ -32,23 +36,24 @@ module.exports = class NoirOgImagePreview {
 		});
 	}
 
-	attachPreviewToString( string ) {
-		var matches = string.match(/a[^\>]+href=("[^"]+"|'[^']+')/);
+	transformDisplayedMessage( string ) {
+		var matches = string.match( /a[^>]+href=("[^"]+"|'[^']+')/ );
 		if ( ! matches ) {
 			return string;
 		}
 		var that = this;
 		var url = matches[ 1 ].slice( 1, -1 );
-		var targetId = 'link-image-' + ( ++ this._imageIdCounter );
+		var targetId = "ogip-" + ( ++ IP_DIV_ID );
 
-		this.getOgImageFromUrl( url ).then(function( attachableElement ) {
+		this.getOgImageFromUrl( url ).then( function( attachableElement ) {
 			var attachTo = document.getElementById( targetId );
 			if ( ! attachTo ) {
 				return;
 			}
 			if ( that._wrapInAnchor ) {
-				var a = document.createElement( 'a' );
+				var a = document.createElement( "a" );
 				a.href = url;
+				a.className = "noirOGIP_anchor";
 				a.appendChild( attachableElement );
 				attachableElement = a;
 			}
@@ -58,19 +63,19 @@ module.exports = class NoirOgImagePreview {
 			remove.parentNode.removeChild( remove );
 		});
 
-		return string + '<div id="' + targetId + '"></div>';
+		return string + "<div class=\"noirOGIP\" id=\"" + targetId + "\"></div>";
 	}
 
-	getOgImageFromHtml( html ) {
-		var metaMatch = html.match(/<meta[^\>]+og:image['"][^\>]+>/);
+	getOgImageSrcFromHtml( html ) {
+		var metaMatch = html.match( /<meta[^>]+og:image['"][^>]+>/ );
 		if ( ! metaMatch ) {
 			return undefined;
 		}
-		var propertyMatch = metaMatch[0].match(/content=['"](.*?)['"]/);
+		var propertyMatch = metaMatch[0].match( /content=['"](.*?)['"]/ );
 		if ( ! propertyMatch ) {
 			return undefined;
 		}
 		return propertyMatch[ 1 ];
 	}
-}
+};
 

@@ -26,12 +26,44 @@ if (! fs.existsSync(global.FILE_PREFS)) {
       {
         "type": "noir-contrib-irc",
         "name": "Thing 1",
-        "host": "irc.freenode.com",
+        "host": "chat.freenode.com",
         "userName": "Thing1",
         "channels": [
           "#noirchat"
+        ],
+        "displayedMessageTransforms": {
+          "NoirMarked",
+          "NoirYouTubeIframe",
+          "NoirLinkify",
+          "NoirOgImagePreview"
+        },
+        "sentMessageTransforms": [
+          "NoirEmojione"
         ]
       }
+    ],
+    "plugins": {
+      "NoirYouTubeIframe": { "height": "292", "width": "480" },
+      "NoirYouTubeImagePreview": { "wrapInAnchor": true },
+      "NoirOgImagePreview": { "style": { "maxHeight": "30vh", "minHeight": "40px" }, "wrapInAnchor": true },
+      "NoirLinkify": {},
+      "NoirMarked": {
+        "gfm": true,
+        "breaks": true,
+        "sanitize": true,
+        "smartypants": true
+      },
+      "NoirEmojione": {},
+      "NoirAutoComplete": {
+        "waitForChars": 3,
+        "completions": {
+          "Image" : "![]( [[url]] )"
+        }
+      }
+    },
+    "autoCompletePlugins": [
+      "NoirEmojione",
+      "NoirAutoComplete"
     ]
   };
   fs.writeFileSync(global.FILE_PREFS, JSON.stringify(defaults, null, "\t"), { mode: '0777' });

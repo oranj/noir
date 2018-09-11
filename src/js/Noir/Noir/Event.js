@@ -1,30 +1,30 @@
 "use strict";
 
-var EVENT_SYMBOL = '@@EVENT',
+var EVENT_SYMBOL = "@@EVENT",
 	targetIter = 0,
 	targetCallbacks = {};
 
-function ucWord(string) {
-	return string.charAt(0).toUpperCase() + string.slice(1);
+function ucWord( string ) {
+	return string.charAt( 0 ).toUpperCase() + string.slice( 1 );
 }
 
-function registerObject(target) {
-	if (! target.hasOwnProperty(EVENT_SYMBOL)) {
+function registerObject( target ) {
+	if ( ! target.hasOwnProperty( EVENT_SYMBOL ) ) {
 		target[EVENT_SYMBOL] = targetIter;
 		targetCallbacks[targetIter] = {};
 		targetIter++;
 	}
 }
 
-function registerEvent(target, event) {
-	registerObject(target);
-	if (! targetCallbacks[target[EVENT_SYMBOL]].hasOwnProperty(event)) {
+function registerEvent( target, event ) {
+	registerObject( target );
+	if ( ! targetCallbacks[target[EVENT_SYMBOL]].hasOwnProperty( event ) ) {
 		targetCallbacks[target[EVENT_SYMBOL]][event] = [];
 	}
 }
 
-function pushEventCallback(target, event, callback) {
-	targetCallbacks[target[EVENT_SYMBOL]][event].push(callback);
+function pushEventCallback( target, event, callback ) {
+	targetCallbacks[target[EVENT_SYMBOL]][event].push( callback );
 }
 
 /**
@@ -49,11 +49,11 @@ var Event = /** @lends Event */ {
 	 *     console.log(e.bim);
 	 * });
 	 */
-	mixin: function(definitions, Constructor) {
-		Object.keys(definitions).forEach(function(name) {
-			Constructor.prototype["on" + ucWord(name)] = function(callback) {
-				registerEvent(this, name);
-				pushEventCallback(this, name, callback);
+	mixin: function( definitions, Constructor ) {
+		Object.keys( definitions ).forEach( function( name ) {
+			Constructor.prototype["on" + ucWord( name )] = function( callback ) {
+				registerEvent( this, name );
+				pushEventCallback( this, name, callback );
 				return this;
 			};
 		});
@@ -75,11 +75,11 @@ var Event = /** @lends Event */ {
 	 *     console.log(e.bim);
 	 * });
 	 */
-	mixinObject: function(definitions, Target) {
-		Object.keys(definitions).forEach(function(name) {
-			registerEvent(Target, name);
-			Target["on"+ucWord(name)] = function(callback) {
-				pushEventCallback(Target, name, callback);
+	mixinObject: function( definitions, Target ) {
+		Object.keys( definitions ).forEach( function( name ) {
+			registerEvent( Target, name );
+			Target["on"+ucWord( name )] = function( callback ) {
+				pushEventCallback( Target, name, callback );
 				return Target;
 			};
 		});
@@ -108,13 +108,13 @@ var Event = /** @lends Event */ {
 	 *
 	 * Event.trigger(Foo, 'baz', { bim: "bar" });
 	 */
-	trigger: function(target, event, data) {
-		if (target.hasOwnProperty(EVENT_SYMBOL) && targetCallbacks[target[EVENT_SYMBOL]].hasOwnProperty(event)) {
+	trigger: function( target, event, data ) {
+		if ( target.hasOwnProperty( EVENT_SYMBOL ) && targetCallbacks[target[EVENT_SYMBOL]].hasOwnProperty( event ) ) {
 
 			data.sender = target;
 			data.eventType = event;
 
-			targetCallbacks[target[EVENT_SYMBOL]][event].forEach(function(callback) { callback.call(null, data); });
+			targetCallbacks[target[EVENT_SYMBOL]][event].forEach( function( callback ) { callback.call( null, data ); });
 		}
 	}
 

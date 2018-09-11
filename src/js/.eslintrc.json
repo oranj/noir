@@ -1,0 +1,48 @@
+{
+    "env": {
+        "browser": true,
+        "node": true,
+        "commonjs": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": 6
+    },
+    "globals": {
+        "define": true,
+        "$": false,
+        "module": false,
+        "confirm": false,
+        "Promise": true,
+        "require": true
+    },
+    "rules": {
+        "no-console": "off",
+        "indent": [
+            "error",
+            "tab"
+        ],
+        "key-spacing": [ "error", {
+            "afterColon": true,
+            "beforeColon": false,
+            "mode": "minimum"
+        }],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "quotes": [
+            "error",
+            "double"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "keyword-spacing": [ "error", {
+            "before": true,
+            "after": true
+        }],
+        "space-in-parens": [ "error", "always", { "exceptions": [ "{}" ]} ]
+    }
+}
