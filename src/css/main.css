@@ -10,7 +10,7 @@ body, html {
   height: 100%;
   padding: 0;
   margin: 0;
-  background: #263238;
+  background: #fff;
 }
 
 /* line 15, ../../scss/main.scss */
@@ -150,7 +150,7 @@ html, input, textarea, button, select {
 
 /* line 1, ../../scss/blocks/_chatWindow.scss */
 .chatWindow {
-  color: #e7fff7;
+  color: #585858;
 }
 
 /* line 5, ../../scss/blocks/_chatWindow.scss */
@@ -159,7 +159,7 @@ html, input, textarea, button, select {
   width: 200px;
   min-width: 150px !important;
   max-width: 66% !important;
-  background: #202a2f;
+  background: #eee;
   overflow-y: auto;
   height: 100vh;
   position: relative;
@@ -181,6 +181,9 @@ html, input, textarea, button, select {
 .chatWindow_main {
   overflow-y: auto;
   height: 100vh;
+  box-shadow: 0 0px 4px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  position: relative;
 }
 
 /* line 4, ../../scss/blocks/_ircWindow.scss */
@@ -203,6 +206,7 @@ html, input, textarea, button, select {
 
 /* line 20, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_inputArea {
+  background: #eee;
   position: absolute;
   bottom: 0px;
   height: 100px;
@@ -211,7 +215,7 @@ html, input, textarea, button, select {
   left: 0px;
 }
 
-/* line 29, ../../scss/blocks/_ircWindow.scss */
+/* line 30, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_textInput {
   -moz-transition: opacity 300ms;
   -o-transition: opacity 300ms;
@@ -228,12 +232,12 @@ html, input, textarea, button, select {
   width: calc(100% - 10px - 50px);
   opacity: 0.5;
 }
-/* line 41, ../../scss/blocks/_ircWindow.scss */
+/* line 42, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_textInput:hover, .ircWindow_textInput:focus, .ircWindow_textInput:active {
   opacity: 1;
 }
 
-/* line 47, ../../scss/blocks/_ircWindow.scss */
+/* line 48, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_button {
   -moz-border-radius: 40px;
   -webkit-border-radius: 40px;
@@ -252,7 +256,7 @@ html, input, textarea, button, select {
   cursor: pointer;
   opacity: .7;
 }
-/* line 58, ../../scss/blocks/_ircWindow.scss */
+/* line 59, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_button:hover {
   opacity: 1;
   -moz-transform: scale(1, 1);
@@ -260,22 +264,22 @@ html, input, textarea, button, select {
   -webkit-transform: scale(1, 1);
   transform: scale(1, 1);
 }
-/* line 63, ../../scss/blocks/_ircWindow.scss */
+/* line 64, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_button.-send {
   background: #3bb16a;
 }
-/* line 67, ../../scss/blocks/_ircWindow.scss */
+/* line 68, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_button.-people {
   background: #acccd0;
 }
 
-/* line 72, ../../scss/blocks/_ircWindow.scss */
+/* line 73, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_buttonArea {
   float: right;
   width: 50px;
 }
 
-/* line 77, ../../scss/blocks/_ircWindow.scss */
+/* line 78, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_contactArea {
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
@@ -305,7 +309,7 @@ html, input, textarea, button, select {
   overflow-y: auto;
   overflow-x: hidden;
 }
-/* line 106, ../../scss/blocks/_ircWindow.scss */
+/* line 107, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_contactArea.-open {
   z-index: 5;
   opacity: 1;
@@ -315,7 +319,7 @@ html, input, textarea, button, select {
   transform: scale(1, 1);
 }
 
-/* line 114, ../../scss/blocks/_ircWindow.scss */
+/* line 115, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_contact {
   -moz-transition: background 300ms;
   -o-transition: background 300ms;
@@ -324,7 +328,7 @@ html, input, textarea, button, select {
   padding: 5px 10px;
   background: rgba(255, 255, 255, 0);
 }
-/* line 119, ../../scss/blocks/_ircWindow.scss */
+/* line 120, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_contact:hover {
   background: white;
 }
@@ -363,7 +367,7 @@ html, input, textarea, button, select {
 }
 /* line 28, ../../scss/blocks/_sidebarBlock.scss */
 .sidebarBlock_item.-active {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.5);
 }
 
 /* line 37, ../../scss/blocks/_sidebarBlock.scss */
@@ -474,7 +478,7 @@ html, input, textarea, button, select {
   -webkit-border-radius: 1em;
   border-radius: 1em 0 1em 1em;
   margin-right: 0px;
-  background: #2f6e8e;
+  background: #eee;
 }
 /* line 21, ../../scss/blocks/_message.scss */
 .message.-old {
@@ -504,8 +508,8 @@ html, input, textarea, button, select {
   border-radius: 1em;
   margin-left: 0px;
   margin-right: 0px;
-  background: #e7fff7;
-  color: #263238;
+  background: #a2ffbe;
+  color: #001005;
   display: block;
 }
 /* line 54, ../../scss/blocks/_message.scss */
@@ -538,7 +542,7 @@ html, input, textarea, button, select {
   -moz-border-radius: 0 1em 1em 1em;
   -webkit-border-radius: 0;
   border-radius: 0 1em 1em 1em;
-  background: #3b4d56;
+  background: #b9e8ff;
   max-width: 100%;
   overflow-x: auto;
   padding: 10px 1em;
@@ -562,7 +566,7 @@ html, input, textarea, button, select {
 }
 /* line 100, ../../scss/blocks/_message.scss */
 .message_text > span a {
-  color: #fff;
+  color: #4c79e6;
 }
 /* line 104, ../../scss/blocks/_message.scss */
 .message_text > span img {
@@ -583,7 +587,7 @@ html, input, textarea, button, select {
   text-align: center;
   font-size: .7em;
   opacity: 0.5;
-  border-bottom: 1px dashed #678898;
+  border-bottom: 1px dashed #212d33;
   margin-bottom: 10px;
 }
 /* line 121, ../../scss/blocks/_message.scss */
@@ -757,8 +761,8 @@ html, input, textarea, button, select {
   -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
   overflow-y: hidden;
-  background: #c76060;
-  height: 60px;
+  background: #607bc7;
+  height: 50px;
 }
 
 /* line 14, ../../scss/blocks/_tabset.scss */
@@ -770,21 +774,21 @@ html, input, textarea, button, select {
   background: transparent;
   height: 100%;
   display: inline-block;
-  line-height: 40px;
+  line-height: 30px;
   padding: 10px;
   cursor: pointer;
   overflow: hidden;
   position: relative;
   z-index: 2;
-}
-/* line 26, ../../scss/blocks/_tabset.scss */
-.tabset_tab:hover {
-  background: rgba(255, 119, 119, 0.2);
-}
-/* line 30, ../../scss/blocks/_tabset.scss */
-.tabset_tab.-selected {
-  background: #ff7777;
   color: #fff;
+}
+/* line 27, ../../scss/blocks/_tabset.scss */
+.tabset_tab:hover {
+  background: rgba(113, 143, 226, 0.2);
+}
+/* line 31, ../../scss/blocks/_tabset.scss */
+.tabset_tab.-selected {
+  background: #718fe2;
 }
 /* line 34, ../../scss/blocks/_tabset.scss */
 .tabset_tab.-selected::before {
@@ -815,7 +819,7 @@ html, input, textarea, button, select {
   top: 50%;
   width: 200px;
   height: 200px;
-  background: #ff7777;
+  background: #718fe2;
   margin-left: -100px;
   margin-top: -100px;
 }
@@ -859,7 +863,7 @@ html, input, textarea, button, select {
 
 /* line 86, ../../scss/blocks/_tabset.scss */
 .tabset_contents {
-  height: calc(100% - 60px);
+  height: calc(100% - 50px);
 }
 
 /* line 90, ../../scss/blocks/_tabset.scss */

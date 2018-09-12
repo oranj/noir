@@ -1,5 +1,5 @@
 .chatWindow {
-	color: #e7fff7;
+	color: #585858;
 }
 
 .chatWindow_sidebar {
@@ -7,7 +7,7 @@
 	width: 200px;
 	min-width: 150px !important;
 	max-width: 66% !important;
-	background: darken(#263238, 3);
+	background: #eee; //darken(#263238, 3);
 	overflow-y: auto;
 	height: 100vh;
 	position: relative;
@@ -29,5 +29,8 @@
 .chatWindow_main {
 	overflow-y: auto;
 	height: 100vh;
+	box-shadow: 0 0px 4px rgba(0,0,0,0.1);
+	z-index: 100;
+	position: relative;
 }
 

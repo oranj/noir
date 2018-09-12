@@ -1,4 +1,4 @@
-$tabset_tabHeight: 60px;
+$tabset_tabHeight: 50px;
 
 .tabset {
 	height: 100%;
@@ -7,7 +7,7 @@ $tabset_tabHeight: 60px;
 .tabset_tabs {
 	@include box-shadow(0 0 3px rgba(0,0,0,.3));
 	overflow-y: hidden;
-	background: #c76060;
+	background: #607bc7;
 	height: $tabset_tabHeight;
 }
 
@@ -16,20 +16,20 @@ $tabset_tabHeight: 60px;
 	background: transparent;
 	height: 100%;
 	display: inline-block;
-	line-height: 40px;
+	line-height: #{$tabset_tabHeight - 20px};
 	padding: 10px;
 	cursor: pointer;
 	overflow: hidden;
 	position: relative;
 	z-index: 2;
+	color: #fff;
 
 	&:hover {
-		background: transparentize(#ff7777, .8);
+		background: transparentize(#718fe2, .8);
 	}
 
 	&.-selected {
-		background: #ff7777;
-		color: #fff;
+		background: #718fe2;
 
 		&::before {
 			@include transform(scale(1, 1));
@@ -49,7 +49,7 @@ $tabset_tabHeight: 60px;
 	    top: 50%;
 	    width: 200px;
 	    height: 200px;
-	    background: #ff7777;
+	    background: #718fe2;
 	    margin-left: -100px;
 	    margin-top: -100px;
 	}

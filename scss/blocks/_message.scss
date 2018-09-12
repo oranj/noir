@@ -14,7 +14,7 @@ $message-border-radius: 1em;
 		.message_text {
 			@include border-radius($message-border-radius 0 $message-border-radius $message-border-radius);
 			margin-right: 0px;
-			background: #2f6e8e;
+			background: #eee;
 		}
 	}
 
@@ -45,8 +45,8 @@ $message-border-radius: 1em;
 			@include border-radius($message-border-radius);
 			margin-left: 0px;
 			margin-right: 0px;
-			background: #e7fff7;
-			color: #263238;
+			background: #a2ffbe;
+			color: #001005;
 			display: block;
 		}
 	}
@@ -71,7 +71,7 @@ $message-border-radius: 1em;
 
 .message_text {
 	@include border-radius(0 $message-border-radius $message-border-radius $message-border-radius);
-	background: lighten(#263238, 10);
+	background: #b9e8ff;
 	max-width: 100%;
 	overflow-x: auto;
 	padding: 10px 1em;
@@ -98,7 +98,7 @@ $message-border-radius: 1em;
 		}
 
 		a {
-			color: #fff;
+			color: #4c79e6;
 		}
 
 		img {
@@ -115,7 +115,7 @@ $message-border-radius: 1em;
 	text-align: center;
 	font-size: .7em;
 	opacity: 0.5;
-	border-bottom: 1px dashed #678898;
+	border-bottom: 1px dashed #212d33;
 	margin-bottom: 10px;
 
 	&:hover {
