@@ -5,6 +5,7 @@ $tabset_tabHeight: 50px;
 }
 
 .tabset_tabs {
+	-webkit-app-region: drag;
 	@include box-shadow(0 0 3px rgba(0,0,0,.3));
 	overflow-y: hidden;
 	background: #607bc7;

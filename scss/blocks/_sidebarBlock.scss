@@ -4,9 +4,9 @@
 
 .sidebarBlock_heading {
 	margin: 0;
-	padding: 10px;
-	background: rgba(0,0,0,0.2);
-	font-size: 1.2em;
+	padding: 10px 10%;
+	color: #aaa;
+    font-size: 1em;
 }
 
 .sidebarBlock_content {
@@ -21,12 +21,14 @@
 
 .sidebarBlock_item {
 	@include transition(background 300ms);
-	background: rgba(255,255,255,0);
+	background: transparent;
 	cursor: pointer;
-	padding: 5px 10px;
+	font-size: 15px;
+	padding: 5px 10%;
+	color: #fff;
 
 	&.-active {
-		background: rgba(255,255,255,.5);
+		background: #666;
 	}
 }
 
