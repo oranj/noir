@@ -104,31 +104,33 @@ module.exports = class NoirContribIrc {
 				return;
 			}
 
-			if ( to == userName || text.indexOf( userName ) >= 0 ) {
+			let isTabInactive = ! this.windows[ channel ].isVisible() || ! this.appIsFocused;
+			let isForMe = ( to == userName ) || ( text.indexOf( userName ) >= 0 );
+
+			if ( isTabInactive && isForMe ) {
 				var notification = new window.Notification( "Message from " + from, { body: text, silent: true });
-				notification.onclick = function() {
+				notification.onclick = () => {
+					this.showWindow( channel );
 					ipcRenderer.send( "focusWindow", "main" );
 				};
-				remote.app.dock.setBadge( "3" );
-			}
-
-			this.windows[channel].addChatMessage( from, text, this.getTimestamp() );
-			if ( ! this.appIsFocused || ! this.windows[channel].isVisible() ) {
 				this.sidebarEntry.handleNotification( channel, 1 );
 				this.updateBadgeCount();
 			}
+
+			this.windows[channel].addChatMessage( from, text, this.getTimestamp() );
 		});
 	}
 
 	updateBadgeCount() {
 		if ( !remote.app.dock || !remote.app.dock.setBadge ) {
-			console.log( "NO DOCK" );
 			return;
 		}
 		let count = this.sidebarEntry.getUnreadCounts();
 		let badge = count ? count.toString() : "";
 
-		console.log( "Count", count, "badge", badge );
+		if ( count && badge != remote.app.dock.getBadge() ) {
+			remote.app.dock.bounce();
+		}
 
 		remote.app.dock.setBadge( badge );
 	}

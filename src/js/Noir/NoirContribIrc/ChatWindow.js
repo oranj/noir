@@ -251,6 +251,12 @@ class ChatWindow {
 		return view;
 	}
 
+	scrollToBottom() {
+		setTimeout( () => {
+			this.view.scrollArea.scrollTop = this.view.scrollArea.scrollHeight;
+		}, 10 );
+	}
+
 	addChatMessage( from, text, timestamp ) {
 
 		var view = this.addMessage( from, text, timestamp );
@@ -258,9 +264,7 @@ class ChatWindow {
 		if ( from == this.nickname ) {
 			view.element.classList.add( "-you" );
 		}
-		setTimeout( () => {
-			this.view.scrollArea.scrollTop = this.view.scrollArea.scrollHeight;
-		}, 10 );
+		this.scrollToBottom();
 		return view;
 	}
 }
