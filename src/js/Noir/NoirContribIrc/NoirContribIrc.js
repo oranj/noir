@@ -1,7 +1,7 @@
-const irc                                = require( "irc" );
-const ChatWindow                         = require( "./ChatWindow" );
-const ChatSidebar                        = require( "./ChatSidebar" );
-const {app, ipcRenderer, shell, remote } = require( "electron" );
+const irc                            = require( "irc" );
+const ChatWindow                     = require( "./ChatWindow" );
+const ChatSidebar                    = require( "./ChatSidebar" );
+const { ipcRenderer, shell, remote } = require( "electron" );
 
 
 module.exports = class NoirContribIrc {
@@ -12,6 +12,19 @@ module.exports = class NoirContribIrc {
 		this.client = new irc.Client( host, userName, config );
 		this.userName = userName,
 		this.tabset = tabset;
+		this.appIsFocused = false;
+		this.activeWindowId = null;
+
+		remote.app.on( "browser-window-focus", () => {
+			if ( this.activeWindowId ) {
+				this.sidebarEntry.setUnreadCount( this.activeWindowId, 0 );
+				this.updateBadgeCount();
+			}
+			this.appIsFocused = true;
+		});
+		remote.app.on( "browser-window-blur", () => {
+			this.appIsFocused = false;
+		});
 
 		this.displayedMessageTransforms = [];
 		this.sentMessageTransforms      = [];
@@ -60,7 +73,7 @@ module.exports = class NoirContribIrc {
 		});
 
 		this.client.addListener( "raw", ( message ) => {
-	    	console.log( message.command + " " + message.args.join( " " ), this.getTimestamp() );
+			console.log( message.command + " " + message.args.join( " " ), this.getTimestamp() );
 		});
 
 		this.client.addListener( "part", ( channel, who, reason ) => {
@@ -68,7 +81,7 @@ module.exports = class NoirContribIrc {
 				return;
 			}
 			this.windows[channel].removeParticipant( who, reason, this.getTimestamp() );
-		    console.log( "%s has left %s: %s", who, channel, reason );
+			console.log( "%s has left %s: %s", who, channel, reason );
 		});
 
 		this.client.addListener( "kick", function( channel, who, by, reason ) {
@@ -76,7 +89,7 @@ module.exports = class NoirContribIrc {
 				return;
 			}
 			this.windows[channel].removeParticipant( who, reason, this.getTimestamp() );
-		    console.log( "%s was kicked from %s by %s: %s", who, channel, by, reason );
+			console.log( "%s was kicked from %s by %s: %s", who, channel, by, reason );
 		});
 
 		this.client.addListener( "message", ( from, to, text, message ) => {
@@ -96,10 +109,11 @@ module.exports = class NoirContribIrc {
 				notification.onclick = function() {
 					ipcRenderer.send( "focusWindow", "main" );
 				};
+				remote.app.dock.setBadge( "3" );
 			}
 
 			this.windows[channel].addChatMessage( from, text, this.getTimestamp() );
-			if ( ! this.windows[channel].isVisible() ) {
+			if ( ! this.appIsFocused || ! this.windows[channel].isVisible() ) {
 				this.sidebarEntry.handleNotification( channel, 1 );
 				this.updateBadgeCount();
 			}
@@ -107,18 +121,20 @@ module.exports = class NoirContribIrc {
 	}
 
 	updateBadgeCount() {
-		if ( remote.app.dock && remote.app.dock.setBadge ) {
-			var count = this.sidebarEntry.getUnreadCounts();
-			if ( count == 0 ) {
-				remote.app.dock.setBadge( "" );
-			} else {
-				remote.app.dock.setBadge( count.toString() );
-			}
+		if ( !remote.app.dock || !remote.app.dock.setBadge ) {
+			console.log( "NO DOCK" );
+			return;
 		}
+		let count = this.sidebarEntry.getUnreadCounts();
+		let badge = count ? count.toString() : "";
+
+		console.log( "Count", count, "badge", badge );
+
+		remote.app.dock.setBadge( badge );
 	}
 
 	joinChannel( channelId ) {
-		var window = this.openWindow( channelId );
+		this.openWindow( channelId );
 
 		this.client.join( channelId, () => {
 			this.client.send( "NAMES", channelId.slice( 1 ) );
@@ -153,7 +169,6 @@ module.exports = class NoirContribIrc {
 			.onMessage( e => {
 				let matches = e.message.match( /^\/join\s+(#[^\s]+)/ );
 				if ( matches ) {
-					debugger;
 					this.joinChannel( matches[1] );
 					return;
 				}
@@ -179,11 +194,11 @@ module.exports = class NoirContribIrc {
 
 		this.sidebarEntry.registerWindow( id, 0 );
 
-		let tab = this.tabset
+		this.tabset
 			.add( this.connectionName+" "+id )
 			.setLabel( id )
 			.setContents( chatWindow.view.element )
-			.onShow( ( e ) => {
+			.onShow( () => {
 				this.sidebarEntry.handleWindowActivated( id );
 				this.updateBadgeCount();
 				chatWindow.show();
@@ -196,6 +211,7 @@ module.exports = class NoirContribIrc {
 				console.log( e );
 			});
 
+		this.activeWindowId = id;
 		this.windows[id] = chatWindow;
 		return chatWindow;
 	}
@@ -209,6 +225,7 @@ module.exports = class NoirContribIrc {
 	}
 
 	showWindow( id ) {
+		this.activeWindowId = id;
 		this.tabset.show( this.connectionName+" "+id );
 	}
 
