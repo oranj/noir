@@ -42,6 +42,9 @@ class ChatArea {
 
 	constructor( textarea, autoCompleteListeners ) {
 		this.textarea     = textarea;
+		this.history  = [];
+		this.historyPreservedText;
+		this.historyIndex = 0;
 
 		this.autoCompleteTooltip   = new AutoCompleteTooltip( this );
 		this.autoCompleteListeners = autoCompleteListeners;
@@ -51,7 +54,7 @@ class ChatArea {
 			this.textarea
 		);
 
-		this.textarea.addEventListener( "keyup", ( e ) => {
+		this.textarea.addEventListener( "keyup", () => {
 			let cursorPosition = this.textarea.selectionStart;
 			let segmented = segmentAtPosition( cursorPosition, this.textarea.value );
 
@@ -82,18 +85,45 @@ class ChatArea {
 					this.autoCompleteTooltip.cursorUp();
 					e.preventDefault();
 				}
-			} else if ( e.keyCode == 9 ) {
+			} else if ( e.keyCode == 38 && this.history.length > 0 ) { // up history
+				if ( this.historyIndex === this.history.length ) {
+					this.historyPreservedText = this.textarea.value;
+				}
+				this.historyIndex = Math.max( 0, Math.min( this.history.length, this.historyIndex - 1 ) );
+				if ( this.historyIndex === this.history.length ) {
+					this.textarea.value = this.historyPreservedText;
+				} else {
+					this.textarea.value = this.history[ this.historyIndex ];
+				}
+			} else if ( e.keyCode == 40 && this.history.length > 0 ) { // down history
+				if ( this.historyIndex === this.history.length ) {
+					this.historyPreservedText = this.textarea.value;
+				}
+				this.historyIndex = Math.max( 0, Math.min( this.history.length, this.historyIndex + 1 ) );
+				if ( this.historyIndex === this.history.length ) {
+					this.textarea.value = this.historyPreservedText;
+				} else {
+					this.textarea.value = this.history[ this.historyIndex ];
+				}
+			} else if ( e.keyCode == 9 ) { // tab
 				if ( this.selectNextTemplate( this.textarea.selectionStart ) ) {
 					e.preventDefault();
 				}
 			}
-
-			console.log( "key down", e );
 		});
 
-		this.textarea.addEventListener( "blur", ( e ) => {
+		this.textarea.addEventListener( "blur", () => {
 			this.autoCompleteTooltip.hide();
 		});
+	}
+
+	pushHistory( lastMessage ) {
+		let index = this.history.indexOf( lastMessage );
+		if ( index !== -1 ) {
+			this.history.splice( index, 0 );
+		}
+		this.history.push( lastMessage );
+		this.historyIndex = this.history.length;
 	}
 
 	selectNextTemplate( cursorPosition ) {

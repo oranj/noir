@@ -84,7 +84,7 @@ class ChatWindow {
 			}
 		});
 
-		chatAreaFactory.make( this.view.textarea );
+		this.chatArea = chatAreaFactory.make( this.view.textarea );
 
 		this.view.element.addEventListener( "click", e => {
 			var node = e.target;
@@ -176,9 +176,11 @@ class ChatWindow {
 	}
 
 	handleMessage() {
+		let value = this.view.textarea.value;
+		this.chatArea.pushHistory( value );
 		let message = this.sentMessageTransforms.reduce( ( carry, transform ) => {
 			return transform( carry );
-		}, this.view.textarea.value );
+		}, value );
 
 		if ( ! message ) {
 			return;
