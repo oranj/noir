@@ -1,8 +1,21 @@
 let IP_DIV_ID = 0;
 
+const linkifyjs = require( "linkifyjs" );
+
+function strip(html)
+{
+   var tmp = document.createElement("DIV");
+   tmp.innerHTML = html;
+   return tmp.textContent || tmp.innerText || "";
+}
+
+
 module.exports = class NoirOgImagePreview {
 
 	constructor( config ) {
+		this.ignoreDomains = config.ignoreDomains || [];
+		this.ignoreDomainRegex = new RegExp( "https?://([^\/]+\.)?(" + this.ignoreDomains.join( "|" ) + ")(\/|$)", 'i' );
+
 		this._imageStyle = config.style || {};
 		this._wrapInAnchor = typeof config.wrapInAnchor == "undefined" ? true : config.wrapInAnchor;
 	}
@@ -36,13 +49,26 @@ module.exports = class NoirOgImagePreview {
 		});
 	}
 
+	getRelevantLinks( string ) {
+		string = strip( string );
+		let matches = linkifyjs.find( string );
+		return matches.filter( ({ href }) => {
+			return !href.match( this.ignoreDomainRegex );
+			// return this.ignoreDomains.reduce(( isRestrictedDomain, domain ) => {
+			// 	let regex = new RegExp( "https?://([^\/]+\.)?" + domain + "(\/|$)", 'i' );
+
+			// 	if ( href.indexOf( "//" + domain ) >= 0 || href.indexOf( "." + d
+			// }, false );
+		});
+	}
+
 	transformDisplayedMessage( string ) {
-		var matches = string.match( /a[^>]+href=("[^"]+"|'[^']+')/ );
-		if ( ! matches ) {
+		let matches = this.getRelevantLinks( string );
+		if ( ! matches.length ) {
 			return string;
 		}
 		var that = this;
-		var url = matches[ 1 ].slice( 1, -1 );
+		var url = matches[ 0 ].href;
 		var targetId = "ogip-" + ( ++ IP_DIV_ID );
 
 		this.getOgImageFromUrl( url ).then( function( attachableElement ) {

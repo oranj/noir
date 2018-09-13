@@ -29,9 +29,10 @@ function segmentAtPosition( cursorPosition, text ) {
 }
 
 class AutoCompleteEvent {
-	constructor( chatArea, autoCompleteTooltip, word, position, fullText ) {
+	constructor( chatArea, autoCompleteTooltip, searchTooltip, word, position, fullText ) {
 		this.chatArea            = chatArea;
 		this.autoCompleteTooltip = autoCompleteTooltip;
+		this.searchTooltip       = searchTooltip;
 		this.word                = word;
 		this.position            = position;
 		this.fullText            = fullText;
@@ -46,11 +47,16 @@ class ChatArea {
 		this.historyPreservedText;
 		this.historyIndex = 0;
 
+		this.searchTooltip = new SearchTooltip( this );
 		this.autoCompleteTooltip   = new AutoCompleteTooltip( this );
 		this.autoCompleteListeners = autoCompleteListeners;
 
 		this.textarea.parentNode.insertBefore(
 			this.autoCompleteTooltip.view.element,
+			this.textarea
+		);
+		this.textarea.parentNode.insertBefore(
+			this.searchTooltip.view.element,
 			this.textarea
 		);
 
@@ -60,7 +66,15 @@ class ChatArea {
 
 			this.autoCompleteTooltip.awaitSuggestions();
 			if ( segmented.word ) {
-				let event = new AutoCompleteEvent( this, this.autoCompleteTooltip, segmented.word, cursorPosition, this.textarea.value );
+				this.searchTooltip.clear();
+				let event = new AutoCompleteEvent(
+					this,
+					this.autoCompleteTooltip,
+					this.searchTooltip,
+					segmented.word,
+					cursorPosition,
+					this.textarea.value
+				);
 
 				this.autoCompleteListeners.forEach( ( listener ) => {
 					listener.call( null, event );
@@ -170,6 +184,18 @@ class ChatArea {
 	}
 }
 
+var searchTemplate = `
+	<div class="search">
+		<div class="search_popup" data-cjs-name="popup">
+			<div class="search_results">
+				<a class="search_result" data-cjs-template="results">
+
+				</a>
+			</div>
+		</div>
+	</div>
+`;
+
 var autoCompleteTemplate = `
 	<div class="autoComplete clearfix">
 		<div class="autoComplete_popup"
@@ -183,6 +209,60 @@ var autoCompleteTemplate = `
 			</div>
 		</div>
 	</div>`;
+
+class SearchTooltip {
+	constructor( chatArea ) {
+		this.view = new View( searchTemplate, {} );
+		this.chatArea = chatArea;
+		this.results = [];
+		this.searchId = 0;
+	}
+
+	getSearchId() {
+		return this.searchId;
+	}
+
+	show() {
+		this.view.popup.classList.add( "-visible" );
+	}
+
+	hide() {
+		this.clear();
+		this.view.popup.classList.remove( "-visible" );
+	}
+
+	clear() {
+		this.searchId++;
+		this.view.results.empty();
+		this.results = [];
+	}
+
+	isVisible() {
+		return this.view.popup.classList.contains( "-visible" );
+	}
+
+	isEmpty() {
+		return this.view.results.isEmpty();
+	}
+
+	addResult( searchId, element, title, url ) {
+		this.show();
+		if ( searchId == this.searchId ) {
+			let el = this.view.results.add( this.results.length, {
+				title: title
+			});
+			el.element.addEventListener( "click",  event => {
+				this.chatArea.textarea.value = url;
+				this.chatArea.textarea.focus();
+				this.hide();
+				event.stopPropagation();
+				event.preventDefault();
+			});
+			this.results.push({ element, title, url });
+			el.element.appendChild( element );
+		}
+	}
+}
 
 class AutoCompleteTooltip {
 	constructor( chatArea ) {
