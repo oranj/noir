@@ -582,6 +582,11 @@ html, input, textarea, button, select {
 /* line 100, ../../scss/blocks/_message.scss */
 .message_text > span a {
   color: #4c79e6;
+  max-width: 300px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
 }
 /* line 104, ../../scss/blocks/_message.scss */
 .message_text > span img {
@@ -890,4 +895,48 @@ html, input, textarea, button, select {
 /* line 95, ../../scss/blocks/_tabset.scss */
 .tabset_view.-selected {
   display: block;
+}
+
+.search {
+  position: absolute;
+    left: 0;
+    width: 100%;
+    height: 0;
+}
+.search_popup {
+    background: rgba(255,255,255,.5);
+    bottom: 20px;
+    position: absolute;
+    height: 200px;
+    max-width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,.3);
+    overflow-y: auto;
+    left: 100%;
+    transition: left 300ms;
+    opacity: 0;
+    min-width: 300px;
+}
+
+.search_results {
+  display: flex;
+  white-space: nowrap;
+  padding: 10px 5px;
+  max-height: 100%;
+}
+
+.search_result {
+  margin: 0 5px;
+  display: inline-block;
+  max-height: 100%;
+}
+
+.search_result > img {
+  max-height: 100%;
+}
+
+.search_popup.-visible {
+    left: 0;
+    opacity: 1;
 }

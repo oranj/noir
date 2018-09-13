@@ -75,7 +75,7 @@ $message-border-radius: 1em;
 	max-width: 100%;
 	overflow-x: auto;
 	padding: 10px 1em;
-	text-align: left;
+	// text-align: left;
 	display: inline-block;
     line-height: 1.5em;
     -webkit-font-smoothing: antialiased;
@@ -99,6 +99,11 @@ $message-border-radius: 1em;
 
 		a {
 			color: #4c79e6;
+		    max-width: 300px;
+		    overflow: hidden;
+		    white-space: nowrap;
+		    text-overflow: ellipsis;
+		    display: inline-block;
 		}
 
 		img {
