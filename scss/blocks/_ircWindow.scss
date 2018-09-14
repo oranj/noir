@@ -4,6 +4,7 @@ $ircWindow-buttonareaWidth: 50px;
 .ircWindow {
 	position: relative;
 	height: 100%;
+	overflow: hidden;
 }
 
 .ircWindow_chatArea {

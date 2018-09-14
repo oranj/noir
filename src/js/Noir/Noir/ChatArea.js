@@ -60,13 +60,18 @@ class ChatArea {
 			this.textarea
 		);
 
+		let lastValue = null;
 		this.textarea.addEventListener( "keyup", () => {
+			if ( lastValue == this.textarea.value ) {
+				return;
+			}
+			lastValue = this.textarea.value;
 			let cursorPosition = this.textarea.selectionStart;
 			let segmented = segmentAtPosition( cursorPosition, this.textarea.value );
 
 			this.autoCompleteTooltip.awaitSuggestions();
+			this.searchTooltip.hide();
 			if ( segmented.word ) {
-				this.searchTooltip.clear();
 				let event = new AutoCompleteEvent(
 					this,
 					this.autoCompleteTooltip,
@@ -187,10 +192,15 @@ class ChatArea {
 var searchTemplate = `
 	<div class="search">
 		<div class="search_popup" data-cjs-name="popup">
-			<div class="search_results">
-				<a class="search_result" data-cjs-template="results">
+			<div class="search_overflow">
+				<div class="search_results">
+					<a class="search_result" data-cjs-template="results">
 
-				</a>
+					</a>
+				</div>
+			</div>
+			<div class="search_giphyLogo">
+				<img width="148px" height="18px" src="./img/giphy_logo.gif" />
 			</div>
 		</div>
 	</div>
