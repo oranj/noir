@@ -12,6 +12,7 @@ process.umask = 0;
 global.DIR_APPDATA  = app.getPath('userData');
 global.DIR_SETTINGS = DIR_APPDATA + "/Settings";
 global.FILE_PREFS   = DIR_SETTINGS + "/prefs.json";
+global.DIR_LOGS     = app.getPath('userData')+"/Logs";
 
 if (! fs.existsSync(DIR_APPDATA)) {
 	fs.mkdirSync(DIR_APPDATA, '0777');
@@ -103,6 +104,17 @@ function createWindow () {
 					accelerator: "CmdOrCtrl+,",
 					click: () => {
 						shell.openItem( global.FILE_PREFS, {}, function() {
+							throw new Error(JSON.stringify(Array.from(arguments)));
+						});
+					}
+				}
+			]},
+			{ label: "Logs", submenu: [
+				{
+					label: "Settings",
+					accelerator: "CmdOrCtrl+l",
+					click: () => {
+						shell.openItem( global.DIR_LOGS, {}, function() {
 							throw new Error(JSON.stringify(Array.from(arguments)));
 						});
 					}
