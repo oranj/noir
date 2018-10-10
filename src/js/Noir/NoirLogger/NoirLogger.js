@@ -19,7 +19,7 @@ class NoirLogger {
 	addMessage( timestamp, channel, username, message ) {
 		let entry = { timestamp, channel, username, message };
 		this.log.push( entry );
-		fs.appendFile( this.filePath, encodeURIComponent( JSON.stringify( entry ) ) + "\n", ( err ) => {
+		fs.appendFile( this.filePath, JSON.stringify( entry ) + "\n", ( err ) => {
 			if ( err ) {
 				console.error( err );
 			}
@@ -37,7 +37,7 @@ NoirLogger.unserializeLog = function( string ) {
 		.filter( v => v )
 		.reduce(( log, line ) => {
 			try {
-				log.push( JSON.parse( decodeURIComponent( line ) ) );
+				log.push( JSON.parse( line ) );
 			} catch ( err ) {
 				console.warn( err );
 			}
