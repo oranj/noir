@@ -206,7 +206,7 @@ html, input, textarea, button, select {
   overflow: hidden;
 }
 
-/* line 9, ../../scss/blocks/_ircWindow.scss */
+/* line 10, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_chatArea {
   padding: 10px;
   max-height: calc(100% - 100px);
@@ -218,7 +218,7 @@ html, input, textarea, button, select {
   overflow-y: auto;
 }
 
-/* line 20, ../../scss/blocks/_ircWindow.scss */
+/* line 21, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_inputArea {
   background: #eee;
   position: absolute;
@@ -229,7 +229,7 @@ html, input, textarea, button, select {
   left: 0px;
 }
 
-/* line 30, ../../scss/blocks/_ircWindow.scss */
+/* line 31, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_textInput {
   -moz-transition: opacity 300ms;
   -o-transition: opacity 300ms;
@@ -246,12 +246,12 @@ html, input, textarea, button, select {
   width: calc(100% - 10px - 50px);
   opacity: 0.5;
 }
-/* line 42, ../../scss/blocks/_ircWindow.scss */
+/* line 43, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_textInput:hover, .ircWindow_textInput:focus, .ircWindow_textInput:active {
   opacity: 1;
 }
 
-/* line 48, ../../scss/blocks/_ircWindow.scss */
+/* line 49, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_button {
   -moz-border-radius: 40px;
   -webkit-border-radius: 40px;
@@ -270,7 +270,7 @@ html, input, textarea, button, select {
   cursor: pointer;
   opacity: .7;
 }
-/* line 59, ../../scss/blocks/_ircWindow.scss */
+/* line 60, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_button:hover {
   opacity: 1;
   -moz-transform: scale(1, 1);
@@ -278,22 +278,22 @@ html, input, textarea, button, select {
   -webkit-transform: scale(1, 1);
   transform: scale(1, 1);
 }
-/* line 64, ../../scss/blocks/_ircWindow.scss */
+/* line 65, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_button.-send {
   background: #3bb16a;
 }
-/* line 68, ../../scss/blocks/_ircWindow.scss */
+/* line 69, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_button.-people {
   background: #acccd0;
 }
 
-/* line 73, ../../scss/blocks/_ircWindow.scss */
+/* line 74, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_buttonArea {
   float: right;
   width: 50px;
 }
 
-/* line 78, ../../scss/blocks/_ircWindow.scss */
+/* line 79, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_contactArea {
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
@@ -323,7 +323,7 @@ html, input, textarea, button, select {
   overflow-y: auto;
   overflow-x: hidden;
 }
-/* line 107, ../../scss/blocks/_ircWindow.scss */
+/* line 108, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_contactArea.-open {
   z-index: 5;
   opacity: 1;
@@ -333,7 +333,7 @@ html, input, textarea, button, select {
   transform: scale(1, 1);
 }
 
-/* line 115, ../../scss/blocks/_ircWindow.scss */
+/* line 116, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_contact {
   -moz-transition: background 300ms;
   -o-transition: background 300ms;
@@ -342,7 +342,7 @@ html, input, textarea, button, select {
   padding: 5px 10px;
   background: rgba(255, 255, 255, 0);
 }
-/* line 120, ../../scss/blocks/_ircWindow.scss */
+/* line 121, ../../scss/blocks/_ircWindow.scss */
 .ircWindow_contact:hover {
   background: white;
 }
@@ -562,7 +562,6 @@ html, input, textarea, button, select {
   max-width: 100%;
   overflow-x: auto;
   padding: 10px 1em;
-  text-align: left;
   display: inline-block;
   line-height: 1.5em;
   -webkit-font-smoothing: antialiased;
@@ -588,8 +587,9 @@ html, input, textarea, button, select {
   white-space: nowrap;
   text-overflow: ellipsis;
   display: inline-block;
+  vertical-align: bottom;
 }
-/* line 104, ../../scss/blocks/_message.scss */
+/* line 110, ../../scss/blocks/_message.scss */
 .message_text > span img {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -597,7 +597,7 @@ html, input, textarea, button, select {
   max-width: 100%;
 }
 
-/* line 111, ../../scss/blocks/_message.scss */
+/* line 117, ../../scss/blocks/_message.scss */
 .message_time {
   -moz-transition: opacity 300ms;
   -o-transition: opacity 300ms;
@@ -611,7 +611,7 @@ html, input, textarea, button, select {
   border-bottom: 1px dashed #212d33;
   margin-bottom: 10px;
 }
-/* line 121, ../../scss/blocks/_message.scss */
+/* line 127, ../../scss/blocks/_message.scss */
 .message_time:hover {
   opacity: 1;
 }
@@ -898,19 +898,22 @@ html, input, textarea, button, select {
   display: block;
 }
 
+/* line 1, ../../scss/blocks/_search.scss */
 .search {
   position: absolute;
-    left: 0;
-    width: 100%;
-    height: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
 }
+
+/* line 8, ../../scss/blocks/_search.scss */
 .search_popup {
-  background: linear-gradient( rgba( 255, 255, 255, .3), #fff );
+  background: linear-gradient(rgba(255, 255, 255, 0.3), #ffffff);
   bottom: 9px;
   position: absolute;
   height: 240px;
   width: 100%;
-  box-shadow: 0 2px 5px rgba(100,100,100,0.5);
+  box-shadow: 0 2px 5px rgba(100, 100, 100, 0.5);
   overflow-y: auto;
   left: 100%;
   transition: left 300ms;
@@ -919,7 +922,7 @@ html, input, textarea, button, select {
   padding-bottom: 15px;
 }
 
-
+/* line 25, ../../scss/blocks/_search.scss */
 .search_overflow {
   overflow-y: auto;
   height: 220px;
@@ -929,6 +932,7 @@ html, input, textarea, button, select {
   left: 0;
 }
 
+/* line 34, ../../scss/blocks/_search.scss */
 .search_results {
   display: flex;
   white-space: nowrap;
@@ -936,24 +940,27 @@ html, input, textarea, button, select {
   max-height: 100%;
 }
 
+/* line 41, ../../scss/blocks/_search.scss */
 .search_result {
   margin: 0 5px;
   display: inline-block;
   max-height: 100%;
 }
-
+/* line 46, ../../scss/blocks/_search.scss */
 .search_result > img {
   max-height: 100%;
 }
 
+/* line 51, ../../scss/blocks/_search.scss */
 .search_popup.-visible {
-    left: 0;
-    opacity: 1;
+  left: 0;
+  opacity: 1;
 }
 
+/* line 56, ../../scss/blocks/_search.scss */
 .search_giphyLogo {
   bottom: 0px;
   right: 0px;
   position: absolute;
-  background: rgba( 255, 255, 255, 1);
+  background: #fff;
 }

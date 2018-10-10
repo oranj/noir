@@ -1,50 +1,61 @@
 .search {
 	position: absolute;
-    left: 0;
-    width: 100%;
-    height: 0;
+	left: 0;
+	width: 100%;
+	height: 0;
 }
 
 .search_popup {
-    background: rgba(255,255,255,.5);
-    bottom: 20px;
-    position: absolute;
-    height: 200px;
-    max-width: 100%;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,.3);
-    overflow-y: auto;
-    left: 100%;
-    transition: left 300ms;
-    opacity: 0;
-    min-width: 300px;
+	background: linear-gradient( rgba( 255, 255, 255, .3), #fff );
+	bottom: 9px;
+	position: absolute;
+	height: 240px;
+	width: 100%;
+	box-shadow: 0 2px 5px rgba(100,100,100,0.5);
+	overflow-y: auto;
+	left: 100%;
+	transition: left 300ms;
+	opacity: 0;
+	min-width: 300px;
+	padding-bottom: 15px;
+}
+
+
+
+.search_overflow {
+	overflow-y: auto;
+	height: 220px;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	left: 0;
 }
 
 .search_results {
-  display: flex;
-  white-space: nowrap;
-  padding: 10px 5px;
-  max-height: 100%;
+	display: flex;
+	white-space: nowrap;
+	padding: 10px 5px;
+	max-height: 100%;
 }
 
 .search_result {
-  margin: 0 5px;
-  display: inline-block;
-  max-height: 100%;
-}
+	margin: 0 5px;
+	display: inline-block;
+	max-height: 100%;
 
-.search_result > img {
-  max-height: 100%;
+	> img {
+		max-height: 100%;
+	}
 }
 
 .search_popup.-visible {
-    left: 0;
-    opacity: 1;
+	left: 0;
+	opacity: 1;
 }
 
 .search_giphyLogo {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
+	bottom: 0px;
+	right: 0px;
+	position: absolute;
+	background: #fff;
 }
