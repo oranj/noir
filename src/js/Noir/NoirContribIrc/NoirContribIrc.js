@@ -1,28 +1,33 @@
 const irc                            = require( "irc" );
 const ChatWindow                     = require( "./ChatWindow" );
 const ChatSidebar                    = require( "./ChatSidebar" );
+const NoirLogger                     = require( "../NoirLogger/NoirLogger" );
 const { ipcRenderer, shell, remote } = require( "electron" );
 
+const LOG_DIR = remote.app.getPath('userData')+"/Logs";
 
 module.exports = class NoirContribIrc {
 	constructor( host, connectionName, userName, config, channels, chatAreaFactory, tabset ) {
 
 		config.autoConnect = false;
 
+		this.logger = new NoirLogger( connectionName, LOG_DIR );
 		this.client = new irc.Client( host, userName, config );
 		this.userName = userName,
 		this.tabset = tabset;
 		this.appIsFocused = false;
 		this.activeWindowId = null;
 
-		remote.app.on( "browser-window-focus", () => {
+
+		let browser = remote.getCurrentWindow();
+		browser.on( "focus", () => {
 			if ( this.activeWindowId ) {
 				this.sidebarEntry.setUnreadCount( this.activeWindowId, 0 );
 				this.updateBadgeCount();
 			}
 			this.appIsFocused = true;
 		});
-		remote.app.on( "browser-window-blur", () => {
+		browser.on( "blur", () => {
 			this.appIsFocused = false;
 		});
 
@@ -176,6 +181,7 @@ module.exports = class NoirContribIrc {
 				}
 				var withConn = () => {
 					this.client.say( id, e.message );
+					this.logger.addMessage( this.getTimestamp(), id, this.userName, e.message );
 					chatWindow.addChatMessage( this.userName, e.message, this.getTimestamp() );
 				};
 				if ( this.client.conn === null ) {
@@ -193,6 +199,10 @@ module.exports = class NoirContribIrc {
 		chatWindow.displayedMessageTransforms = Object.create( this.displayedMessageTransforms );
 		chatWindow.sentMessageTransforms      = Object.create( this.sentMessageTransforms );
 		chatWindow.autoCompleteListeners      = Object.create( this.autoCompleteListeners );
+
+		this.logger.getMessages( id ).forEach(({ username, message, timestamp }) => {
+			chatWindow.addChatMessage( username, message, timestamp );
+		});
 
 		this.sidebarEntry.registerWindow( id, 0 );
 
