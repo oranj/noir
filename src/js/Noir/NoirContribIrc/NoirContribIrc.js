@@ -34,6 +34,7 @@ module.exports = class NoirContribIrc {
 		this.displayedMessageTransforms = [];
 		this.sentMessageTransforms      = [];
 		this.autoCompleteListeners      = [];
+		this.fileDropHandler            = null;
 		this.connectionName = connectionName;
 
 		this.windows = {};
@@ -122,6 +123,7 @@ module.exports = class NoirContribIrc {
 				this.updateBadgeCount();
 			}
 
+			this.logger.addMessage( this.getTimestamp(), channel, from, text );
 			this.windows[channel].addChatMessage( from, text, this.getTimestamp() );
 		});
 	}
@@ -196,6 +198,7 @@ module.exports = class NoirContribIrc {
 			});
 
 
+		chatWindow.fileDropHandler            = this.fileDropHandler;
 		chatWindow.displayedMessageTransforms = Object.create( this.displayedMessageTransforms );
 		chatWindow.sentMessageTransforms      = Object.create( this.sentMessageTransforms );
 		chatWindow.autoCompleteListeners      = Object.create( this.autoCompleteListeners );

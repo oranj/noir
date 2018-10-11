@@ -1,5 +1,6 @@
 const View        = require( "./../Noir/View.js" );
 const Event       = require( "./../Noir/Event.js" );
+const { ipcMain } = require( "electron" );
 
 const template = `
 	<div class="ircWindow">
@@ -16,7 +17,7 @@ const template = `
 				</div>
 			</div>
 		</div>
-		<div class="ircWindow_inputArea">
+		<div class="ircWindow_inputArea" data-cjs-name="dragArea">
 			<div class="ircWindow_buttonArea">
 				<button
 					type="button"
@@ -64,6 +65,7 @@ class ChatWindow {
 		this.lastText      = "";
 		this.lastDisplayedTimestamp = 0;
 
+		this.fileDropHandler = null;
 		this.displayedMessageTransforms = [];
 		this.sentMessageTransforms = [];
 
@@ -86,6 +88,52 @@ class ChatWindow {
 
 		this.chatArea = chatAreaFactory.make( this.view.textarea );
 
+		this.view.dragArea.ondragover = () => {
+			if ( ! this.fileDropHandler ) {
+				return;
+			}
+			this.view.dragArea.classList.add( "-fileDrag" );
+			return false;
+		};
+
+		this.view.dragArea.ondragleave = () => {
+			this.view.dragArea.classList.remove( "-fileDrag" );
+
+			if ( ! this.fileDropHandler ) {
+				return;
+			}
+			return false;
+		};
+
+		this.view.dragArea.ondragend = () => {
+			this.view.dragArea.classList.remove( "-fileDrag" );
+
+			if ( ! this.fileDropHandler ) {
+				return;
+			}
+			return false;
+		};
+
+		this.view.dragArea.ondrop = (e) => {
+			this.view.dragArea.classList.remove( "-fileDrag" );
+
+			if ( ! this.fileDropHandler ) {
+				return;
+			}
+
+			this.view.dragArea.classList.add( "-fileDragHandling" );
+			e.preventDefault();
+			let promises = [];
+			for (let f of e.dataTransfer.files) {
+				promises.push(this.fileDropHandler.handleFileDrop( this.chatArea, f.path ));
+			}
+
+			Promise.all( promises ).then(() => {
+				this.view.dragArea.classList.remove( "-fileDragHandling" );
+			});
+
+			return false;
+		};
 		this.view.element.addEventListener( "click", e => {
 			var node = e.target;
 			while ( node.tagName.toUpperCase() != "A" ) {
@@ -124,6 +172,10 @@ class ChatWindow {
 			let contact = node.getAttribute( "data-contact-name" );
 			Event.trigger( this, "conversationOpened", { contact });
 		});
+	}
+
+	setFileDropHandler( fileDropHandler ) {
+		this.fileDropHandler = fileDropHandler;
 	}
 
 	replaceTextAt( position, from, to ) {

@@ -6,6 +6,7 @@ const NoirYouTubeImagePreview = require( "./js/Noir/NoirYouTubeImagePreview/Noir
 const NoirMarked = require( "./js/Noir/NoirMarked/NoirMarked.js" );
 const NoirGiphy = require( "./js/Noir/NoirGiphy/NoirGiphy.js" );
 const NoirAutoComplete = require( "./js/Noir/NoirAutoComplete/NoirAutoComplete.js" );
+const NoirDropbox = require( "./js/Noir/NoirDropbox/NoirDropbox.js" );
 const NoirEmojione = require( "./js/Noir/NoirEmojione/NoirEmojione.js" );
 
 const { ChatAreaFactory } = require( "./js/Noir/Noir/ChatArea.js" );
@@ -24,6 +25,7 @@ let availablePlugins = {
 	NoirMarked,
 	NoirGiphy,
 	NoirAutoComplete,
+	NoirDropbox,
 	NoirEmojione
 };
 
@@ -140,6 +142,22 @@ config.connections
 					console.error( e.message );
 				}
 			});
+		}
+
+		if ( cxn.fileDropHandler ) {
+			try {
+				let name = cxn.fileDropHandler;
+				if ( typeof plugins[ name ] === "undefined" ) {
+					throw new Error( `Unrecognized plugin ${name}` );
+				}
+				let plugin = plugins[ name ];
+				if ( ! plugin.handleFileDrop ) {
+					throw new Error( `Plugin "${name}" does not support "handleFileDrop"` );
+				}
+				irc.fileDropHandler = plugin;
+			} catch ( e ) {
+				console.error( e.message );
+			}
 		}
 
 		if ( cxn.sentMessageTransforms ) {

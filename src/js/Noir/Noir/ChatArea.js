@@ -136,6 +136,10 @@ class ChatArea {
 		});
 	}
 
+	appendText( text ) {
+		this.textarea.value += text;
+	}
+
 	pushHistory( lastMessage ) {
 		let index = this.history.indexOf( lastMessage );
 		if ( index !== -1 ) {
