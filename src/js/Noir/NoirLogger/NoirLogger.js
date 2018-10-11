@@ -17,7 +17,7 @@ class NoirLogger {
 	}
 
 	addMessage( timestamp, channel, username, message ) {
-		let entry = { timestamp, channel, username, message };
+		let entry = { timestamp: Math.floor( timestamp ), channel, username, message };
 		this.log.push( entry );
 		fs.appendFile( this.filePath, JSON.stringify( entry ) + "\n", ( err ) => {
 			if ( err ) {
