@@ -9,11 +9,16 @@ const template = `
 				<div class="message_time" data-cjs-name="time">
 					{{ timestamp | formatTime | html }}
 				</div>
+				<div class="message_avatar">
+					<object class="message_avatarImage" data="{{ sender | getAvatarFromSender }}" type="image/png"></object>
+				</div>
 				<div class="message_sender" data-cjs-name="sender">
 					{{ sender | html }}
 				</div>
-				<div class="message_text" data-cjs-name="text">
-					{{ text | formatMessage }}
+				<div class="message_textRegion">
+					<div class="message_text" data-cjs-name="text">
+						{{ text | formatMessage }}
+					</div>
 				</div>
 			</div>
 		</div>
@@ -41,17 +46,6 @@ const template = `
 		</div>
 	</div>`;
 
-function toggleClass( element, className, value ) {
-	if ( value == undefined ) {
-		value = ! element.classList.contains( className );
-	}
-	if ( value ) {
-		element.classList.add( className );
-	} else {
-		element.classList.remove( className );
-	}
-}
-
 class ChatWindow {
 
 	constructor( nickname, channel, chatAreaFactory ) {
@@ -68,6 +62,7 @@ class ChatWindow {
 		this.fileDropHandler = null;
 		this.displayedMessageTransforms = [];
 		this.sentMessageTransforms = [];
+		this.avatarSources = [];
 
 		this.view = new View( template, {
 			formatTime: function( timestamp ) {
@@ -79,6 +74,15 @@ class ChatWindow {
 					+ ":" + ( "00" + date.getSeconds() ).slice( -2 ) + ( date.getHours() > 12 ? "PM" : "AM" );
 			},
 			html: View.escapeHtml,
+			getAvatarFromSender: sender => {
+				for ( let i = 0; i < this.avatarSources.length; i++ ) {
+					let avatar = this.avatarSources[ i ].getAvatarFromSender( sender );
+					if ( avatar ) {
+						return avatar;
+					}
+				}
+				return "_";
+			},
 			formatMessage: str => {
 				return this.displayedMessageTransforms.reduce( ( carry, plugin ) => {
 					return plugin( carry );
@@ -159,7 +163,7 @@ class ChatWindow {
 			this.handleMessage();
 		});
 		this.view.peopleButton.addEventListener( "click", e => {
-			toggleClass( this.view.contactArea, "-open" );
+			this.view.contactArea.classList.toggle( "-open" );
 		});
 		this.view.contactArea.addEventListener( "click", ( e ) => {
 			var node = e.target;

@@ -1,10 +1,12 @@
-$message-border-radius: 1em;
+$message-border-radius: 5px;
 
 .message {
 	@include transition(opacity 300ms, transform 300ms);
 
+	display: grid;
+	grid-template-columns: 50px auto 50px;
+	grid-template-rows: auto auto auto;
 	margin: 10px 0;
-	padding-right: 100px;
 
 	&.-you {
 		// margin: 10px 0 10px 40px;
@@ -12,7 +14,7 @@ $message-border-radius: 1em;
 		padding: 0;
 
 		.message_text {
-			@include border-radius($message-border-radius 0 $message-border-radius $message-border-radius);
+			@include border-radius($message-border-radius);
 			margin-right: 0px;
 			background: #eee;
 		}
@@ -65,12 +67,73 @@ $message-border-radius: 1em;
 }
 
 .message_sender {
-	padding: 10px;
+	padding: 5px 0;
 	display: block;
+	grid-row: 2;
+	grid-column: 2;
+}
+
+.message_avatar {
+	grid-column: 1;
+	grid-row: 3;
+	position:relative;
+
+	&::after {
+		position: absolute;
+		border-right: 8px solid #b9e8ff;
+		border-top: 8px solid transparent;
+		border-bottom: 8px solid transparent;
+		content: "";
+		right: 0;
+		top: 13px;
+	}
+
+	.message.-you & {
+		grid-column: 3;
+
+		&::after {
+			left: 0;
+			border-right: none;
+			border-left: 8px solid #eee;
+		}
+	}
+
+}
+
+.message_avatarImage {
+	width: 40px;
+	height: 40px;
+	border-radius: 40px;
+	display: inline-block;
+	position: relative;
+
+	&::after {
+		background-image: url(https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y);
+		width: 40px;
+		height: 40px;
+		border-radius: 40px;
+		position: absolute;
+		content:"";
+		left: 0;
+		top: 0;
+		background-size: contain;
+	}
+
+}
+
+.message_textRegion {
+	display: flex;
+	flex-direction: row;
+	grid-row:3;
+	grid-column: 2;
+
+	.message.-you & {
+		justify-content: flex-end;
+	}
 }
 
 .message_text {
-	@include border-radius(0 $message-border-radius $message-border-radius $message-border-radius);
+	@include border-radius( $message-border-radius );
 	background: #b9e8ff;
 	max-width: 100%;
 	overflow-x: auto;
@@ -79,9 +142,6 @@ $message-border-radius: 1em;
 	display: inline-block;
     line-height: 1.5em;
     -webkit-font-smoothing: antialiased;
-
-
-
 
 	> span {
 		> p {
@@ -116,6 +176,8 @@ $message-border-radius: 1em;
 
 .message_time {
 	@include transition(opacity 300ms);
+	grid-column: 1/4;
+	grid-row: 1;
 	padding: 5px 10px;
 	display: none;
 	text-align: center;

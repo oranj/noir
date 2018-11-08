@@ -110,6 +110,8 @@ Temporary Items
 .apdisk
 
 
+src/dist/
+
 ### Sass ###
 .sass-cache/
 *.css.map

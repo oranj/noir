@@ -15,7 +15,7 @@ body, html {
 
 /* line 15, ../../scss/main.scss */
 html, input, textarea, button, select {
-  font-size: 18px;
+  font-size: 14px;
   font-family: sans-serif;
 }
 
@@ -506,84 +506,148 @@ html, input, textarea, button, select {
   -o-transition: opacity 300ms, -o-transform 300ms;
   -webkit-transition: opacity 300ms, -webkit-transform 300ms;
   transition: opacity 300ms, transform 300ms;
+  display: grid;
+  grid-template-columns: 50px auto 50px;
+  grid-template-rows: auto auto auto;
   margin: 10px 0;
-  padding-right: 100px;
 }
-/* line 9, ../../scss/blocks/_message.scss */
+/* line 11, ../../scss/blocks/_message.scss */
 .message.-you {
   text-align: right;
   padding: 0;
 }
-/* line 14, ../../scss/blocks/_message.scss */
+/* line 16, ../../scss/blocks/_message.scss */
 .message.-you .message_text {
-  -moz-border-radius: 1em 0 1em 1em;
-  -webkit-border-radius: 1em;
-  border-radius: 1em 0 1em 1em;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
   margin-right: 0px;
   background: #eee;
 }
-/* line 21, ../../scss/blocks/_message.scss */
+/* line 23, ../../scss/blocks/_message.scss */
 .message.-old {
   opacity: 0.3;
 }
-/* line 23, ../../scss/blocks/_message.scss */
+/* line 25, ../../scss/blocks/_message.scss */
 .message.-old:hover {
   opacity: 8;
 }
-/* line 29, ../../scss/blocks/_message.scss */
+/* line 31, ../../scss/blocks/_message.scss */
 .message.-sameSender .message_sender, .message.-you .message_sender, .message.-system .message_sender {
   display: none;
 }
-/* line 35, ../../scss/blocks/_message.scss */
+/* line 37, ../../scss/blocks/_message.scss */
 .message.-timestamped .message_time {
   display: block;
 }
-/* line 40, ../../scss/blocks/_message.scss */
+/* line 42, ../../scss/blocks/_message.scss */
 .message.-system {
   padding: 0px;
   opacity: .5;
 }
-/* line 44, ../../scss/blocks/_message.scss */
+/* line 46, ../../scss/blocks/_message.scss */
 .message.-system .message_text {
-  -moz-border-radius: 1em;
-  -webkit-border-radius: 1em;
-  border-radius: 1em;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
   margin-left: 0px;
   margin-right: 0px;
   background: #a2ffbe;
   color: #001005;
   display: block;
 }
-/* line 54, ../../scss/blocks/_message.scss */
+/* line 56, ../../scss/blocks/_message.scss */
 .message.-anim {
   -moz-animation: message-animLeft 1000ms 1;
   -webkit-animation: message-animLeft 1000ms 1;
   animation: message-animLeft 1000ms 1;
 }
-/* line 57, ../../scss/blocks/_message.scss */
+/* line 59, ../../scss/blocks/_message.scss */
 .message.-anim.-you {
   -moz-animation: message-animRight 1000ms 1;
   -webkit-animation: message-animRight 1000ms 1;
   animation: message-animRight 1000ms 1;
 }
-/* line 61, ../../scss/blocks/_message.scss */
+/* line 63, ../../scss/blocks/_message.scss */
 .message.-anim.-system {
   -moz-animation: message-animSystem 2000ms 1;
   -webkit-animation: message-animSystem 2000ms 1;
   animation: message-animSystem 2000ms 1;
 }
 
-/* line 67, ../../scss/blocks/_message.scss */
+/* line 69, ../../scss/blocks/_message.scss */
 .message_sender {
-  padding: 10px;
+  padding: 5px 0;
   display: block;
+  grid-row: 2;
+  grid-column: 2;
 }
 
-/* line 72, ../../scss/blocks/_message.scss */
+/* line 76, ../../scss/blocks/_message.scss */
+.message_avatar {
+  grid-column: 1;
+  grid-row: 3;
+  position: relative;
+}
+/* line 81, ../../scss/blocks/_message.scss */
+.message_avatar::after {
+  position: absolute;
+  border-right: 8px solid #b9e8ff;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  content: "";
+  right: 0;
+  top: 13px;
+}
+/* line 91, ../../scss/blocks/_message.scss */
+.message.-you .message_avatar {
+  grid-column: 3;
+}
+/* line 94, ../../scss/blocks/_message.scss */
+.message.-you .message_avatar::after {
+  left: 0;
+  border-right: none;
+  border-left: 8px solid #eee;
+}
+
+/* line 103, ../../scss/blocks/_message.scss */
+.message_avatarImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  display: inline-block;
+  position: relative;
+}
+/* line 110, ../../scss/blocks/_message.scss */
+.message_avatarImage::after {
+  background-image: url(https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y);
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 0;
+  background-size: contain;
+}
+
+/* line 124, ../../scss/blocks/_message.scss */
+.message_textRegion {
+  display: flex;
+  flex-direction: row;
+  grid-row: 3;
+  grid-column: 2;
+}
+/* line 130, ../../scss/blocks/_message.scss */
+.message.-you .message_textRegion {
+  justify-content: flex-end;
+}
+
+/* line 135, ../../scss/blocks/_message.scss */
 .message_text {
-  -moz-border-radius: 0 1em 1em 1em;
-  -webkit-border-radius: 0;
-  border-radius: 0 1em 1em 1em;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
   background: #b9e8ff;
   max-width: 100%;
   overflow-x: auto;
@@ -592,20 +656,20 @@ html, input, textarea, button, select {
   line-height: 1.5em;
   -webkit-font-smoothing: antialiased;
 }
-/* line 87, ../../scss/blocks/_message.scss */
+/* line 147, ../../scss/blocks/_message.scss */
 .message_text > span > p {
   margin-top: 0px;
   margin-bottom: 0px;
 }
-/* line 91, ../../scss/blocks/_message.scss */
+/* line 151, ../../scss/blocks/_message.scss */
 .message_text > span > p + p {
   margin-top: 1em;
 }
-/* line 96, ../../scss/blocks/_message.scss */
+/* line 156, ../../scss/blocks/_message.scss */
 .message_text > span code, .message_text > span pre {
   text-align: left;
 }
-/* line 100, ../../scss/blocks/_message.scss */
+/* line 160, ../../scss/blocks/_message.scss */
 .message_text > span a {
   color: #4c79e6;
   max-width: 300px;
@@ -615,7 +679,7 @@ html, input, textarea, button, select {
   display: inline-block;
   vertical-align: bottom;
 }
-/* line 110, ../../scss/blocks/_message.scss */
+/* line 170, ../../scss/blocks/_message.scss */
 .message_text > span img {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -623,12 +687,14 @@ html, input, textarea, button, select {
   max-width: 100%;
 }
 
-/* line 117, ../../scss/blocks/_message.scss */
+/* line 177, ../../scss/blocks/_message.scss */
 .message_time {
   -moz-transition: opacity 300ms;
   -o-transition: opacity 300ms;
   -webkit-transition: opacity 300ms;
   transition: opacity 300ms;
+  grid-column: 1/4;
+  grid-row: 1;
   padding: 5px 10px;
   display: none;
   text-align: center;
@@ -637,7 +703,7 @@ html, input, textarea, button, select {
   border-bottom: 1px dashed #212d33;
   margin-bottom: 10px;
 }
-/* line 127, ../../scss/blocks/_message.scss */
+/* line 189, ../../scss/blocks/_message.scss */
 .message_time:hover {
   opacity: 1;
 }

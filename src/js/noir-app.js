@@ -5,6 +5,7 @@ const NoirLinkify = require( "./js/Noir/NoirLinkify/NoirLinkify.js" );
 const NoirYouTubeImagePreview = require( "./js/Noir/NoirYouTubeImagePreview/NoirYouTubeImagePreview.js" );
 const NoirMarked = require( "./js/Noir/NoirMarked/NoirMarked.js" );
 const NoirGiphy = require( "./js/Noir/NoirGiphy/NoirGiphy.js" );
+const NoirGithub = require( "./js/Noir/NoirGithub/NoirGithub.js" );
 const NoirAutoComplete = require( "./js/Noir/NoirAutoComplete/NoirAutoComplete.js" );
 const NoirDropbox = require( "./js/Noir/NoirDropbox/NoirDropbox.js" );
 const NoirEmojione = require( "./js/Noir/NoirEmojione/NoirEmojione.js" );
@@ -24,6 +25,7 @@ let availablePlugins = {
 	NoirYouTubeIframe,
 	NoirMarked,
 	NoirGiphy,
+	NoirGithub,
 	NoirAutoComplete,
 	NoirDropbox,
 	NoirEmojione
@@ -139,6 +141,23 @@ config.connections
 						return plugin.transformDisplayedMessage( str );
 					});
 				} catch ( e ) {
+					console.error( e.message );
+				}
+			});
+		}
+
+		if ( cxn.avatarSources ) {
+			cxn.avatarSources.forEach( name => {
+				try {
+					if ( typeof plugins[ name ] === "undefined" ) {
+						throw new Error( `Unrecognized plugin ${name}` );
+					}
+					let plugin = plugins[ name ];
+					if ( ! plugin.getAvatarFromSender ) {
+						throw new Error( `Plugin ${name} does not support "getAvatarFromSender" `);
+					}
+					irc.avatarSources.push( plugin );
+				} catch( e ) {
 					console.error( e.message );
 				}
 			});

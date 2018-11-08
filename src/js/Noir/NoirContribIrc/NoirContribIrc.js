@@ -34,6 +34,7 @@ module.exports = class NoirContribIrc {
 		this.displayedMessageTransforms = [];
 		this.sentMessageTransforms      = [];
 		this.autoCompleteListeners      = [];
+		this.avatarSources      = [];
 		this.fileDropHandler            = null;
 		this.connectionName = connectionName;
 
@@ -202,6 +203,7 @@ module.exports = class NoirContribIrc {
 		chatWindow.displayedMessageTransforms = Object.create( this.displayedMessageTransforms );
 		chatWindow.sentMessageTransforms      = Object.create( this.sentMessageTransforms );
 		chatWindow.autoCompleteListeners      = Object.create( this.autoCompleteListeners );
+		chatWindow.avatarSources              = Object.create( this.avatarSources );
 
 		this.logger.getMessages( id ).forEach(({ username, message, timestamp }) => {
 			chatWindow.addChatMessage( username, message, timestamp );
